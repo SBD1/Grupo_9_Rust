@@ -13,10 +13,16 @@
 | 15/0149948 | Thiago Ferreira | [@thiagoiferreira](https://github.com/thiagoiferreira) |
 
 ## Sobre
+<p align="justify">
 &nbsp;&nbsp;Repositório direcionado para o desenvolvimento do projeto do Grupo 09 na disciplina SBD1 com o professor Maurício Serrano. O projeto visa o desenvolvimento de um jogo de Rust no estilo MUD (Multi-user dungeon).
+</p>
 
 ## Módulo 1 - Modelo Entidade Relacionamento
+<p align="justify">
 &nbsp;&nbsp;O Modelo Entidade Relacionamento, se caracteriza como um modelo conceitual utilizado na Engenharia de Software que busca descrever as entidades (objetos) envolvidas em um domínio de negócios, com seus atributos (características) e como elas se relacionam entre si (relacionamentos). Representando de forma abstrata a estrutura que possuirá o  banco de dados da aplicação.
+</p>
 
-#### Diagrama
-![Diagrama MER](./1. Modelo Entidade Relacionamento/MER.jpg)
+### Diagrama
+<p align="center">
+  <img src="1. Modelo Entidade Relacionamento/MER.jpg" title="Diagrama MER">
+</p>
