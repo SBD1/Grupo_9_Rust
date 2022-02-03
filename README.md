@@ -1,6 +1,6 @@
 # Rust - Grupo 09
 
-**Disciplina**: Banco de Dados 1<br>
+**Disciplina**: Sistema de Banco de Dados 1<br>
 **Código da Disciplina**: FGA0137<br>
 
 ## Alunos
@@ -17,6 +17,10 @@
 &nbsp;&nbsp;Repositório direcionado para o desenvolvimento do projeto do Grupo 09 na disciplina SBD1 com o professor Maurício Serrano. O projeto visa o desenvolvimento de um jogo de Rust no estilo MUD (Multi-user dungeon).
 </p>
 
+<p align="center">
+  <img src="images/rust.jpg" title="Capa do Jogo Rust">
+</p>
+
 ## Módulo 1 - Modelo Entidade Relacionamento
 <p align="justify">
 &nbsp;&nbsp;O Modelo Entidade Relacionamento, se caracteriza como um modelo conceitual utilizado na Engenharia de Software que busca descrever as entidades (objetos) envolvidas em um domínio de negócios, com seus atributos (características) e como elas se relacionam entre si (relacionamentos). Representando de forma abstrata a estrutura que possuirá o  banco de dados da aplicação.
@@ -24,5 +28,5 @@
 
 ### Diagrama
 <p align="center">
-  <img src="1. Modelo Entidade Relacionamento/MER.jpg" title="Diagrama MER">
+  <img src="images/MER.jpg" title="Diagrama MER">
 </p>
