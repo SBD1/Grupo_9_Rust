@@ -28,5 +28,5 @@
 
 ### Diagrama
 <p align="center">
-  <img src="images/MER.jpg" title="Diagrama MER">
+  <img src="images/MER--v1.0.jpg" title="Diagrama MER">
 </p>
