@@ -30,3 +30,13 @@
 <p align="center">
   <img src="images/MER--v1.0.jpg" title="Diagrama MER">
 </p>
+
+## Módulo 2 - Modelo Relacional
+<p align="justify">
+&nbsp;&nbsp;O modelo relacional é um modelo de dados representativo, que se baseia no princípio de que todos os dados estão armazenados em relações (tabelas). Toda sua definição é teórica e baseada na lógica de predicados e na teoria dos conjuntos.
+</p>
+
+### Representação
+<p align="center">
+  <img src="images/MR--v0.1.jpg" title="Representação MR">
+</p>
