@@ -37,85 +37,88 @@
 </p>
 
 ### Representação
-```
-Map = { mapID }
+Map = { <u>mapID</u> }
 
-HaveMapRegion = { mapID, coordinates }
+HaveMapRegion = { <u>mapID</u>, <u>coordinates</u> }
 
-Region = { coordinates*¹, biome, monument, dangerLevel, monument*¹º }
+Region = { <u>coordinates</u>*¹, biome, monument, dangerLevel, monument*¹º }
 
-Biomes = { biomesID*², coordinates*¹, resourceAbundance, resourceAvailability, type, climate*³ }
+Biomes = { <u>biomesID</u>*², coordinates*¹, resourceAbundance, resourceAvailability, type, climate*³ }
 
-Flora = { biomes*², flora }
+Flora = { biomes*², <u>flora</u> }
 
-Fauna = { biomes*², fauna }
+Fauna = { biomes*², <u>fauna</u> }
 
-Climate = { climateID*³, temperature, event, statusEffect, visibility }
+Climate = { <u>climateID</u>*³, temperature, event, statusEffect, visibility }
 
-Characters = { charactersID*⁴, name, position, gatherYield, characterModel, health, speed, visibility, climate*³, type, item }
+Characters = { <u>charactersID</u>*⁴, name, position, characterModel, climate*³, type, item }
 
-EnterCombatCharacters = { enterCombatCharactersID*⁵, firstCharacter*⁴, secondCharacter*⁴ }
+GatherYield = { <u>character</u>*⁴, <u>gatherYield</u> }
 
-CombatLog = { enterCombatCharacters*⁵, indexLog, log }
+EnterCombatCharacters = { <u>enterCombatCharactersID</u>*⁵, firstCharacter*⁴, secondCharacter*⁴ }
 
-PlayerCharacters = { charactersID*⁴, comfort, wet, radiation, oxygen, hydration, poisoned, temperature, hunger, coldResistance, type, equipedItems1, equipedItems2, equipedItems3, equipedItems4, equipedItems5, backpack*¹³ }
+CombatLog = { <u>enterCombatCharacters</u>*⁵, indexLog, log }
 
-RecruitableCharacters = { charactersID*⁴, specialization, recruited, loyalty }
+PlayerCharacters = { <u>charactersID</u>*⁴, hydration, poisoned, hunger, type, equipedItems1, equipedItems2, equipedItems3, equipedItems4, equipedItems5, backpack*¹³ }
 
-MainCharacter = { charactersID*⁴, owner*⁶ }
+RecruitableCharacters = { <u>charactersID</u>*⁴, specialization, recruited }
 
-RespawmLocation = { ownerID*⁶, description, timer, X, Y }
+MainCharacter = { <u>charactersID</u>*⁴, owner*⁶ }
 
-NPCs = { charactersID*⁴, isAgressive, aggroRange, enemyGrade, type }
+RespawmLocation = { <u>ownerID</u>*⁶, description, timer, X, Y }
 
-Animals = { charactersID*⁴, sound, modelType }
+NPCs = { <u>charactersID</u>*⁴, isAgressive, aggroRange, enemyGrade, type }
 
-Scientists = { charactersID*⁴, hasDialogue }
+Animals = { <u>charactersID</u>*⁴, sound, modelType }
 
-DialogueText = { character*⁴, dialogue }
+Scientists = { <u>charactersID</u>*⁴, hasDialogue }
 
+DialogueText = { character*⁴, <u>dialogue</u> }
 
-Items = { itemsID*⁷, stackSize, lootGrade*⁸, name, type, quantity, durability, craftable, type, backpack*¹³ }
+Items = { <u>itemsID</u>*⁷, stackSize, <u>lootGrade</u>*⁸, name, type, quantity, durability, craftable, type, backpack*¹³, character*⁴ }
 
-Ingredients = { items*⁷, lootGrade*⁸, ingredient }
+Ingredients = { items*⁷, lootGrade*⁸, <u>ingredient</u> }
 
-DropCharactersItems = { dropCharactersItemsID, item*⁷, lootGrade*⁸, character*⁴ }
+DropCharactersItems = { <u>dropCharactersItemsID</u>, item*⁷, lootGrade*⁸, character*⁴ }
 
-Weapons = { itemsID*⁷, armsDamage, legDamage, chestDamage, headDamage, range, type }
+PlayerCharactersGeneratesItem = { <u>character</u>*⁴, <u>items</u>*⁷ }
 
-Melee = { itemsID*⁷, canBeThrown, fleshGatherRate, oreGatherRate, treeGatherRate }
+Weapons = { <u>itemsID</u>*⁷, type }
 
-Ranged = { itemsID*⁷. recoil, attackRange, amnoCapacity, modSlots, fireMode, fireRate, accuracyModifier }
+Melee = { <u>itemsID</u>*⁷, canBeThrown, fleshGatherRate, oreGatherRate, treeGatherRate }
 
-Consumables = { itemsID*⁷, instantHeal, healOverTime, hidrationYield, bleedingYield, radiationYield, poisonYield, hungerYield, hungerYield, vomitChance, type }
+Ranged = { <u>itemsID</u>*⁷. recoil, attackRange, amnoCapacity, modSlots, fireMode, fireRate, accuracyModifier }
 
-Teas = { itemsID*⁷, statusUpgradeType, upgradePercentage }
+Consumables = { <u>itemsID</u>*⁷, instantHeal, healOverTime, hidrationYield, bleedingYield, radiationYield, poisonYield, hungerYield, hungerYield, vomitChance, type }
 
-Clothing = { itemsID*⁷, coldResistance, radResistance, explosionResistance, meleeResistance, rangedResistance, biteResistance, equipmentSlot, wetResistance }
+Teas = { <u>itemsID</u>*⁷, statusUpgradeType, upgradePercentage }
 
-Components = { itemsID*⁷ }
+Clothing = { <u>itemsID</u>*⁷, coldResistance, radResistance, explosionResistance, meleeResistance, rangedResistance, biteResistance, equipmentSlot, wetResistance }
 
-Resources = { itemsID*⁷, isPrimary, isProcessed }
+Components = { <u>itemsID</u>*⁷ }
 
-WeaponsAreComposedOfComponentsResources = { weapons*⁷, components*⁷, resouces*⁷ }
+Resources = { <u>itemsID</u>*⁷, isPrimary }
 
-ConsumablesAreComposedOfComponentsResources = { consumables*⁷, components*⁷, resouces*⁷ }
+WeaponsAreComposedOfComponentsResources = { weapons*⁷, <u>components</u>*⁷, <u>resouces</u>*⁷ }
 
-ClothingAreComposedOfComponentsResources = { clothing*⁷, components*⁷, resouces*⁷ }
+ConsumablesAreComposedOfComponentsResources = { consumables*⁷, <u>components</u>*⁷, <u>resouces</u>*⁷ }
 
-ResourceNodes = { resourceNodesID*⁹, nodeType, maxYield, durabilityDamage, biomes*² }
+ClothingAreComposedOfComponentsResources = { clothing*⁷, <u>components</u>*⁷, <u>resouces</u>*⁷ }
 
-ResourceNodesGenerateItems = { resourceNodes*⁹, item*⁷ }
+ResourceNodes = { <u>resourceNodesID</u>*⁹, nodeType, maxYield, durabilityDamage, biomes*² }
 
-Monuments = { name*¹º, monumentSize, lootGrade, enemyGrade, regions }
+ResourceNodesGenerateItems = { <u>resourceNodes</u>*⁹, <u>item</u>*⁷ }
 
-Structures = { structureID*¹¹ , monument*¹º }
+Monuments = { <u>name</u>*¹º, monumentSize, lootGrade, enemyGrade }
 
-LootCrates = { lootCratesID*¹², grade, quantityOfItems }
+regionsMonuments = { <u>name</u>*¹º, <u>regionMonument</u> }
 
-StructuresContainsLootCrates = {  structure*¹¹, lootCrates*¹² }
+Structures = { <u>structureID</u>*¹¹ , monument*¹º }
 
-Party = { capacity } 
+LootCrates = { <u>lootCratesID</u>*¹², grade }
 
-Backpack = { ownerID*¹³, availableSlots, slot1, slot2, slot3, slot4, slot5, totalSlots }
-```
+StructuresContainsLootCrates = { <u>structure</u>*¹¹, <u>lootCrates</u>*¹² }
+
+Party = { <u>partyID</u>, character*⁴, capacity } 
+
+Backpack = { <u>ownerID</u>*¹³, slot1, slot2, slot3, slot4, slot5, totalSlots }
