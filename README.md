@@ -28,7 +28,7 @@
 
 ### Diagrama
 <p align="center">
-  <img src="images/MER--v1.0.jpg" title="Diagrama MER">
+  <img src="1. Modelo Entidade Relacionamento/MER-Versão-Final.jpg" title="Diagrama MER">
 </p>
 
 ## Módulo 2 - Modelo Relacional
@@ -37,4 +37,4 @@
 </p>
 
 ### Representação
-Disponivel, em PDF, neste [arquivo](https://github.com/SBD1/Grupo_9_Rust/blob/main/2.%20Modelo%20Relacional/MR-v4.pdf).
+Disponivel no arquivo '2. Modelo Relacional/MR-Versão-Final.pdf'
