@@ -37,4 +37,4 @@
 </p>
 
 ### Representação
-Disponivel no arquivo '2. Modelo Relacional/MR-Versão-Final.pdf'
+Disponivel, em PDF, neste [arquivo](https://github.com/SBD1/Grupo_9_Rust/blob/main/2.%20Modelo%20Relacional/MR-v4.pdf).
