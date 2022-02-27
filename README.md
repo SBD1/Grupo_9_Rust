@@ -38,3 +38,11 @@
 
 ### Representação
 Disponivel no arquivo ['2. Modelo Relacional/MR-Versão-Final.pdf'](https://github.com/SBD1/Grupo_9_Rust/blob/main/2.%20Modelo%20Relacional/MR-Vers%C3%A3o-Final.pdf).
+
+## Módulo 3 - Normalização
+<p align="justify">
+&nbsp;&nbsp;Normalização pode ser definda como um processo de modelagem dos dados em um banco afim de evitar ou ao menos minimizar a ocorrência de redundâncias.
+</p>
+
+### Representação
+Disponivel no arquivo ['3. Normalização/Normalização-Versão-Final.pdf'](https://github.com/SBD1/Grupo_9_Rust/blob/main/3.%20Normalização/Normalização-Vers%C3%A3o-Final.pdf).
