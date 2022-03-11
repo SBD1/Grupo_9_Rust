@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <img src="images/rust.jpg" title="Capa do Jogo Rust">
+  <img src="Images/rust.jpg" title="Capa do Jogo Rust">
 </p>
 
 ## Módulo 1 - Modelo Entidade Relacionamento
