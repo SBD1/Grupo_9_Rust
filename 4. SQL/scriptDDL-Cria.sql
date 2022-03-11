@@ -6,61 +6,66 @@ Script DDL - Criação das tabelas do projeto
 
 ----------------------------------------------------- */
 
-CREATE TABLE Map { 
-  mapID INTEGER NOT NULL PRIMARY KEY
-};
+CREATE TYPE ENUM_STATUS AS ENUM('HIGH','MEDIUM', 'LOW');
+CREATE TYPE ENUM_BOOLEAN AS ENUM('true','false');
 
-CREATE TABLE Structures { 
+CREATE TABLE Maps ( 
+  mapID INTEGER NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE Structures ( 
   structureID INTEGER NOT NULL PRIMARY KEY,
   monument VARCHAR(100) NOT NULL
-};
+);
 
-CREATE TABLE Region { 
-  coordinates INTEGER NOT NULL PRIMARY KEY,
+CREATE TABLE Region ( 
+  coordinates INTEGER NOT NULL,
   biome VARCHAR(30) NOT NULL,
   dangerLevel SMALLINT NOT NULL,
-  monument INTEGER NOT NULL PRIMARY KEY,
+  monument INTEGER NOT NULL,
+  CONSTRAINT pk_Region PRIMARY KEY(coordinates,monument),
   FOREIGN KEY (monument) REFERENCES Structures(structureID)
-}
+);
 
-CREATE TABLE HaveMapRegion { 
-  mapID INTEGER NOT NULL PRIMARY KEY,
-  coordinates INTEGER NOT NULL PRIMARY KEY,
-  FOREIGN KEY (mapID) REFERENCES Map(mapID),
-  FOREIGN KEY (coordinates) REFERENCES Region(coordinates)
-};
+CREATE TABLE HaveMapRegion ( 
+  mapID INTEGER NOT NULL,
+  coordinates INTEGER NOT NULL,
+  CONSTRAINT pk_HaveMapRegion PRIMARY KEY(mapID,coordinates),
+  CONSTRAINT fk_mapID_HaveMapRegion FOREIGN KEY (mapID) REFERENCES Maps(mapID),
+  CONSTRAINT fk_coordinates_HaveMapRegion FOREIGN KEY (coordinates) REFERENCES Structures(structureID)
+);
 
-CREATE TABLE Climate { 
+CREATE TABLE Climate ( 
   climateID INTEGER NOT NULL PRIMARY KEY,
   temperature DECIMAL(4,1) NOT NULL,
   event VARCHAR(30) NOT NULL, 
   statusEffect VARCHAR(30) NOT NULL,
-  visibility ENUM('HIGH','MEDIUM', 'LOW') NOT NULL
-}
+  visibility ENUM_STATUS NOT NULL
+);
 
-CREATE TABLE Biomes { 
+CREATE TABLE Biomes ( 
   biomesID INTEGER NOT NULL PRIMARY KEY,
   coordinates INTEGER NOT NULL,
-  resourceAbundance ENUM('true','false') NOT NULL,
-  resourceAvailability ENUM('true','false') NOT NULL,
+  resourceAbundance ENUM_BOOLEAN NOT NULL,
+  resourceAvailability ENUM_BOOLEAN NOT NULL,
   type VARCHAR(30) NOT NULL,
   climate INTEGER NOT NULL,
-  FOREIGN KEY (climate) REFERENCES Climate(climateID)
-}
+  CONSTRAINT fk_Biomes_Climate FOREIGN KEY (climate) REFERENCES Climate(climateID)
+);
 
-CREATE TABLE Flora { 
+CREATE TABLE Flora ( 
   flora VARCHAR(30) NOT NULL PRIMARY KEY,
   biomes INTEGER NOT NULL,
-  FOREIGN KEY (biomes) REFERENCES Biomes(biomesID)
-}
+  CONSTRAINT fk_Flora_Biomes FOREIGN KEY (biomes) REFERENCES Biomes(biomesID)
+);
 
-CREATE TABLE Fauna { 
+CREATE TABLE Fauna ( 
   fauna VARCHAR(30) NOT NULL PRIMARY KEY,
   biomes INTEGER NOT NULL,
-  FOREIGN KEY (biomes) REFERENCES Biomes(biomesID)
-}
+  CONSTRAINT fk_Fauna_Biomes FOREIGN KEY (biomes) REFERENCES Biomes(biomesID)
+);
 
-CREATE TABLE Characters { 
+CREATE TABLE Characters ( 
   charactersID INTEGER NOT NULL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   position INTEGER NOT NULL,
@@ -68,30 +73,32 @@ CREATE TABLE Characters {
   climate INTEGER NOT NULL,
   type VARCHAR(30) NOT NULL,
   item VARCHAR(30) NOT NULL,
-  FOREIGN KEY (climate) REFERENCES Climate(climateID)
-};
+  CONSTRAINT fk_Characters_Climate FOREIGN KEY (climate) REFERENCES Climate(climateID)
+);
 
-CREATE TABLE GatherYield { 
-  character INTEGER NOT NULL PRIMARY KEY, 
-  gatherYield VARCHAR(30) NOT NULL PRIMARY KEY,
-  FOREIGN KEY (character) REFERENCES Characters(charactersID)
-};
+CREATE TABLE GatherYield ( 
+  character INTEGER NOT NULL, 
+  gatherYield VARCHAR(30) NOT NULL,
+  CONSTRAINT pk_GatherYield PRIMARY KEY(character,gatherYield),
+  CONSTRAINT fk_GatherYield_Characters FOREIGN KEY (character) REFERENCES Characters(charactersID)
+);
 
-CREATE TABLE EnterCombatCharacters { 
+CREATE TABLE EnterCombatCharacters ( 
   enterCombatCharactersID INTEGER NOT NULL PRIMARY KEY,
   firstCharacter INTEGER NOT NULL,
   secondCharacter INTEGER NOT NULL,
-  FOREIGN KEY (firstCharacter) REFERENCES Characters(charactersID),
-  FOREIGN KEY (secondCharacter) REFERENCES Characters(charactersID),
-};
+  CONSTRAINT fk_EnterCombatCharacters_Characters_1 FOREIGN KEY (firstCharacter) REFERENCES Characters(charactersID)
+/*  CONSTRAINT fk_EnterCombatCharacters_Characters_2 FOREIGN KEY (secondCharacter) REFERENCES Characters(charactersID)*/
+);
 
-CREATE TABLE CombatLog { 
-  enterCombatCharacters INTEGER NOT NULL PRIMARY KEY,
-  indexLog INTEGER NOT NULL PRIMARY KEY,
+CREATE TABLE CombatLog ( 
+  enterCombatCharacters INTEGER NOT NULL,
+  indexLog INTEGER NOT NULL,
+  CONSTRAINT pk_CombatLog PRIMARY KEY(enterCombatCharacters,indexLog),
   log VARCHAR(100) NOT NULL
-};
+);
 
-CREATE TABLE PlayerCharacters { 
+CREATE TABLE PlayerCharacters ( 
   charactersID INTEGER NOT NULL PRIMARY KEY,
   hydration INTEGER NOT NULL,
   poisoned INTEGER NOT NULL,
@@ -103,115 +110,111 @@ CREATE TABLE PlayerCharacters {
   equipedItems4 INTEGER,
   equipedItems5 INTEGER,
   backpack INTEGER NOT NULL,
-  FOREIGN KEY (charactersID) REFERENCES Characters(charactersID)
-};
+  CONSTRAINT fk_PlayerCharacters_Characters FOREIGN KEY (charactersID) REFERENCES Characters(charactersID)
+);
 
-CREATE TABLE RecruitableCharacters { 
+CREATE TABLE RecruitableCharacters ( 
   charactersID INTEGER NOT NULL PRIMARY KEY,
   specialization VARCHAR(30) NOT NULL,
-  recruited ENUM('true','false') NOT NULL,
-  FOREIGN KEY (charactersID) REFERENCES Characters(charactersID)
-};
+  recruited ENUM_BOOLEAN NOT NULL,
+  CONSTRAINT fk_RecruitableCharacters_Characters FOREIGN KEY (charactersID) REFERENCES Characters(charactersID)
+);
 
-CREATE TABLE MainCharacter { 
-  charactersID INTEGER NOT NULL PRIMARY KEY,
-  owner INTEGER NOT NULL PRIMARY KEY,
-  FOREIGN KEY (charactersID) REFERENCES Characters(charactersID)
-};
+CREATE TABLE MainCharacter ( 
+  charactersID INTEGER NOT NULL,
+  owner INTEGER NOT NULL,
+  CONSTRAINT pk_MainCharacter PRIMARY KEY(charactersID,owner),
+  CONSTRAINT fk_MainCharacter_Characters FOREIGN KEY (charactersID) REFERENCES Characters(charactersID)
+);
 
-CREATE TABLE RespawnLocation { 
+CREATE TABLE RespawnLocation ( 
   ownerID INTEGER NOT NULL PRIMARY KEY,
   description VARCHAR(100) NOT NULL,
   timer INTEGER NOT NULL,
   X INTEGER NOT NULL,
   Y INTEGER NOT NULL
-};
+);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-CREATE TABLE NPCs { 
+CREATE TABLE NPCs ( 
   charactersID INTEGER NOT NULL PRIMARY KEY,
-  isAgressive ENUM('true','false') NOT NULL,
-  aggroRange, 
-  enemyGrade, 
-  type 
-};
+  isAgressive ENUM_BOOLEAN NOT NULL,
+  aggroRange VARCHAR(30) NOT NULL, 
+  enemyGrade VARCHAR(30) NOT NULL,
+  type VARCHAR(30) NOT NULL,
+  CONSTRAINT fk_NPCs_Characters FOREIGN KEY (charactersID) REFERENCES Characters(charactersID)
+);
 
-CREATE TABLE Animals { 
+CREATE TABLE Animals ( 
   charactersID INTEGER NOT NULL PRIMARY KEY,
   sound VARCHAR(100) NOT NULL,
-  modelType 
-};
+  modelType VARCHAR(30) NOT NULL,
+  CONSTRAINT fk_Animals_Characters FOREIGN KEY (charactersID) REFERENCES Characters(charactersID)
+);
 
-CREATE TABLE Scientists { 
+CREATE TABLE Scientists ( 
   charactersID INTEGER NOT NULL PRIMARY KEY,
-  hasDialogue 
-};
+  hasDialogue ENUM_BOOLEAN NOT NULL,
+  CONSTRAINT fk_Scientists_Characters FOREIGN KEY (charactersID) REFERENCES Characters(charactersID)
+);
 
-CREATE TABLE DialogueText { 
-  dialogue, 
-  character 
-};
+CREATE TABLE DialogueText ( 
+  dialogue VARCHAR(100) NOT NULL PRIMARY KEY,
+  character INTEGER NOT NULL,
+  CONSTRAINT fk_DialogueText_Characters FOREIGN KEY (character) REFERENCES Characters(charactersID)
+);
 
-CREATE TABLE Items { 
+CREATE TABLE Items ( 
+  itemsID INTEGER NOT NULL UNIQUE,
+  stackSize INTEGER NOT NULL,
+  lootGrade INTEGER NOT NULL,
+  name VARCHAR(30) NOT NULL,
+  type VARCHAR(30) NOT NULL,
+  quantity INTEGER NOT NULL,
+  durability INTEGER NOT NULL,
+  craftable ENUM_BOOLEAN NOT NULL,
+  backpack INTEGER NOT NULL , 
+  character INTEGER NOT NULL,
+  CONSTRAINT pk_Items PRIMARY KEY(itemsID,lootGrade),
+  CONSTRAINT fk_Items_Characters FOREIGN KEY (character) REFERENCES Characters(charactersID)
+/*  FOREIGN KEY (lootGrade) REFERENCES Characters(lootGradeID)  Faltando */
+);
+
+CREATE TABLE Ingredients ( 
+  ingredient VARCHAR(30) NOT NULL PRIMARY KEY, 
+  items INTEGER NOT NULL,
+  lootGrade INTEGER NOT NULL,
+  CONSTRAINT fk_Ingredients_Items FOREIGN KEY (items) REFERENCES Items(itemsID)
+/*  FOREIGN KEY (lootGrade) REFERENCES Characters(lootGradeID)  Faltando */
+);
+
+CREATE TABLE Weapons ( 
   itemsID INTEGER NOT NULL PRIMARY KEY,
-  stackSize, 
-  lootGrade, 
-  name, 
-  type, 
-  quantity, 
-  durability, 
-  craftable,
-  type, 
-  backpack, 
-  character 
-};
+  type VARCHAR(30) NOT NULL,
+  CONSTRAINT fk_Weapons_Items FOREIGN KEY (itemsID) REFERENCES Items(itemsID)
+);
 
-CREATE TABLE Ingredients { 
-  ingredient, 
-  items, 
-  lootGrade 
-};
-
-CREATE TABLE Weapons { 
+CREATE TABLE Melee ( 
   itemsID INTEGER NOT NULL PRIMARY KEY,
-  type
-};
+  canBeThrown ENUM_BOOLEAN NOT NULL,
+  fleshGatherRate INTEGER NOT NULL,
+  oreGatherRate INTEGER NOT NULL,
+  treeGatherRate INTEGER NOT NULL,
+  CONSTRAINT fk_Melee_Items FOREIGN KEY (itemsID) REFERENCES Items(itemsID)
+);
 
-CREATE TABLE Melee { 
+CREATE TABLE Ranged ( 
   itemsID INTEGER NOT NULL PRIMARY KEY,
-  canBeThrown, 
-  fleshGatherRate, 
-  oreGatherRate,
-  treeGatherRate 
-};
-
-CREATE TABLE Ranged { 
-  itemsID INTEGER NOT NULL PRIMARY KEY,
-  recoil, 
-  attackRange, 
-  amnoCapacity, 
-  modSlots, 
-  fireMode,
-  CREATE TABLE 
-  fireRate, 
-  accuracyModifier 
-};
-
-CREATE TABLE Consumables { 
+  recoil INTEGER NOT NULL,
+  attackRange INTEGER NOT NULL,
+  amnoCapacity INTEGER NOT NULL,
+  modSlots INTEGER NOT NULL,
+  fireMode ENUM_BOOLEAN NOT NULL,
+  fireRate INTEGER NOT NULL,
+  accuracyModifier INTEGER NOT NULL,
+  CONSTRAINT fk_Ranged_Items FOREIGN KEY (itemsID) REFERENCES Items(itemsID)
+);
+/* Falta completar
+CREATE TABLE Consumables ( 
   itemsID INTEGER NOT NULL PRIMARY KEY,
   instantHeal, 
   healOverTime, 
@@ -223,15 +226,15 @@ CREATE TABLE Consumables {
   hungerYield, 
   vomitChance, 
   type 
-};
+);
 
-CREATE TABLE Teas { 
+CREATE TABLE Teas ( 
   itemsID INTEGER NOT NULL PRIMARY KEY,
   statusUpgradeType, 
   upgradePercentage 
-};
+);
 
-CREATE TABLE Clothing { 
+CREATE TABLE Clothing ( 
   itemsID INTEGER NOT NULL PRIMARY KEY,
   coldResistance, 
   radResistance, 
@@ -241,92 +244,93 @@ CREATE TABLE Clothing {
   biteResistance, 
   equipmentSlot,
   wetResistance
-};
+);
 
-CREATE TABLE Components { 
+CREATE TABLE Components ( 
   itemsID INTEGER NOT NULL PRIMARY KEY
-};
+);
 
-CREATE TABLE Resources { 
+CREATE TABLE Resources ( 
   itemsID INTEGER NOT NULL PRIMARY KEY,
   isPrimary 
-};
+);
 
-CREATE TABLE DropCharactersItems { 
+CREATE TABLE DropCharactersItems ( 
   dropCharactersItemsID INTEGER NOT NULL PRIMARY KEY,
   item, 
   lootGrade, 
   character 
-};
+);
 
-CREATE TABLE PlayerCharactersGeneratesItem { 
+CREATE TABLE PlayerCharactersGeneratesItem ( 
   character, 
   items 
-};
+);
 
-CREATE TABLE WeaponsAreComposedOfComponentsResources {
+CREATE TABLE WeaponsAreComposedOfComponentsResources (
   components, 
   resouces,
   weapons
-};
+);
 
-CREATE TABLE ConsumablesAreComposedOfComponentsResources { 
+CREATE TABLE ConsumablesAreComposedOfComponentsResources ( 
   components, 
   resouces,
   consumables 
-};
+);
 
-CREATE TABLE ClothingAreComposedOfComponentsResources { 
+CREATE TABLE ClothingAreComposedOfComponentsResources ( 
   components, 
   resouces,
   clothing
-};
+);
 
-CREATE TABLE ResourceNodes {
+CREATE TABLE ResourceNodes (
   resourceNodesID INTEGER NOT NULL PRIMARY KEY,
   nodeType, 
   maxYield, 
   durabilityDamage,
   biomes 
-};
+);
 
-CREATE TABLE ResourceNodesGenerateItems { 
+CREATE TABLE ResourceNodesGenerateItems ( 
   resourceNodes, 
   item 
-};
+);
 
-CREATE TABLE Monuments { 
+CREATE TABLE Monuments ( 
   name, 
   monumentSize, 
   lootGrade, 
   enemyGrade 
-};
+);
 
-CREATE TABLE regionsMonuments { 
+CREATE TABLE regionsMonuments ( 
   name, 
   regionMonument 
-};
+);
 
-CREATE TABLE LootCrates { 
+CREATE TABLE LootCrates ( 
   lootCratesID INTEGER NOT NULL PRIMARY KEY,
   grade 
-};
+);
 
-CREATE TABLE StructuresContainsLootCrates { 
+CREATE TABLE StructuresContainsLootCrates ( 
   structure,
   lootCrates 
-};
+);
 
-CREATE TABLE Party { 
+CREATE TABLE Party ( 
   partyID INTEGER NOT NULL PRIMARY KEY,
   character, 
   capacity 
-};
+);
 
-CREATE TABLE Backpack { 
+CREATE TABLE Backpack ( 
   ownerID INTEGER NOT NULL PRIMARY KEY,
   slot1,
   slot2,
   slot3,
   slot4
-};
+);
+*/
