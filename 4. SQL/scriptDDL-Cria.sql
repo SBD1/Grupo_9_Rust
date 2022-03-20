@@ -6,6 +6,10 @@ Script DDL - Criação das tabelas do projeto
 
 ----------------------------------------------------- */
 
+CREATE DATABASE rust;
+
+\connect rust;
+
 CREATE TYPE ENUM_STATUS AS ENUM('HIGH','MEDIUM', 'LOW');
 CREATE TYPE ENUM_BOOLEAN AS ENUM('true','false');
 
