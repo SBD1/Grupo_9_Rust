@@ -1,0 +1,1 @@
+CREATE TYPE loot_grade AS ENUM('resource','barrel','basic','military','tool','food','elite');

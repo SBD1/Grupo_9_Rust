@@ -1,0 +1,18 @@
+INSERT INTO Resources (maxStackSize,isPrimary, itemType, craftable,itemName,isRefinable,lootGrade) VALUES 
+	(1000,true,'resource', false,'Wood',False,'primary'),
+	(1000,true,'resource', false,'Stone',False,'primary'),
+	(1000,true,'resource', false,'Bone Fragments',False,'primary'),
+	(1000,true,'resource', false,'Leather',False,'primary'),
+	(1000,true,'resource', false,'Cloth',False,'primary'),
+	(1000,true,'resource', false,'Scrap',False,'primary'),
+	(100,true,'resource', false,'High Quality Metal Ore',true,'primary'),
+	(500,true,'resource', false,'Animal Fat',true,'primary'),
+	(500,true,'resource', false,'Crude Oil',true,'primary'),
+	(1000,true,'resource', false,'Metal Ore',true,'primary'),
+	(1000,true,'resource', false,'Sulfur Ore',true,'primary'),
+	(100,false,'resource', true,'High Quality Metal',false,'resource'),
+	(500,false,'resource', true,'Low Grade Fuel',false,'resource'),
+	(1000,false,'resource', true,'Metal Fragments',false,'resource'),
+	(1000,false,'resource', true,'Sulfur',false,'resource'),
+	(1000,false,'resource', true,'Charcoal',false,'resource'),
+	(1000,false,'resource', true,'Gunpowder',false,'resource');
