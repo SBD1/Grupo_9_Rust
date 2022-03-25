@@ -46,3 +46,8 @@ Disponivel no arquivo ['2. Modelo Relacional/MR-Versão-Final.pdf'](https://gith
 
 ### Representação
 Disponivel no arquivo ['3. Normalização/Normalização-Versão-Final.pdf'](https://github.com/SBD1/Grupo_9_Rust/blob/main/3.%20Normalização/Normalização-Vers%C3%A3o-Final.pdf).
+
+## Módulo 4 - SQL
+<p align="justify">
+&nbsp;&nbsp;Structured Query Language, ou Linguagem de Consulta Estruturada ou SQL, é a linguagem de pesquisa declarativa padrão para banco de dados relacional. Muitas das características originais do SQL foram inspiradas na álgebra relacional. Para o projeto foram desenvolvidos alguns scripts para a criação e população do banco de dados, disponíveis no diretório ['4. SQL'](https://github.com/SBD1/Grupo_9_Rust/tree/main/4.%20SQL)
+</p>
