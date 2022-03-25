@@ -18,7 +18,7 @@ INSERT INTO Resources (maxStackSize,isPrimary, itemType,itemName,isRefinable,loo
 	(1000,false,'resource','Gunpowder',false,'resource');
 
 INSERT INTO RangedWeapons(maxStackSize, itemName, itemType, lootGrade, 
-attackRange, headDamage,chestDamage,legDamage,arsDamage, accuracyModifier, fireRate,
+attackRange, headDamage,chestDamage,legDamage,armsDamage, accuracyModifier, fireRate,
 fireMode, modSlots, ammoCapacity, recoil) VALUES
 (1,'Hunting Bow','ranged','basic','150','80', '50','35','40','0.5','0.5','single','0','1','0'),
 (1,'Crossbow','ranged','basic','200','102', '60','45','45','0.75','0.3','single','2','1','0'),
@@ -38,6 +38,33 @@ fireMode, modSlots, ammoCapacity, recoil) VALUES
 (1,'LR-300 Assault Rifle','ranged','elite','400','80', '40','30','40','3','2.5','semi-auto','3','30','2'),
 (1,'AK47 Assault Rifle','ranged','elite','450','85', '45','35','45','3','3','full-auto','3','30','3.5'),
 (1,'Bolt Action Rifle','ranged','elite','900','150', '75','50','50','5','0.8','single','3','4','5');
+
+INSERT INTO MeleeWeapons(maxStackSize, itemName, itemType, lootGrade,
+attackRange, headDamage,chestDamage,legDamage,armsDamage,
+treeGatherRate,oreGatherRate, fleshGatherRate,canBeThrown) VALUES
+('1','Machete','melee','tool','1.5','70','35','29','35','0','0','0.8',true),
+('1','Salvage Sword','melee','basic','1.5','100','50','45','50','0','0','0.8',true),
+('1','Salvage Cleaver','melee','basic','1.5','120','60','50','55','0','0','0.7',true),
+('1','Longsword','melee','military','2','150','75','36','45','0','0','0.6',true),
+('1','Mace','melee','basic','1.5','100','50','45','50','0','0','0',true),
+('1','Stone Spear','melee','basic','2.2','70','35','35','28','0','0','0',true),
+('1','Spear','melee','primary','2.2','30','25','25','13','0','0','0',true),
+('1','Rock','melee','resource','1.25','20','10','8','8','0.5','0.5','0.5',true),
+('1','Stone Hatchet','melee','resource','1.5','20','10','8','8','0.75','0','0.75',true),
+('1','Stone Pickaxe','melee','resource','1.5','20','10','8','8','0','0.75','0.75',true),
+('1','Hatchet','melee','resource','1.5','30','25','13','25','1','0','1',true),
+('1','Pickaxe','melee','resource','1.5','30','25','13','25','0','1','0.65',true);
+
+
+
+
+
+
+
+
+
+
+
 
 
 
