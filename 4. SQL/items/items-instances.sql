@@ -55,6 +55,77 @@ treeGatherRate,oreGatherRate, fleshGatherRate,canBeThrown) VALUES
 ('1','Hatchet','melee','resource','1.5','30','25','13','25','1','0','1',true),
 ('1','Pickaxe','melee','resource','1.5','30','25','13','25','0','1','0.65',true);
 
+INSERT INTO Clothing(maxStackSize, itemName, itemType, lootGrade,
+coldResistance,radResistance,explosionResistance,meleeResistance,
+rangedResistance,biteResistance,equipmentSlot,wetResistance) VALUES
+(1,'Bandana Mask','clothing','barrel',0.1,0.03,0,0.1,0.05,0.03,'face',0),
+(1,'Wolf Headdress','clothing','basic',0.06,0.04,0.13,0.6,0.3,0.1,'head',0),
+(1,'Wood Armour Helmet','clothing','basic',0.07,0.02,0,0.25,0.15,0.03,'head',0),
+(1,'Coffee Can Helmet','clothing','military',0.0,0.05,0.08,0.5,0.35,0.08,'head',0),
+(1,'Riot Helmet','clothing','basic',0.06,0.05,0.08,0.8,0.25,0.13,'head',0),
+(1,'Bucket Helmet','clothing','basic',0.06,0.04,0.08,0.5,0.2,0.08,'head',0),
+(1,'Facemask','clothing','elite',-0.04,0.0,0.08,0.7,0.5,0.08,'head',0),
+(1,'Boonie Hat','clothing','barrel',0.07,0.02,0.0,0.15,0.15,0.03,'head',0),
+(1,'Beanie','clothing','barrel',0.07,0.01,0.0,0.1,0.1,0.03,'head',0),
+(1,'Cap','clothing','barrel',0.07,0.01,0.0,0.1,0.1,0.03,'head',0),
+(1,'Tank Top','clothing','barrel',0.05,0.02,0.0,0.05,0.05,0.03,'chest',0),
+(1,'Burlap Shirt','clothing','barrel',0.07,0.02,0.0,0.1,0.1,0.03,'chest',0),
+(1,'Hide Vest','clothing','barrel',0.05,0.02,0.0,0.1,0.15,0.08,'chest',0),
+(1,'T-Shirt','clothing','basic',0.04,0.03,0.0,0.1,0.1,0.04,'chest',0),
+(1,'Hoodie','clothing','basic',0.08,0.05,0.0,0.15,0.15,0.06,'chest',0),
+(1,'Hide Poncho','clothing','basic',0.08,0.05,0.0,0.1,0.1,0.05,'chest-armour',0),
+(1,'Wood Chestplate','clothing','basic',0.0,0.05,0.05,0.4,0.1,0.05,'chest-armour',0),
+(1,'Metal Chestplate','clothing','elite',-0.08,0.0,0.0,0.2,0.25,0.03,'chest-armour',0),
+(1,'Jacker','clothing','military',0.1,0.05,0.0,0.2,0.15,0.07,'chest-armour',0),
+(1,'Roadsign Jacket','clothing','military',-0.08,0.0,0.0,0.25,0.20,0.1,'chest-armour',0),
+(1,'Shorts','clothing','barrel',0.07,0.02,0.0,0.1,0.10,0.03,'legs',0),
+(1,'Pants','clothing','basic',0.08,0.05,0.0,0.15,0.15,0.03,'legs',0),
+(1,'Hide Pants','clothing','barrel',0.04,0.02,0.0,0.1,0.1,0.08,'legs',0),
+(1,'Burlap Trousers','clothing','barrel',0.07,0.02,0.0,0.1,0.1,0.03,'legs',0),
+(1,'Frog Boots','clothing','elite',0.08,0.05,0.0,0.0,0.0,0.0,'feet',1),
+(1,'Hide Boots','clothing','basic',0.05,0.02,0.0,0.05,0.05,0.03,'feet',0),
+(1,'Burlap Shoes','clothing','barrel',0.03,0.02,0.0,0.05,0.05,0.02,'feet',0),
+(1,'Boots','clothing','military',0.08,0.03,0.0,0.1,0.1,0.03,'feet',0),
+(1,'Leather Gloves','clothing','barrel',0.03,0.02,0.0,0.05,0.05,0.02,'hands',0),
+(1,'Road Sign Gloves','clothing','military',0.0,0.04,0.02,0.1,0.1,0.05,'hands',0),
+(1,'Wood Armour Pants','clothing','basic',0.0,0.05,0.05,0.4,0.1,0.05,'leg-armour',0),
+(1,'Road Sign Kilt','clothing','military',-0.08,0.0,0.0,0.25,0.2,0.1,'leg-armour',0),
+(1,'Bone Armour','clothing','basic',0.0,0.08,0.07,0.4,0.25,0.13,'whole-body-armour',0),
+(1,'Hazmat Suit','clothing','military',0.08,0.5,0.05,0.3,0.3,0.08,'whole-body-armour',0),
+(1,'Heavy Hazmat Suit','clothing','elite',0.12,0.7,0.1,0.5,0.5,0.15,'whole-body-armour',0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

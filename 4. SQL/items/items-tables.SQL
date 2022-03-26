@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS Clothing(
 	meleeResistance numeric(4,2),
 	rangedResistance numeric(4,2),
 	biteResistance numeric(4,2),
-	equipmentSlot numeric(4,2),
+	equipmentSlot equipment_slot,
 	wetResistance numeric(4,2)
 );
 
