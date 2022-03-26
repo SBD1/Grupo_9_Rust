@@ -15,7 +15,7 @@ CREATE TABLE RespawnLocation (
     coordinateY VARCHAR(5)
 );
 
-CREATE TYPE node_type as ENUM('sulfur', 'stone', 'metal');
+CREATE TYPE node_type as ENUM('sulfur', 'stone', 'metal', 'tree', 'cactus');
 
 CREATE TABLE ResouceNodes (
     id SERIAL PRIMARY KEY UNIQUE,
