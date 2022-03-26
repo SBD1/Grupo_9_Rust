@@ -5,6 +5,7 @@ SGBD 1 - GRUPO 9
 Script DDL - Remoção das tabelas do banco de dados
 
 ----------------------------------------------------- */
+\connect rust;
 
 DROP TABLE Party;
 DROP TABLE StructuresContainsLootCrates;
