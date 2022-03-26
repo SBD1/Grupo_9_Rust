@@ -1,6 +1,6 @@
 CREATE TABLE Map ( 
     id SERIAL PRIMARY KEY UNIQUE,
-    mapID int,
+    mapID int
 );
 
 CREATE TABLE Region ( 
@@ -15,8 +15,8 @@ CREATE TABLE Region (
 CREATE TABLE Biomes ( 
   biomesID int,
   coordinates int,
-  resourceAbundance ENUM_BOOLEAN,
-  resourceAvailability ENUM_BOOLEAN,
+  resourceAbundance boolean,
+  resourceAvailability boolean,
   type VARCHAR(30),
-  climate int,
+  climate int
 );
