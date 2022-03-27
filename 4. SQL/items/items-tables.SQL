@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS Consumables(
 	hidrationYield int,
 	bleedingYield int,
 	radiationYield int,
-	poisionYield int,
+	poisonYield int,
 	hungerYield int,
 	vomitChance numeric(4,2)
 )INHERITS(items);

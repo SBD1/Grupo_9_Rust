@@ -118,6 +118,33 @@ bleedingYield,radiationYield,poisonYield,hungerYield,vomitChance) VALUES
 (5,'Medical Syringe','consumable','food',15,20,0,0,-10,0,0,-2,0),
 (2,'Large Medkit','consumable','food',0,100,-15,-15,-10,0,0,-10,0);
 
+INSERT INTO TEAS (maxStackSize, itemName, itemType, lootGrade,
+instantHeal,healOverTime,hidrationYield,
+bleedingYield,radiationYield,poisonYield,hungerYield,vomitChance,
+statusUpgradeType, upgradePercentage) VALUES 
+(5,'Normal Max Health Tea','tea','food',0,0,0,0,0,0,0,0,0,'health',0.05),
+(5,'Advanced Max Health Tea','tea','food',0,0,0,0,0,0,0,0,0,'health',0.125),
+(5,'Pure Max Health Tea','tea','food',0,0,0,0,0,0,0,0,0,'health',0.2),
+(5,'Normal Healing Tea','tea','food',0,0,30,0,0,0,0,0,0,'health',0),
+(5,'Advanced Healing Tea','tea','food',0,45,,0,0,0,0,0,0,'health',0),
+(5,'Pure Healing Tea','tea','food',0,60,0,0,0,0,0,0,0,'health',0),
+(5,'Normal Ore Tea','tea','food',0,0,0,0,0,0,0,0,0,'mining',0.1),
+(5,'Advanced Ore Tea','tea','food',0,0,0,0,0,0,0,0,0,'mining',0.3),
+(5,'Pure Ore Tea','tea','food',0,0,0,0,0,0,0,0,0,'mining',0.5),
+(5,'Normal Wood Tea','tea','food',0,0,0,0,0,0,0,0,0,'woodcutting',0.1),
+(5,'Advanced Wood Tea','tea','food',0,0,0,0,0,0,0,0,0,'woodcutting',0.3),
+(5,'Pure Wood Tea','tea','food',0,0,0,0,0,0,0,0,0,'woodcutting',0.5),
+(5,'Normal Scrap Tea','tea','food',0,0,0,0,0,0,0,0,0,'scrap',0.1),
+(5,'Advanced Scrap Tea','tea','food',0,0,0,0,0,0,0,0,0,'scrap',0.3),
+(5,'Pure Scrap Tea','tea','food',0,0,0,0,0,0,0,0,0,'scrap',0.5),
+(5,'Normal Radiation Tea','tea','food',0,0,0,0,0,-60,0,0,0,'radiation',0),
+(5,'Advanced Radiation Tea','tea','food',0,0,,0,0,-80,0,0,0,'radiation',0),
+(5,'Pure Radiation Tea','tea','food',0,0,0,0,0,0,0,-100,0,'radiation',0),
+(5,'Normal Radiation Resistance Tea','tea','food',0,0,0,0,0,0,0,0,0,'radiation',0.1),
+(5,'Advanced Radiation Resistance Tea','tea','food',0,0,0,0,0,0,0,0,0,'radiation',0.3),
+(5,'Pure Radiation Resistance Tea','tea','food',0,0,0,0,0,0,0,0,0,'radiation',0.5);
+
+
 
 
 
