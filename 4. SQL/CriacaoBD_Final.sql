@@ -9,7 +9,7 @@ Script DDL - Criação das tabelas do projeto
 CREATE TYPE loot_grade AS ENUM('primary','resource','barrel','basic','military','tool','food','elite');
 CREATE TYPE item_type as ENUM('ranged', 'resource','melee','clothes','component','consumable','tea');
 CREATE TYPE fire_mode as ENUM('single','auto','semi-auto','full-auto','charged-fire','pump');
-CREATE TYPE equipment_slot as ENUM('face','head','chest','chest-armour','feet','legs','leg-armour','whole-body');
+CREATE TYPE equipment_slot as ENUM('face','head','chest','chest-armour','feet','legs','leg-armour','whole-body','hands');
 CREATE TYPE status_type as ENUM('health','mining','woodcutting','radiation','scrap');
 CREATE TYPE node_type as ENUM('sulfur', 'stone', 'metal', 'tree', 'cactus');
 CREATE TYPE ENUM_STATUS AS ENUM ('HIGH','MEDIUM', 'LOW');
@@ -209,14 +209,6 @@ CREATE TABLE IF NOT EXISTS Items (
 	lootGrade loot_grade
 );
 
-CREATE TABLE IF NOT EXISTS Ingredients ( 
-  ingredient VARCHAR(30) NOT NULL PRIMARY KEY, 
-  items INTEGER NOT NULL,
-  lootGrade INTEGER NOT NULL,
-  CONSTRAINT fk_Ingredients_Items FOREIGN KEY (items) REFERENCES Items(id) ON DELETE RESTRICT
-/*  FOREIGN KEY (lootGrade) REFERENCES Characters(lootGradeID)  Faltando */
-);
-
 CREATE TABLE IF NOT EXISTS MeleeWeapons(
 	attackRange int,
 	headDamage int,
@@ -241,7 +233,7 @@ CREATE TABLE IF NOT EXISTS RangedWeapons(
 	modSlots int,
 	ammoCapacity int,
 	recoil int
-);
+)INHERITS (items);
 
 CREATE TABLE IF NOT EXISTS Consumables(
 	instantHeal int,
@@ -268,63 +260,12 @@ CREATE TABLE IF NOT EXISTS Clothing(
 	biteResistance numeric(4,2),
 	equipmentSlot equipment_slot,
 	wetResistance numeric(4,2)
-);
-
-CREATE TABLE IF NOT EXISTS Components(
 )INHERITS(items);
 
 CREATE TABLE IF NOT EXISTS Resources(
 	isPrimary boolean NOT NULL,
 	isRefinable boolean NOT NULL
 )INHERITS (items);
-
-CREATE TABLE IF NOT EXISTS DropCharactersItems ( 
-  dropCharactersItemsID INTEGER NOT NULL,
-  item INTEGER NOT NULL,
-  lootGrade INTEGER NOT NULL, 
-  character INTEGER NOT NULL,
-  CONSTRAINT pk_DropCharactersItems PRIMARY KEY(dropCharactersItemsID),
-  CONSTRAINT fk_DropCharactersItems_Items FOREIGN KEY (item) REFERENCES Items(id) ON DELETE RESTRICT,
-  CONSTRAINT fk_DropCharactersItems_Characters FOREIGN KEY (character) REFERENCES Characters(charactersID) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS PlayerCharactersGeneratesItem ( 
-  character INTEGER NOT NULL, 
-  items INTEGER NOT NULL,
-  CONSTRAINT pk_PlayerCharactersGeneratesItem PRIMARY KEY(character, items),
-  CONSTRAINT fk_PlayerCharactersGeneratesItem_Items FOREIGN KEY (items) REFERENCES Items(id) ON DELETE RESTRICT,
-  CONSTRAINT fk_PlayerCharactersGeneratesItem_Characters FOREIGN KEY (character) REFERENCES Characters(charactersID) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS WeaponsAreComposedOfComponentsResources (
-  components INTEGER NOT NULL,
-  resouces INTEGER NOT NULL,
-  weapons INTEGER NOT NULL,
-  CONSTRAINT pk_WeaponsAreComposedOfComponentsResources PRIMARY KEY(components, resouces),
-  CONSTRAINT fk_WeaponsAreComposedOfComponentsResources_Items1 FOREIGN KEY (components) REFERENCES Items(id) ON DELETE RESTRICT,
-  CONSTRAINT fk_WeaponsAreComposedOfComponentsResources_Items2 FOREIGN KEY (resouces) REFERENCES Items(id) ON DELETE RESTRICT,
-  CONSTRAINT fk_WeaponsAreComposedOfComponentsResources_Items3 FOREIGN KEY (weapons) REFERENCES Items(id) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS ConsumablesAreComposedOfComponentsResources ( 
-  components INTEGER NOT NULL,
-  resouces INTEGER NOT NULL,
-  consumables INTEGER NOT NULL,
-  CONSTRAINT pk_ConsumablesAreComposedOfComponentsResources PRIMARY KEY(components, resouces),
-  CONSTRAINT fk_ConsumablesAreComposedOfComponentsResources_Items1 FOREIGN KEY (components) REFERENCES Items(id) ON DELETE RESTRICT,
-  CONSTRAINT fk_ConsumablesAreComposedOfComponentsResources_Items2 FOREIGN KEY (resouces) REFERENCES Items(id) ON DELETE RESTRICT,
-  CONSTRAINT fk_ConsumablesAreComposedOfComponentsResources_Items3 FOREIGN KEY (consumables) REFERENCES Items(id) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS ClothingAreComposedOfComponentsResources ( 
-  components INTEGER NOT NULL,
-  resouces INTEGER NOT NULL,
-  clothing INTEGER NOT NULL,
-  CONSTRAINT pk_ClothingAreComposedOfComponentsResources PRIMARY KEY(components, resouces),
-  CONSTRAINT fk_ClothingAreComposedOfComponentsResources_Items1 FOREIGN KEY (components) REFERENCES Items(id) ON DELETE RESTRICT,
-  CONSTRAINT fk_ClothingAreComposedOfComponentsResources_Items2 FOREIGN KEY (resouces) REFERENCES Items(id) ON DELETE RESTRICT,
-  CONSTRAINT fk_ClothingAreComposedOfComponentsResources_Items3 FOREIGN KEY (clothing) REFERENCES Items(id) ON DELETE RESTRICT
-);
 
 CREATE TABLE IF NOT EXISTS ResourceNodes (
     id SERIAL PRIMARY KEY UNIQUE,
