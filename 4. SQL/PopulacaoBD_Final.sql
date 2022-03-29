@@ -26,15 +26,10 @@ INSERT INTO Climate VALUES
 (2, 5.4, 'event2', 'status2'),
 (3, 20.2, 'event3', 'status3');
 
-INSERT INTO Biomes VALUES
-(1, 1, false, true,'Temperate Grassland Plains', 1),
-(2, 1, false, true,'Temperate Grassland Hills', 2),
-(3, 1, false, true,'Temperate Forest', 3);
-
 INSERT INTO Characters VALUES
-(1, 'Character1', '10', 'model1', 1, 'type1', 'item1'),
-(2, 'Character2', '5', 'model2', 2, 'type2', 'item2'),
-(3, 'Character3', '20', 'model3', 3, 'type3', 'item3');
+(1, 'Character1', '10', 'model1', 'type1', 'item1'),
+(2, 'Character2', '5', 'model2', 'type2', 'item2'),
+(3, 'Character3', '20', 'model3', 'type3', 'item3');
 
 INSERT INTO Backpack VALUES
 (1, 1, 4, 2, 4),
@@ -79,16 +74,16 @@ INSERT INTO ResourceNodes (nodeType, maxYield, durabilityDamage) VALUES
 
 
 INSERT INTO Biomes VALUES
-('1', 'xyz1', '1', '1','Temperate Grassland Plains', 'climate1'),
-('2', 'xyz2', '1', '1','Temperate Grassland Hills', 'climate2'),
-('3', 'xyz3', '1', '1','Temperate Forest', 'climate3'),
-('4', 'xyz4', '1', '1','Desert', 'climate4'),
-('5', 'xyz5', '1', '1','Snow', 'climate5'),
-('6', 'xyz6', '1', '1','Trivia', 'climate6'),
-('7', 'xyz7', '1', '1','Beach', 'climate7'),
-('8', 'xyz8', '1', '1','Lake', 'climate8'),
-('9', 'xyz9', '1', '1','River', 'climate9'),
-('10', 'xyz10', '1', '1','Ocean', 'climate10');
+(1, 'xyz1', true, true,'Temperate Grassland Plains', 'climate1'),
+(2, 'xyz2', true, true,'Temperate Grassland Hills', 'climate2'),
+(3, 'xyz3', true, true,'Temperate Forest', 'climate3'),
+(4, 'xyz4', true, true,'Desert', 'climate4'),
+(5, 'xyz5', true, true,'Snow', 'climate5'),
+(6, 'xyz6', true, true,'Trivia', 'climate6'),
+(7, 'xyz7', true, true,'Beach', 'climate7'),
+(8, 'xyz8', true, true,'Lake', 'climate8'),
+(9, 'xyz9', true, true,'River', 'climate9'),
+(10, 'xyz10', true, true,'Ocean', 'climate10');
 
 INSERT INTO Resources (maxStackSize,isPrimary, itemType,itemName,isRefinable,lootGrade) VALUES
 	(1000,true,'resource','Wood',False,'primary'),

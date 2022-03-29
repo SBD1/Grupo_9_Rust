@@ -63,24 +63,24 @@ CREATE TABLE IF NOT EXISTS Climate (
 );
 
 CREATE TABLE IF NOT EXISTS Biomes (
-  biomesID int UNIQUE,
-  coordinates int,
+  biomesID int PRIMARY KEY,
+  coordinates varchar(5),
   resourceAbundance boolean,
   resourceAvailability boolean,
   type VARCHAR(30),
-  climate int
+  climate varchar(30)
 );
 
 CREATE TABLE IF NOT EXISTS Flora (
   flora VARCHAR(30) NOT NULL,
-  biomes INTEGER NOT NULL,
+  biomes INTEGER,
   CONSTRAINT pk_Flora PRIMARY KEY(flora),
   CONSTRAINT fk_Flora_Biomes FOREIGN KEY (biomes) REFERENCES Biomes(biomesID) ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS Fauna (
   fauna VARCHAR(30) NOT NULL,
-  biomes INTEGER NOT NULL,
+  biomes INTEGER,
   CONSTRAINT pk_Fauna PRIMARY KEY(fauna),
   CONSTRAINT fk_Fauna_Biomes FOREIGN KEY (biomes) REFERENCES Biomes(biomesID) ON DELETE RESTRICT
 );
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS Characters (
   characterModel VARCHAR(30) NOT NULL,
   type VARCHAR(30) NOT NULL,
   item VARCHAR(30) NOT NULL,
-  CONSTRAINT pk_Characters PRIMARY KEY(charactersID),
+  CONSTRAINT pk_Characters PRIMARY KEY(charactersID)
 );
 
 CREATE TABLE IF NOT EXISTS GatherYield (
@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS Backpack (
     slot47 INT,
     slot48 INT,
     slot49 INT,
-    slot50 INT,
+    slot50 INT
 );
 
 CREATE TABLE IF NOT EXISTS PlayerCharacters (
