@@ -90,11 +90,9 @@ CREATE TABLE IF NOT EXISTS Characters (
   name VARCHAR(100) NOT NULL,
   position INTEGER NOT NULL,
   characterModel VARCHAR(30) NOT NULL,
-  climate INTEGER NOT NULL,
   type VARCHAR(30) NOT NULL,
   item VARCHAR(30) NOT NULL,
   CONSTRAINT pk_Characters PRIMARY KEY(charactersID),
-  CONSTRAINT fk_Characters_Climate FOREIGN KEY (climate) REFERENCES Climate(climateID) ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS GatherYield ( 
