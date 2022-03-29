@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS Monuments (
 
 CREATE TABLE IF NOT EXISTS Region (
     name VARCHAR(30),
-    coordinates int,
+    coordinateX VARCHAR(5),
+    coordinateY VARCHAR(5),
     biome VARCHAR(30),
     dangerLevel SMALLINT,
     monument VARCHAR(30),
@@ -48,10 +49,11 @@ CREATE TABLE IF NOT EXISTS Region (
 
 CREATE TABLE IF NOT EXISTS HaveMapRegion (
   mapID INTEGER NOT NULL UNIQUE,
-  coordinates INTEGER NOT NULL,
-  CONSTRAINT pk_HaveMapRegion PRIMARY KEY(mapID,coordinates),
+  coordinateX VARCHAR(5),
+  coordinateY VARCHAR(5),
+  CONSTRAINT pk_HaveMapRegion PRIMARY KEY(mapID,coordinateX,coordinateY),
   CONSTRAINT fk_mapID_HaveMapRegion FOREIGN KEY (mapID) REFERENCES Maps(mapID) ON DELETE RESTRICT,
-  CONSTRAINT fk_coordinates_HaveMapRegion FOREIGN KEY (coordinates) REFERENCES Structures(structureID) ON DELETE RESTRICT
+  CONSTRAINT fk_coordinates_HaveMapRegion FOREIGN KEY (coordinateX,coordinateY) REFERENCES Structures(structureID) ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS Climate (
@@ -64,7 +66,8 @@ CREATE TABLE IF NOT EXISTS Climate (
 
 CREATE TABLE IF NOT EXISTS Biomes (
   biomesID int PRIMARY KEY,
-  coordinates varchar(5),
+  coordinateX VARCHAR(5),
+  coordinateY VARCHAR(5),
   resourceAbundance boolean,
   resourceAvailability boolean,
   type VARCHAR(30),
