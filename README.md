@@ -51,3 +51,8 @@ Disponivel no arquivo ['3. Normalização/Normalização-Versão-Final.pdf'](htt
 <p align="justify">
 &nbsp;&nbsp;Structured Query Language, ou Linguagem de Consulta Estruturada ou SQL, é a linguagem de pesquisa declarativa padrão para banco de dados relacional. Muitas das características originais do SQL foram inspiradas na álgebra relacional. Para o projeto foram desenvolvidos alguns scripts para a criação e população do banco de dados, disponíveis no diretório <a href="https://github.com/SBD1/Grupo_9_Rust/tree/main/4.%20SQL">'4. SQL'</a>.
 </p>
+
+## Módulo 5 - Álgebra Relacional, Triggers, SP e Transações
+<p align="justify">
+  
+</p>
