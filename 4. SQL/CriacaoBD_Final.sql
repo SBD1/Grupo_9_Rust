@@ -52,8 +52,7 @@ CREATE TABLE IF NOT EXISTS HaveMapRegion (
   coordinateX VARCHAR(5),
   coordinateY VARCHAR(5),
   CONSTRAINT pk_HaveMapRegion PRIMARY KEY(mapID,coordinateX,coordinateY),
-  CONSTRAINT fk_mapID_HaveMapRegion FOREIGN KEY (mapID) REFERENCES Maps(mapID) ON DELETE RESTRICT,
-  CONSTRAINT fk_coordinates_HaveMapRegion FOREIGN KEY (coordinateX,coordinateY) REFERENCES Structures(structureID) ON DELETE RESTRICT
+  CONSTRAINT fk_mapID_HaveMapRegion FOREIGN KEY (mapID) REFERENCES Maps(mapID) ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS Climate (
