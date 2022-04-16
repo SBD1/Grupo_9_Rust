@@ -314,44 +314,6 @@ CREATE TABLE DropCharactersItems (
   CONSTRAINT fk_DropCharactersItems_Characters FOREIGN KEY (character) REFERENCES Characters(charactersID) ON DELETE RESTRICT
 );
 
-CREATE TABLE PlayerCharactersGeneratesItem ( 
-  character INTEGER NOT NULL, 
-  items INTEGER NOT NULL,
-  CONSTRAINT pk_PlayerCharactersGeneratesItem PRIMARY KEY(character, items),
-  CONSTRAINT fk_PlayerCharactersGeneratesItem_Items FOREIGN KEY (items) REFERENCES Items(itemsID) ON DELETE RESTRICT,
-  CONSTRAINT fk_PlayerCharactersGeneratesItem_Characters FOREIGN KEY (character) REFERENCES Characters(charactersID) ON DELETE RESTRICT
-);
-
-CREATE TABLE WeaponsAreComposedOfComponentsResources (
-  components INTEGER NOT NULL,
-  resouces INTEGER NOT NULL,
-  weapons INTEGER NOT NULL,
-  CONSTRAINT pk_WeaponsAreComposedOfComponentsResources PRIMARY KEY(components, resouces),
-  CONSTRAINT fk_WeaponsAreComposedOfComponentsResources_Items1 FOREIGN KEY (components) REFERENCES Items(itemsID) ON DELETE RESTRICT,
-  CONSTRAINT fk_WeaponsAreComposedOfComponentsResources_Items2 FOREIGN KEY (resouces) REFERENCES Items(itemsID) ON DELETE RESTRICT,
-  CONSTRAINT fk_WeaponsAreComposedOfComponentsResources_Items3 FOREIGN KEY (weapons) REFERENCES Items(itemsID) ON DELETE RESTRICT
-);
-
-CREATE TABLE ConsumablesAreComposedOfComponentsResources ( 
-  components INTEGER NOT NULL,
-  resouces INTEGER NOT NULL,
-  consumables INTEGER NOT NULL,
-  CONSTRAINT pk_ConsumablesAreComposedOfComponentsResources PRIMARY KEY(components, resouces),
-  CONSTRAINT fk_ConsumablesAreComposedOfComponentsResources_Items1 FOREIGN KEY (components) REFERENCES Items(itemsID) ON DELETE RESTRICT,
-  CONSTRAINT fk_ConsumablesAreComposedOfComponentsResources_Items2 FOREIGN KEY (resouces) REFERENCES Items(itemsID) ON DELETE RESTRICT,
-  CONSTRAINT fk_ConsumablesAreComposedOfComponentsResources_Items3 FOREIGN KEY (consumables) REFERENCES Items(itemsID) ON DELETE RESTRICT
-);
-
-CREATE TABLE ClothingAreComposedOfComponentsResources ( 
-  components INTEGER NOT NULL,
-  resouces INTEGER NOT NULL,
-  clothing INTEGER NOT NULL,
-  CONSTRAINT pk_ClothingAreComposedOfComponentsResources PRIMARY KEY(components, resouces),
-  CONSTRAINT fk_ClothingAreComposedOfComponentsResources_Items1 FOREIGN KEY (components) REFERENCES Items(itemsID) ON DELETE RESTRICT,
-  CONSTRAINT fk_ClothingAreComposedOfComponentsResources_Items2 FOREIGN KEY (resouces) REFERENCES Items(itemsID) ON DELETE RESTRICT,
-  CONSTRAINT fk_ClothingAreComposedOfComponentsResources_Items3 FOREIGN KEY (clothing) REFERENCES Items(itemsID) ON DELETE RESTRICT
-);
-
 CREATE TABLE ResourceNodes (
   resourceNodesID INTEGER NOT NULL,
   nodeType VARCHAR(30) NOT NULL,
