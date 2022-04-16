@@ -57,11 +57,12 @@ BEGIN
     END IF;
     PERFORM * FROM Party where character = new.character;
     IF FOUND THEN
-        RAISE EXCEPTION 'Character is already in a party'
-    RETURN NEW;
-    PERFOM * FROM Party where capacity = 8;
+        RAISE EXCEPTION 'Character is already in a party';
+    END IF;
+    PERFORM * FROM Party where capacity = 8;
     IF FOUND THEN
-        RAISE EXCEPTION 'Party is already full'
+        RAISE EXCEPTION 'Party is already full';
+    END IF;
     RETURN NEW;
 END;
 $insert_party$ LANGUAGE plpgsql;
