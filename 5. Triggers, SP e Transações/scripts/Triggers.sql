@@ -29,12 +29,12 @@ FOR EACH ROW EXECUTE PROCEDURE insert_biomes();
 
 /*
 CLIMATE
-
+*/
 
 CREATE TRIGGER insertClimate
 BEFORE INSERT ON Climate
 FOR EACH ROW EXECUTE PROCEDURE insert_climate();
-*/
+
 /*
 PARTY
 */

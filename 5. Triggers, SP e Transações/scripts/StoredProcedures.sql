@@ -32,6 +32,20 @@ END;
 $insert_region$ LANGUAGE plpgsql;
 
 /*
+CLIMATE
+*/
+
+CREATE OR REPLACE FUNCTION insert_climate() RETURNS trigger AS $insert_climate$
+BEGIN
+    PERFORM * FROM Climate WHERE climateID = new.climateID;
+    IF FOUND THEN
+        RAISE EXCEPTION 'Climate already exists';
+    END IF;
+    RETURN NEW;
+END;
+$insert_climate$ LANGUAGE plpgsql;
+
+/*
 BIOMES
 */
 
