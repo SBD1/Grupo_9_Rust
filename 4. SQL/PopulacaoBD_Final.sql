@@ -244,3 +244,12 @@ statusUpgradeType, upgradePercentage) VALUES
 (5,'Normal Radiation Resistance Tea','tea','food',0,0,0,0,0,0,0,0,'radiation',0.1),
 (5,'Advanced Radiation Resistance Tea','tea','food',0,0,0,0,0,0,0,0,'radiation',0.3),
 (5,'Pure Radiation Resistance Tea','tea','food',0,0,0,0,0,0,0,0,'radiation',0.5);
+
+INSERT INTO lootcrates values 
+(5,1,'basic'),
+(2,2,'barrel'),
+(3,3,'resource'),
+(6,4,'military'),
+(3,5,'tool'),
+(3,6,'food'),
+(7,7,'elite');

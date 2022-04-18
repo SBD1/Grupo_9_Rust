@@ -337,10 +337,22 @@ CREATE TABLE IF NOT EXISTS RegionsMonuments (
 );
 
 CREATE TABLE IF NOT EXISTS LootCrates (
-    quantifyOfItens INT,
+    item_quantity INT,
     id SERIAL PRIMARY KEY UNIQUE,
     grade loot_grade
 );
+
+CREATE TABLE IF NOT EXISTS loot_crate_instance(
+    id serial primary key unique,
+    loot_grade loot_grade,
+    item1_id int,
+    item2_id int,
+    item3_id int,
+    item4_id int,
+    item5_id int,
+    item6_id int,
+    item7_id int,
+)
 
 CREATE TABLE IF NOT EXISTS StructuresContainsLootCrates (
   structure INTEGER NOT NULL,
