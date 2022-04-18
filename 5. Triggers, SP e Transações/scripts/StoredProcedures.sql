@@ -9,6 +9,21 @@ Script DDL - Stored Procedures
 MAP
 */
 
+CREATE OR REPLACE FUNCTION instanciateCharacterFunction()
+RETURNS trigger as $charCreation$
+BEGIN
+IF (TG_OP = 'INSERT') THEN
+INSERT INTO Backpack VALUES (NEW.charactersID);
+RETURN NEW;
+END IF;
+IF (TG_OP = 'DELETE') THEN 
+DELETE FROM BACKPACK
+WHERE ownerID = deleted.charactersID;
+RETURN OLD;
+END IF;
+END;
+$charCreation$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION insert_map() RETURNS trigger AS $insert_map$
 BEGIN
     PERFORM * FROM Maps WHERE mapID = new.mapID;

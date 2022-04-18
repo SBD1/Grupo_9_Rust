@@ -4,7 +4,9 @@ SGBD 1 - GRUPO 9
 Script DDL - Triggers
 
 ----------------------------------------------------- */
-
+CREATE OR REPLACE TRIGGER instanciateCharacter
+AFTER INSERT ON maincharacter 
+EXECUTE PROCEDURE instanciateCharacterFunction();
 /*
 MAP
 */
