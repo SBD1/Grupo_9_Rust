@@ -11,6 +11,11 @@ EXECUTE PROCEDURE instanciateCharacterFunction();
 MAP
 */
 
+
+CREATE TRIGGER insertItem
+BEFORE INSERT ON items
+FOR EACH ROW EXECUTE PROCEDURE insert_item();
+
 CREATE TRIGGER insertMap
 BEFORE INSERT ON Maps
 FOR EACH ROW EXECUTE PROCEDURE insert_map();

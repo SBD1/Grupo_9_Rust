@@ -24,6 +24,17 @@ END IF;
 END;
 $charCreation$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION insert_item() RETURNS trigger AS $insert_item$
+BEGIN
+    PERFORM * FROM items WHERE itemname = new.itemname;
+    IF FOUND THEN
+        RAISE EXCEPTION 'Item already exists';
+    END IF;
+    RETURN NEW;
+END;
+$insert_map$ LANGUAGE plpgsql;
+
+
 CREATE OR REPLACE FUNCTION insert_map() RETURNS trigger AS $insert_map$
 BEGIN
     PERFORM * FROM Maps WHERE mapID = new.mapID;
