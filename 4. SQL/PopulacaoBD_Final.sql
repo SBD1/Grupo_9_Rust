@@ -61,9 +61,9 @@ INSERT INTO RecruitableCharacters VALUES
 (6, 'Handguns','true');
 
 INSERT INTO MainCharacter VALUES
-(7, 1),
-(8, 2),
-(9, 3);
+(7, '1'),
+(8, '2'),
+(9, '3');
 
 INSERT INTO NPCs VALUES
 (10, 'false', '30', '50', 'type1'),

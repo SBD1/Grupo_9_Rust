@@ -201,8 +201,8 @@ CREATE TABLE IF NOT EXISTS RecruitableCharacters (
 );
 
 CREATE TABLE IF NOT EXISTS MainCharacter (
-  charactersID INTEGER NOT NULL,
-  owner INTEGER NOT NULL,
+  charactersID SERIAL NOT NULL,
+  owner varchar(20) NOT NULL,
   CONSTRAINT pk_MainCharacter PRIMARY KEY(charactersID,owner),
   CONSTRAINT fk_MainCharacter_Characters FOREIGN KEY (charactersID) REFERENCES Characters(charactersID) ON DELETE RESTRICT
 );
