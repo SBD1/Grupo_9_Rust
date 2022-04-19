@@ -19,7 +19,7 @@ STRUCTURES
 
 CREATE TRIGGER insertStructures
 BEFORE INSERT ON Structures
-FOR EACH ROW EXECUTE PROCEDURE insert_structures());
+FOR EACH ROW EXECUTE PROCEDURE insert_structures();
 
 /*
 MONUMENTS
@@ -27,7 +27,7 @@ MONUMENTS
 
 CREATE TRIGGER insertMonuments
 BEFORE INSERT ON Monuments
-FOR EACH ROW EXECUTE PROCEDURE insert_monuments());
+FOR EACH ROW EXECUTE PROCEDURE insert_monuments();
 
 /*
 REGION
