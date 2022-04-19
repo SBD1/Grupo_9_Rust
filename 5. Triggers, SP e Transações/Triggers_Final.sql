@@ -1,4 +1,4 @@
-/* -------------------------------------------------- 
+/* --------------------------------------------------
 
 SGBD 1 - GRUPO 9
 Script DDL - Triggers
@@ -12,6 +12,22 @@ MAP
 CREATE TRIGGER insertMap
 BEFORE INSERT ON Maps
 FOR EACH ROW EXECUTE PROCEDURE insert_map();
+
+/*
+STRUCTURES
+*/
+
+CREATE TRIGGER insertStructures
+BEFORE INSERT ON Structures
+FOR EACH ROW EXECUTE PROCEDURE insert_structures());
+
+/*
+MONUMENTS
+*/
+
+CREATE TRIGGER insertMonuments
+BEFORE INSERT ON Monuments
+FOR EACH ROW EXECUTE PROCEDURE insert_monuments());
 
 /*
 REGION
