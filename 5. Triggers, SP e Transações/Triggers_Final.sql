@@ -14,30 +14,6 @@ BEFORE INSERT ON Maps
 FOR EACH ROW EXECUTE PROCEDURE insert_map();
 
 /*
-STRUCTURES
-*/
-
-CREATE TRIGGER insertStructures
-BEFORE INSERT ON Structures
-FOR EACH ROW EXECUTE PROCEDURE insert_structures();
-
-/*
-MONUMENTS
-*/
-
-CREATE TRIGGER insertMonuments
-BEFORE INSERT ON Monuments
-FOR EACH ROW EXECUTE PROCEDURE insert_monuments();
-
-/*
-REGION
-*/
-
-CREATE TRIGGER insertRegion
-BEFORE INSERT ON Region
-FOR EACH ROW EXECUTE PROCEDURE insert_region();
-
-/*
 PARTY
 */
 
@@ -49,10 +25,9 @@ FOR EACH ROW EXECUTE PROCEDURE insert_party();
 */
 
 CREATE TRIGGER instanciateCharacter
-AFTER INSERT ON characters
-AS
-INSERT INTO Backpack (new.charactersID);
+AFTER INSERT ON PlayerCharacters
+FOR EACH ROW EXECUTE PROCEDURE insertCharacter_backpack();
 
 CREATE TRIGGER insertBackpack
 AFTER INSERT ON Backpack
-FOR EACH ROW EXECUTE PROCEDURE insert_Backpack();
+FOR EACH ROW EXECUTE PROCEDURE insertBackpack();

@@ -36,63 +36,8 @@ CREATE TABLE IF NOT EXISTS Monuments (
   name VARCHAR(30) UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS HaveMapRegion (
-  mapID INTEGER NOT NULL UNIQUE,
-  coordinateX VARCHAR(5),
-  coordinateY VARCHAR(5),
-  CONSTRAINT pk_HaveMapRegion PRIMARY KEY(mapID,coordinateX,coordinateY),
-  CONSTRAINT fk_mapID_HaveMapRegion FOREIGN KEY (mapID) REFERENCES Maps(mapID) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS Flora (
-  flora VARCHAR(30) NOT NULL,
-  biomes INTEGER,
-  CONSTRAINT pk_Flora PRIMARY KEY(flora),
-  CONSTRAINT fk_Flora_Biomes FOREIGN KEY (biomes) REFERENCES Biomes(biomesID) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS Fauna (
-  fauna VARCHAR(30) NOT NULL,
-  biomes INTEGER,
-  CONSTRAINT pk_Fauna PRIMARY KEY(fauna),
-  CONSTRAINT fk_Fauna_Biomes FOREIGN KEY (biomes) REFERENCES Biomes(biomesID) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS Characters (
-  charactersID INTEGER NOT NULL UNIQUE,
-  name VARCHAR(100) NOT NULL,
-  position INTEGER NOT NULL,
-  characterModel VARCHAR(30) NOT NULL,
-  type VARCHAR(30) NOT NULL,
-  item VARCHAR(30) NOT NULL,
-  CONSTRAINT pk_Characters PRIMARY KEY(charactersID)
-);
-
-CREATE TABLE IF NOT EXISTS GatherYield (
-  character INTEGER NOT NULL,
-  gatherYield VARCHAR(30) NOT NULL,
-  CONSTRAINT pk_GatherYield PRIMARY KEY(character,gatherYield),
-  CONSTRAINT fk_GatherYield_Characters FOREIGN KEY (character) REFERENCES Characters(charactersID) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS EnterCombatCharacters (
-  enterCombatCharactersID INTEGER NOT NULL,
-  firstCharacter INTEGER NOT NULL,
-  secondCharacter INTEGER NOT NULL,
-  CONSTRAINT pk_EnterCombatCharacters PRIMARY KEY(enterCombatCharactersID),
-  CONSTRAINT fk_EnterCombatCharacters_Characters_1 FOREIGN KEY (firstCharacter) REFERENCES Characters(charactersID) ON DELETE RESTRICT,
-  CONSTRAINT fk_EnterCombatCharacters_Characters_2 FOREIGN KEY (secondCharacter) REFERENCES Characters(charactersID) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS CombatLog (
-  enterCombatCharacters INTEGER NOT NULL,
-  indexLog INTEGER NOT NULL,
-  CONSTRAINT pk_CombatLog PRIMARY KEY(enterCombatCharacters,indexLog),
-  log VARCHAR(100) NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS Backpack (
-    ownerID INT UNIQUE,
+    ownerID INT,
     id SERIAL PRIMARY KEY UNIQUE,
     slot01 INT,
     slot02 INT,
@@ -146,78 +91,30 @@ CREATE TABLE IF NOT EXISTS Backpack (
     slot50 INT
 );
 
+CREATE TABLE IF NOT EXISTS Characters (
+  charactersID SERIAL primary key unique NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  type VARCHAR(30) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS PlayerCharacters (
-  charactersID INTEGER NOT NULL,
   hydration INTEGER NOT NULL,
   poisoned INTEGER NOT NULL,
   hunger INTEGER NOT NULL,
-  type VARCHAR(30) NOT NULL,
   equipedItems1 INTEGER,
   equipedItems2 INTEGER,
   equipedItems3 INTEGER,
   equipedItems4 INTEGER,
   equipedItems5 INTEGER,
-  backpack INTEGER NOT NULL,
-  CONSTRAINT pk_PlayerCharacters PRIMARY KEY(charactersID),
-  CONSTRAINT fk_PlayerCharacters_Characters FOREIGN KEY (charactersID) REFERENCES Characters(charactersID) ON DELETE RESTRICT,
-  CONSTRAINT fk_PlayerCharacters_Backpack FOREIGN KEY (backpack) REFERENCES Backpack(ownerID) ON DELETE RESTRICT
-);
+  backpack INTEGER
+)INHERITS (Characters);
 
-CREATE TABLE IF NOT EXISTS RecruitableCharacters (
-  charactersID INTEGER NOT NULL,
-  specialization VARCHAR(30) NOT NULL,
-  recruited ENUM_BOOLEAN NOT NULL,
-  CONSTRAINT pk_RecruitableCharacters PRIMARY KEY(charactersID),
-  CONSTRAINT fk_RecruitableCharacters_Characters FOREIGN KEY (charactersID) REFERENCES Characters(charactersID) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS MainCharacter (
-  charactersID SERIAL NOT NULL,
-  owner varchar(20) NOT NULL,
-  CONSTRAINT pk_MainCharacter PRIMARY KEY(charactersID,owner),
-  CONSTRAINT fk_MainCharacter_Characters FOREIGN KEY (charactersID) REFERENCES Characters(charactersID) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS RespawnLocation (
-    ownerID INT,
-    id SERIAL PRIMARY KEY UNIQUE,
-    description VARCHAR(300),
-    timer INT,
-    coordinateX VARCHAR(5),
-    coordinateY VARCHAR(5)
-);
 
 CREATE TABLE IF NOT EXISTS NPCs (
-  charactersID INTEGER NOT NULL,
   isAgressive ENUM_BOOLEAN NOT NULL,
-  aggroRange VARCHAR(30) NOT NULL,
-  enemyGrade VARCHAR(30) NOT NULL,
-  type VARCHAR(30) NOT NULL,
-  CONSTRAINT pk_NPCs PRIMARY KEY(charactersID),
-  CONSTRAINT fk_NPCs_Characters FOREIGN KEY (charactersID) REFERENCES Characters(charactersID) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS Animals (
-  charactersID INTEGER NOT NULL,
-  sound VARCHAR(100) NOT NULL,
-  modelType VARCHAR(30) NOT NULL,
-  CONSTRAINT pk_Animals PRIMARY KEY(charactersID),
-  CONSTRAINT fk_Animals_Characters FOREIGN KEY (charactersID) REFERENCES Characters(charactersID) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS Scientists (
-  charactersID INTEGER NOT NULL,
-  hasDialogue ENUM_BOOLEAN NOT NULL,
-  CONSTRAINT pk_Scientists PRIMARY KEY(charactersID),
-  CONSTRAINT fk_Scientists_Characters FOREIGN KEY (charactersID) REFERENCES Characters(charactersID) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS DialogueText (
-  dialogue VARCHAR(100) NOT NULL,
-  character INTEGER NOT NULL,
-  CONSTRAINT pk_DialogueText PRIMARY KEY(dialogue),
-  CONSTRAINT fk_DialogueText_Characters FOREIGN KEY (character) REFERENCES Characters(charactersID) ON DELETE RESTRICT
-);
+  typeNpc VARCHAR(30) NOT NULL,
+  grau VARCHAR(30) NOT NULL
+)INHERITS (Characters);
 
 CREATE TABLE IF NOT EXISTS Items (
 	id SERIAL primary key unique NOT NULL,
@@ -322,8 +219,8 @@ CREATE TABLE IF NOT EXISTS loot_crate_instance(
     item4_id int,
     item5_id int,
     item6_id int,
-    item7_id int,
-)
+    item7_id int
+);
 
 CREATE TABLE IF NOT EXISTS StructuresContainsLootCrates (
   structure INTEGER NOT NULL,
