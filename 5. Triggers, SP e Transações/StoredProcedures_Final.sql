@@ -286,3 +286,25 @@ BEGIN
     RETURN NEW;
 END;
 $insert_scientists_character$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION insertCharacter_backpack() RETURNS trigger AS $insertCharacter_backpack$
+BEGIN
+    PERFORM * FROM Character WHERE charactersID = new.charactersID;
+    IF FOUND THEN
+        RAISE EXCEPTION 'Character already exists';
+    END IF;
+    INSERT INTO backpack (ownerID) values (new.charactersID);
+    RETURN NEW;
+END;
+$insertCharacter_backpack$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION insertBackpack() RETURNS trigger AS $insertBackpack$
+BEGIN
+    PERFORM * FROM Backpack WHERE ownerID = new.ownerID;
+    IF FOUND THEN
+        RAISE EXCEPTION 'Backpack already exists';
+    END IF;
+    UPDATE PlayerCharacters set backpack = new.id WHERE charactersID = new.ownerID;
+    RETURN NEW;
+END;
+$insertBackpack$ LANGUAGE plpgsql;
