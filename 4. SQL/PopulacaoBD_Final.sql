@@ -7,12 +7,16 @@ Script DML - População do banco de dados
 ---------------------------------------------------- */
 
 INSERT INTO Structures VALUES
-(1,'Eletric Central'),
-(2,'Regular Building')
-(3,'Main Building'),
-(4,'Parkour Puzzle')
-(5,'Special Loot Room')
-(6,'Recycler');
+(1,false,'Eletric Central'),
+(2,true,'Eletric Central 2'),
+(3,false,'Regular Building'),
+(4,false,'Parkour Puzzle'),
+(5,true,'Special Loot Room'),
+(6,false,'Recycler'),
+(7,false,'Old Abandoned Cars'),
+(8,true,'Old Abandoned Cars 2'),
+(9,false,'Loot Room'),
+(10,true,'Loot Room 2');
 
 INSERT INTO Monuments VALUES
 (1,10,'basic','Lighthouse'),
@@ -25,27 +29,26 @@ INSERT INTO Monuments VALUES
 (8,20,'elite','Launch Site'),
 (9,20,'elite','Military Tunnel');
 
-
 INSERT INTO PlayerCharacters(name, type, hydration, poisoned, hunger)VALUES
-('Character1', 'Player', 1, 2, 3);
+('Character1', 'Player',1,2,3);
 
-INSERT INTO NPCs(name, type, isAgressive, typeNpc, grau) VALUES
-('Character2', 'NPC', true, "type", "grau");
+INSERT INTO NPCs(name,type,isAgressive,typeNpc,grau) VALUES
+('Character2','NPC',true,"type","grau");
 
 INSERT INTO ResourceNodes (nodeType, maxYield, durabilityDamage) VALUES
-('sulfur', 300, 7.5),
-('stone', 1000, 7.5),
-('metal',600, 7.5),
-('tree', 500, 3.75),
-('cactus', 3, 2.5);
+('sulfur',300,7.5),
+('stone',1000,7.5),
+('metal',600,7.5),
+('tree',500,3.75),
+('cactus',10,2.5);
 
 INSERT INTO Resources (maxStackSize,isPrimary, itemType,itemName,isRefinable,lootGrade) VALUES
-(1000,true,'resource','Wood',False,'primary'),
-(1000,true,'resource','Stone',False,'primary'),
-(1000,true,'resource','Bone Fragments',False,'primary'),
-(1000,true,'resource','Leather',False,'primary'),
-(1000,true,'resource','Cloth',False,'primary'),
-(1000,true,'resource','Scrap',False,'primary'),
+(1000,true,'resource','Wood',false,'primary'),
+(1000,true,'resource','Stone',false,'primary'),
+(1000,true,'resource','Bone Fragments',false,'primary'),
+(1000,true,'resource','Leather',false,'primary'),
+(1000,true,'resource','Cloth',false,'primary'),
+(1000,true,'resource','Scrap',false,'primary'),
 (100,true,'resource','High Quality Metal Ore',true,'primary'),
 (500,true,'resource','Animal Fat',true,'primary'),
 (500,true,'resource','Crude Oil',true,'primary'),
