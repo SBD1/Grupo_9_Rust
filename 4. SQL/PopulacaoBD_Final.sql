@@ -6,25 +6,26 @@ Script DML - População do banco de dados
 
 ---------------------------------------------------- */
 
-INSERT INTO Maps VALUES
-(1,1),
-(2,2),
-(3,3);
-
 INSERT INTO Structures VALUES
-(1,'Structure1'),
-(2,'Structure2'),
-(3,'Structure3');
+(1,'Eletric Central'),
+(2,'Regular Building')
+(3,'Main Building'),
+(4,'Parkour Puzzle')
+(5,'Special Loot Room')
+(6,'Recycler');
 
 INSERT INTO Monuments VALUES
-(1,1,'0','scientist','lest','Monument1'),
-(1,2,'1','scientist','lest','Monument2'),
-(1,3,'2','scientist','lest','Monument3');
+(1,10,'basic','Lighthouse'),
+(2,10,'basic','Warehouse'),
+(3,10,'basic','Harbour'),
+(4,15,'military','Water Treatment Plant'),
+(5,15,'military','The Dome'),
+(6,15,'military','Airfield'),
+(7,20,'elite','Giant Excavator'),
+(8,20,'elite','Launch Site'),
+(9,20,'elite','Military Tunnel');
 
-INSERT INTO Climate VALUES
-(1, 30.3, 'event1', 'status1'),
-(2, 5.4, 'event2', 'status2'),
-(3, 20.2, 'event3', 'status3');
+
 
 INSERT INTO Characters VALUES
 (1, 'Character1', '10', 'model1', 'type1', 'item1'),
@@ -86,19 +87,6 @@ INSERT INTO ResourceNodes (nodeType, maxYield, durabilityDamage) VALUES
 ('metal',600, 7.5),
 ('tree', 500, 3.75),
 ('cactus', 3, 2.5);
-
-
-INSERT INTO Biomes VALUES
-(1, 'xy', 'z1', true, true,'Temperate Grassland Plains', 'climate1'),
-(2, 'xy', 'z2', true, true,'Temperate Grassland Hills', 'climate2'),
-(3, 'xy', 'z3', true, true,'Temperate Forest', 'climate3'),
-(4, 'xy', 'z4', true, true,'Desert', 'climate4'),
-(5, 'xy', 'z5', true, true,'Snow', 'climate5'),
-(6, 'xy', 'z6', true, true,'Trivia', 'climate6'),
-(7, 'xy', 'z7', true, true,'Beach', 'climate7'),
-(8, 'xy', 'z8', true, true,'Lake', 'climate8'),
-(9, 'xy', 'z9', true, true,'River', 'climate9'),
-(10, 'xy', 'z10', true, true,'Ocean', 'climate10');
 
 INSERT INTO Resources (maxStackSize,isPrimary, itemType,itemName,isRefinable,lootGrade) VALUES
 	(1000,true,'resource','Wood',False,'primary'),
@@ -245,7 +233,7 @@ statusUpgradeType, upgradePercentage) VALUES
 (5,'Advanced Radiation Resistance Tea','tea','food',0,0,0,0,0,0,0,0,'radiation',0.3),
 (5,'Pure Radiation Resistance Tea','tea','food',0,0,0,0,0,0,0,0,'radiation',0.5);
 
-INSERT INTO lootcrates values 
+INSERT INTO lootcrates values
 (5,1,'basic'),
 (2,2,'barrel'),
 (3,3,'resource'),
