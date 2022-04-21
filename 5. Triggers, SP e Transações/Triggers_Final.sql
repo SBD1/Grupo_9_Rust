@@ -50,8 +50,8 @@ FOR EACH ROW EXECUTE PROCEDURE insert_party();
 
 CREATE TRIGGER instanciateCharacter
 AFTER INSERT ON characters
-AS 
-    INSERT INTO Backpack (new.charactersID);
+AS
+INSERT INTO Backpack (new.charactersID);
 
 CREATE TRIGGER insertBackpack
 AFTER INSERT ON Backpack
