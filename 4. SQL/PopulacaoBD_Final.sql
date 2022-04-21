@@ -11,74 +11,19 @@ INSERT INTO Maps VALUES
 (2,2),
 (3,3);
 
-INSERT INTO Structures VALUES
-(1,'Structure1'),
-(2,'Structure2'),
-(3,'Structure3');
-
 INSERT INTO Monuments VALUES
 (1,1,'0','scientist','lest','Monument1'),
 (1,2,'1','scientist','lest','Monument2'),
 (1,3,'2','scientist','lest','Monument3');
 
-INSERT INTO Climate VALUES
-(1, 30.3, 'event1', 'status1'),
-(2, 5.4, 'event2', 'status2'),
-(3, 20.2, 'event3', 'status3');
+INSERT INTO PlayerCharacters(name, type, hydration, poisoned, hunger)VALUES
+('Character1', 'Player', 1, 2, 3);
 
-INSERT INTO Characters VALUES
-(1, 'Character1', '10', 'model1', 'type1', 'item1'),
-(2, 'Character2', '5', 'model2', 'type2', 'item2'),
-(3, 'Character3', '20', 'model3', 'type3', 'item3'),
-(4, 'Character4', '10', 'model1', 'type1', 'item1'),
-(5, 'Character5', '5', 'model2', 'type2', 'item2'),
-(6, 'Character6', '20', 'model3', 'type3', 'item3'),
-(7, 'Character7', '10', 'model1', 'type1', 'item1'),
-(8, 'Character8', '5', 'model2', 'type2', 'item2'),
-(9, 'Character9', '20', 'model3', 'type3', 'item3'),
-(10, 'Character10', '10', 'model1', 'type1', 'item1'),
-(11, 'Character11', '5', 'model2', 'type2', 'item2'),
-(12, 'Character12', '20', 'model3', 'type3', 'item3'),
-(13, 'Character13', '10', 'model1', 'type1', 'item1'),
-(14, 'Character14', '5', 'model2', 'type2', 'item2'),
-(15, 'Character15', '20', 'model3', 'type3', 'item3'),
-(16, 'Character16', '6', 'model4', 'type4', 'item4'),
-(17, 'Character17', '6', 'model4', 'type4', 'item4'),
-(18, 'Character18', '6', 'model4', 'type4', 'item4');
+INSERT INTO MainCharacter(name, type, owner) VALUES
+('Character2', 'NPC', 'owner');
 
-INSERT INTO Backpack VALUES
-(1, 1, 4, 2, 4),
-(2, 2, 4, 2, 4),
-(3, 3, 4, 2, 4);
-
-INSERT INTO PlayerCharacters VALUES
-(1, 10, 20, 30, 'type1', 1, 2, 3, 4, 5, 1),
-(2, 30, 20, 10, 'type2', 1, 5, 4, 3, 2, 2),
-(3, 30, 10, 20, 'type3', 1, 3, 5, 4, 2, 3);
-
-INSERT INTO RecruitableCharacters VALUES
-(4, 'Melee Weapons','true'),(5, 'Bows','false'),
-(6, 'Handguns','true');
-
-INSERT INTO MainCharacter VALUES
-(7, '1'),
-(8, '2'),
-(9, '3');
-
-INSERT INTO NPCs VALUES
-(10, 'false', '30', '50', 'type1'),
-(11, 'true', '40', '60', 'type2'),
-(12, 'false', '80', '70', 'type3');
-
-INSERT INTO Animals VALUES
-(13, 'roar, roooor', 'aligator'),
-(14, 'ssssss', 'snake'),
-(15, 'auuu', 'wolf');
-
-INSERT INTO Scientists VALUES
-(16, 'true'),
-(17, 'false'),
-(18, 'true');
+INSERT INTO NPCs(name, type, isAgressive, aggroRange, enemyGrade, typeNpc, grau) VALUES
+('Character2', 'NPC', true, "aggroRange", "enemyGrade", "type", "grau");
 
 INSERT INTO ResourceNodes (nodeType, maxYield, durabilityDamage) VALUES
 ('sulfur', 300, 7.5),
@@ -86,19 +31,6 @@ INSERT INTO ResourceNodes (nodeType, maxYield, durabilityDamage) VALUES
 ('metal',600, 7.5),
 ('tree', 500, 3.75),
 ('cactus', 3, 2.5);
-
-
-INSERT INTO Biomes VALUES
-(1, 'xy', 'z1', true, true,'Temperate Grassland Plains', 'climate1'),
-(2, 'xy', 'z2', true, true,'Temperate Grassland Hills', 'climate2'),
-(3, 'xy', 'z3', true, true,'Temperate Forest', 'climate3'),
-(4, 'xy', 'z4', true, true,'Desert', 'climate4'),
-(5, 'xy', 'z5', true, true,'Snow', 'climate5'),
-(6, 'xy', 'z6', true, true,'Trivia', 'climate6'),
-(7, 'xy', 'z7', true, true,'Beach', 'climate7'),
-(8, 'xy', 'z8', true, true,'Lake', 'climate8'),
-(9, 'xy', 'z9', true, true,'River', 'climate9'),
-(10, 'xy', 'z10', true, true,'Ocean', 'climate10');
 
 INSERT INTO Resources (maxStackSize,isPrimary, itemType,itemName,isRefinable,lootGrade) VALUES
 	(1000,true,'resource','Wood',False,'primary'),
