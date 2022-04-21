@@ -13,38 +13,27 @@ CREATE TYPE equipment_slot as ENUM('face','head','chest','chest-armour','feet','
 CREATE TYPE status_type as ENUM('health','mining','woodcutting','radiation','scrap');
 CREATE TYPE node_type as ENUM('sulfur', 'stone', 'metal', 'tree', 'cactus');
 CREATE TYPE ENUM_STATUS AS ENUM ('HIGH','MEDIUM', 'LOW');
-CREATE TYPE monument_tier AS ENUM('0','1','2','3');
+CREATE TYPE monument_tier AS ENUM('basic','military','elite');
 CREATE TYPE enemy_grade AS ENUM('scientist', 'outpost-scientist', 'heavy-scientist', 'bandit');
 CREATE TYPE ENUM_BOOLEAN AS ENUM('true','false');
 
 CREATE TABLE IF NOT EXISTS Maps (
-    id SERIAL PRIMARY KEY UNIQUE,
-    mapID int UNIQUE
+  id SERIAL PRIMARY KEY UNIQUE,
+  mapID int UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS Structures (
   structureID INTEGER NOT NULL,
-  monument VARCHAR(100) NOT NULL,
+  combat_enemy BOOLEAN,
+  name VARCHAR(30) NOT NULL,
   CONSTRAINT pk_Structures PRIMARY KEY(structureID)
 );
 
 CREATE TABLE IF NOT EXISTS Monuments (
-    monumentSize INT,
-    id SERIAL PRIMARY KEY UNIQUE,
-    lootGrade monument_tier,
-    enemyGrade enemy_grade,
-    regions VARCHAR(5),
-    name VARCHAR(10) UNIQUE
-);
-
-CREATE TABLE IF NOT EXISTS Region (
-    name VARCHAR(30),
-    coordinateX VARCHAR(5),
-    coordinateY VARCHAR(5),
-    biome VARCHAR(30),
-    dangerLevel SMALLINT,
-    monument VARCHAR(30),
-    FOREIGN KEY (monument) REFERENCES Monuments(name) ON DELETE RESTRICT
+  id SERIAL PRIMARY KEY UNIQUE,
+  monumentSize INT,
+  lootGrade monument_tier,
+  name VARCHAR(30) UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS HaveMapRegion (
@@ -53,24 +42,6 @@ CREATE TABLE IF NOT EXISTS HaveMapRegion (
   coordinateY VARCHAR(5),
   CONSTRAINT pk_HaveMapRegion PRIMARY KEY(mapID,coordinateX,coordinateY),
   CONSTRAINT fk_mapID_HaveMapRegion FOREIGN KEY (mapID) REFERENCES Maps(mapID) ON DELETE RESTRICT
-);
-
-CREATE TABLE IF NOT EXISTS Climate (
-  climateID int UNIQUE,
-  temperature DECIMAL(4,1),
-  event VARCHAR(30),
-  statusEffect VARCHAR(30),
-  visibility ENUM_STATUS
-);
-
-CREATE TABLE IF NOT EXISTS Biomes (
-  biomesID int PRIMARY KEY,
-  coordinateX VARCHAR(5),
-  coordinateY VARCHAR(5),
-  resourceAbundance boolean,
-  resourceAvailability boolean,
-  type VARCHAR(30),
-  climate varchar(30)
 );
 
 CREATE TABLE IF NOT EXISTS Flora (
