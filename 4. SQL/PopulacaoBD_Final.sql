@@ -19,11 +19,8 @@ INSERT INTO Monuments VALUES
 INSERT INTO PlayerCharacters(name, type, hydration, poisoned, hunger)VALUES
 ('Character1', 'Player', 1, 2, 3);
 
-INSERT INTO MainCharacter(name, type, owner) VALUES
-('Character2', 'NPC', 'owner');
-
-INSERT INTO NPCs(name, type, isAgressive, aggroRange, enemyGrade, typeNpc, grau) VALUES
-('Character2', 'NPC', true, "aggroRange", "enemyGrade", "type", "grau");
+INSERT INTO NPCs(name, type, isAgressive, typeNpc, grau) VALUES
+('Character2', 'NPC', true, "type", "grau");
 
 INSERT INTO ResourceNodes (nodeType, maxYield, durabilityDamage) VALUES
 ('sulfur', 300, 7.5),

@@ -110,14 +110,9 @@ CREATE TABLE IF NOT EXISTS PlayerCharacters (
   backpack INTEGER
 )INHERITS (Characters);
 
-CREATE TABLE IF NOT EXISTS MainCharacter (
-  owner varchar(20) NOT NULL
-)INHERITS (Characters);
 
 CREATE TABLE IF NOT EXISTS NPCs (
   isAgressive ENUM_BOOLEAN NOT NULL,
-  aggroRange VARCHAR(30) NOT NULL,
-  enemyGrade VARCHAR(30) NOT NULL,
   typeNpc VARCHAR(30) NOT NULL,
   grau VARCHAR(30) NOT NULL
 )INHERITS (Characters);
