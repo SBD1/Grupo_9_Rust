@@ -33,7 +33,19 @@ INSERT INTO PlayerCharacters(name, type, hydration, poisoned, hunger)VALUES
 ('Character1', 'Player',1,2,3);
 
 INSERT INTO NPCs(name,type,isAgressive,typeNpc,grau) VALUES
-('Character2','NPC',true,"type","grau");
+('M249 Scientist','NPC',true,'Scientist','elite'),
+('M92 Scientist','NPC',true,'Scientist','basic'),
+('LR300 Scientist','NPC',true,'Scientist','military'),
+('AK Bandit','NPC',true,'Bandit','elite'),
+('Tommy Bandit','NPC',true,'Bandit','military'),
+('Revolver Bandit','NPC',true,'Bandit','basic'),
+('Hunter','NPC',false,'Bandit','basic'),
+('Boar','NPC',true,'Animal','basic'),
+('Deer','NPC',false,'Animal','basic'),
+('Wolf','NPC',true,'Animal','military'),
+('Bear','NPC',true,'Animal','military'),
+('Polar Bear','NPC',true,'Animal','elite')
+;
 
 INSERT INTO ResourceNodes (nodeType, maxYield, durabilityDamage) VALUES
 ('sulfur',300,7.5),
