@@ -1,3 +1,4 @@
+from secrets import choice
 from game_instances import game_assets
 
 class gametext():
@@ -51,8 +52,17 @@ class gametext():
         return pd.read_sql('select id from maincharacter order by id desc limit 1',engine).id
     
     def progression_text(self,coordinates):
-        print("You have a choice to make, where you wish to go?")
+        m1 = pd.read_sql("""SELECT id FROM monuments WHERE lootgrade = '{}' ORDER BY random() LIMIT 1;  """.format('basic'))
+        m2 = pd.read_sql("""SELECT id FROM monuments WHERE lootgrade = '{}' ORDER BY random() LIMIT 1;  """.format('military'))
+        m3 = pd.read_sql("""SELECT id FROM monuments WHERE lootgrade = '{}' ORDER BY random() LIMIT 1;  """.format('elite'))
 
+        print("You have a choice to make, your life might depend on it.\n ")
+        print("1 - " + m1[0].name + "| TIER 1")
+        print("2 - " + m2[0].name + "| TIER 2")
+        print("3 - " + m3[0].name + "| TIER 3")
+        choice = input("Where you wish to go? 1, 2 or 3")
+
+        return choice
 
     def loot_text(self, loot_tier):
         print('You open the crate, inside you find some items:')
