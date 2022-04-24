@@ -23,10 +23,10 @@ CREATE TABLE IF NOT EXISTS Maps (
 );
 
 CREATE TABLE IF NOT EXISTS Structures (
-  structureID INTEGER NOT NULL,
+  id INTEGER NOT NULL,
   combat_enemy BOOLEAN,
   name VARCHAR(30) NOT NULL,
-  CONSTRAINT pk_Structures PRIMARY KEY(structureID)
+  CONSTRAINT pk_Structures PRIMARY KEY(id)
 );
 
 CREATE TABLE IF NOT EXISTS Monuments (
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS Backpack (
 );
 
 CREATE TABLE IF NOT EXISTS Characters (
-  charactersID SERIAL primary key unique NOT NULL,
+  id SERIAL primary key unique NOT NULL,
   name VARCHAR(100) NOT NULL,
   type VARCHAR(30) NOT NULL
 );
@@ -226,16 +226,16 @@ CREATE TABLE IF NOT EXISTS StructuresContainsLootCrates (
   structure INTEGER NOT NULL,
   lootCrates INTEGER NOT NULL,
   CONSTRAINT pk_StructuresContainsLootCrates PRIMARY KEY(structure, lootCrates),
-  CONSTRAINT fk_StructuresContainsLootCrates_Structures FOREIGN KEY (structure) REFERENCES Structures(structureID) ON DELETE RESTRICT,
+  CONSTRAINT fk_StructuresContainsLootCrates_Structures FOREIGN KEY (structure) REFERENCES Structures(id) ON DELETE RESTRICT,
   CONSTRAINT fk_StructuresContainsLootCrates_LootCrates FOREIGN KEY (lootCrates) REFERENCES LootCrates(id) ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS Party (
-  partyID INTEGER NOT NULL,
+  id INTEGER NOT NULL,
   character INTEGER NOT NULL,
   capacity INTEGER NOT NULL,
-  CONSTRAINT pk_Party PRIMARY KEY(partyID),
-  CONSTRAINT fk_Party_Characters FOREIGN KEY (character) REFERENCES Characters(charactersID) ON DELETE RESTRICT
+  CONSTRAINT pk_Party PRIMARY KEY(id),
+  CONSTRAINT fk_Party_Characters FOREIGN KEY (character) REFERENCES Characters(id) ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS instancedItem (
