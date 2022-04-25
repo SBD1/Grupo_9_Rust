@@ -5,7 +5,7 @@
 -- Dumped from database version 14.2
 -- Dumped by pg_dump version 14.2
 
--- Started on 2022-03-28 22:35:49
+-- Started on 2022-04-25 18:44:45
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,7 +19,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 889 (class 1247 OID 31118)
+-- TOC entry 883 (class 1247 OID 33326)
 -- Name: enemy_grade; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -34,7 +34,7 @@ CREATE TYPE public.enemy_grade AS ENUM (
 ALTER TYPE public.enemy_grade OWNER TO postgres;
 
 --
--- TOC entry 892 (class 1247 OID 31128)
+-- TOC entry 886 (class 1247 OID 33336)
 -- Name: enum_boolean; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -47,7 +47,7 @@ CREATE TYPE public.enum_boolean AS ENUM (
 ALTER TYPE public.enum_boolean OWNER TO postgres;
 
 --
--- TOC entry 883 (class 1247 OID 31100)
+-- TOC entry 877 (class 1247 OID 33310)
 -- Name: enum_status; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -61,7 +61,7 @@ CREATE TYPE public.enum_status AS ENUM (
 ALTER TYPE public.enum_status OWNER TO postgres;
 
 --
--- TOC entry 874 (class 1247 OID 31056)
+-- TOC entry 868 (class 1247 OID 33266)
 -- Name: equipment_slot; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -81,7 +81,7 @@ CREATE TYPE public.equipment_slot AS ENUM (
 ALTER TYPE public.equipment_slot OWNER TO postgres;
 
 --
--- TOC entry 871 (class 1247 OID 31042)
+-- TOC entry 865 (class 1247 OID 33252)
 -- Name: fire_mode; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -98,7 +98,7 @@ CREATE TYPE public.fire_mode AS ENUM (
 ALTER TYPE public.fire_mode OWNER TO postgres;
 
 --
--- TOC entry 868 (class 1247 OID 31026)
+-- TOC entry 862 (class 1247 OID 33236)
 -- Name: item_type; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -116,7 +116,7 @@ CREATE TYPE public.item_type AS ENUM (
 ALTER TYPE public.item_type OWNER TO postgres;
 
 --
--- TOC entry 865 (class 1247 OID 31009)
+-- TOC entry 859 (class 1247 OID 33219)
 -- Name: loot_grade; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -135,22 +135,21 @@ CREATE TYPE public.loot_grade AS ENUM (
 ALTER TYPE public.loot_grade OWNER TO postgres;
 
 --
--- TOC entry 886 (class 1247 OID 31108)
+-- TOC entry 880 (class 1247 OID 33318)
 -- Name: monument_tier; Type: TYPE; Schema: public; Owner: postgres
 --
 
 CREATE TYPE public.monument_tier AS ENUM (
-    '0',
-    '1',
-    '2',
-    '3'
+    'basic',
+    'military',
+    'elite'
 );
 
 
 ALTER TYPE public.monument_tier OWNER TO postgres;
 
 --
--- TOC entry 880 (class 1247 OID 31088)
+-- TOC entry 874 (class 1247 OID 33298)
 -- Name: node_type; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -166,7 +165,7 @@ CREATE TYPE public.node_type AS ENUM (
 ALTER TYPE public.node_type OWNER TO postgres;
 
 --
--- TOC entry 877 (class 1247 OID 31076)
+-- TOC entry 871 (class 1247 OID 33286)
 -- Name: status_type; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -181,26 +180,154 @@ CREATE TYPE public.status_type AS ENUM (
 
 ALTER TYPE public.status_type OWNER TO postgres;
 
+--
+-- TOC entry 240 (class 1255 OID 33504)
+-- Name: insert_biomes(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.insert_biomes() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    PERFORM * FROM Biomes WHERE biomesID = new.biomesID;
+    IF FOUND THEN
+        RAISE EXCEPTION 'Biome already exists';
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.insert_biomes() OWNER TO postgres;
+
+--
+-- TOC entry 243 (class 1255 OID 33503)
+-- Name: insert_climate(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.insert_climate() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    PERFORM * FROM Climate WHERE climateID = new.climateID;
+    IF FOUND THEN
+        RAISE EXCEPTION 'Climate already exists';
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.insert_climate() OWNER TO postgres;
+
+--
+-- TOC entry 241 (class 1255 OID 33501)
+-- Name: insert_map(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.insert_map() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    PERFORM * FROM Maps WHERE mapID = new.mapID;
+    IF FOUND THEN
+        RAISE EXCEPTION 'Map already exists';
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.insert_map() OWNER TO postgres;
+
+--
+-- TOC entry 244 (class 1255 OID 33505)
+-- Name: insert_party(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.insert_party() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    PERFORM * FROM Party WHERE partyID = new.partyID;
+    IF FOUND THEN
+        RAISE EXCEPTION 'Party already exists';
+    END IF;
+    PERFORM * FROM Party where character = new.character;
+    IF FOUND THEN
+        RAISE EXCEPTION 'Character is already in a party';
+    END IF;
+    PERFORM * FROM Party where capacity = 8;
+    IF FOUND THEN
+        RAISE EXCEPTION 'Party is already full';
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.insert_party() OWNER TO postgres;
+
+--
+-- TOC entry 242 (class 1255 OID 33502)
+-- Name: insert_region(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.insert_region() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    PERFORM * FROM Region WHERE name = new.name;
+    IF FOUND THEN
+        RAISE EXCEPTION 'Region already exists';
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.insert_region() OWNER TO postgres;
+
+--
+-- TOC entry 246 (class 1255 OID 33507)
+-- Name: insertbackpack(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.insertbackpack() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    UPDATE PlayerCharacters SET backpack = new.id WHERE id = new.ownerID;
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.insertbackpack() OWNER TO postgres;
+
+--
+-- TOC entry 245 (class 1255 OID 33506)
+-- Name: insertcharacter_backpack(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.insertcharacter_backpack() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    INSERT INTO backpack(ownerID) VALUES (new.id);
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.insertcharacter_backpack() OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
 --
--- TOC entry 232 (class 1259 OID 31307)
--- Name: animals; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.animals (
-    charactersid integer NOT NULL,
-    sound character varying(100) NOT NULL,
-    modeltype character varying(30) NOT NULL
-);
-
-
-ALTER TABLE public.animals OWNER TO postgres;
-
---
--- TOC entry 225 (class 1259 OID 31247)
+-- TOC entry 215 (class 1259 OID 33365)
 -- Name: backpack; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -263,7 +390,7 @@ CREATE TABLE public.backpack (
 ALTER TABLE public.backpack OWNER TO postgres;
 
 --
--- TOC entry 224 (class 1259 OID 31246)
+-- TOC entry 214 (class 1259 OID 33364)
 -- Name: backpack_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -279,8 +406,8 @@ CREATE SEQUENCE public.backpack_id_seq
 ALTER TABLE public.backpack_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3633 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 3529 (class 0 OID 0)
+-- Dependencies: 214
 -- Name: backpack_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -288,57 +415,46 @@ ALTER SEQUENCE public.backpack_id_seq OWNED BY public.backpack.id;
 
 
 --
--- TOC entry 217 (class 1259 OID 31186)
--- Name: biomes; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.biomes (
-    biomesid integer NOT NULL,
-    coordinates character varying(5),
-    resourceabundance boolean,
-    resourceavailability boolean,
-    type character varying(30),
-    climate character varying(30)
-);
-
-
-ALTER TABLE public.biomes OWNER TO postgres;
-
---
--- TOC entry 220 (class 1259 OID 31211)
+-- TOC entry 217 (class 1259 OID 33372)
 -- Name: characters; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.characters (
-    charactersid integer NOT NULL,
+    id integer NOT NULL,
     name character varying(100) NOT NULL,
-    "position" integer NOT NULL,
-    charactermodel character varying(30) NOT NULL,
-    type character varying(30) NOT NULL,
-    item character varying(30) NOT NULL
+    type character varying(30) NOT NULL
 );
 
 
 ALTER TABLE public.characters OWNER TO postgres;
 
 --
--- TOC entry 216 (class 1259 OID 31181)
--- Name: climate; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 216 (class 1259 OID 33371)
+-- Name: characters_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.climate (
-    climateid integer,
-    temperature numeric(4,1),
-    event character varying(30),
-    statuseffect character varying(30),
-    visibility public.enum_status
-);
+CREATE SEQUENCE public.characters_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
-ALTER TABLE public.climate OWNER TO postgres;
+ALTER TABLE public.characters_id_seq OWNER TO postgres;
 
 --
--- TOC entry 236 (class 1259 OID 31338)
+-- TOC entry 3530 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: characters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.characters_id_seq OWNED BY public.characters.id;
+
+
+--
+-- TOC entry 221 (class 1259 OID 33387)
 -- Name: items; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -354,7 +470,7 @@ CREATE TABLE public.items (
 ALTER TABLE public.items OWNER TO postgres;
 
 --
--- TOC entry 241 (class 1259 OID 31360)
+-- TOC entry 226 (class 1259 OID 33409)
 -- Name: clothing; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -374,21 +490,7 @@ INHERITS (public.items);
 ALTER TABLE public.clothing OWNER TO postgres;
 
 --
--- TOC entry 223 (class 1259 OID 31241)
--- Name: combatlog; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.combatlog (
-    entercombatcharacters integer NOT NULL,
-    indexlog integer NOT NULL,
-    log character varying(100) NOT NULL
-);
-
-
-ALTER TABLE public.combatlog OWNER TO postgres;
-
---
--- TOC entry 239 (class 1259 OID 31352)
+-- TOC entry 224 (class 1259 OID 33401)
 -- Name: consumables; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -408,86 +510,7 @@ INHERITS (public.items);
 ALTER TABLE public.consumables OWNER TO postgres;
 
 --
--- TOC entry 234 (class 1259 OID 31327)
--- Name: dialoguetext; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.dialoguetext (
-    dialogue character varying(100) NOT NULL,
-    "character" integer NOT NULL
-);
-
-
-ALTER TABLE public.dialoguetext OWNER TO postgres;
-
---
--- TOC entry 222 (class 1259 OID 31226)
--- Name: entercombatcharacters; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.entercombatcharacters (
-    entercombatcharactersid integer NOT NULL,
-    firstcharacter integer NOT NULL,
-    secondcharacter integer NOT NULL
-);
-
-
-ALTER TABLE public.entercombatcharacters OWNER TO postgres;
-
---
--- TOC entry 219 (class 1259 OID 31201)
--- Name: fauna; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.fauna (
-    fauna character varying(30) NOT NULL,
-    biomes integer
-);
-
-
-ALTER TABLE public.fauna OWNER TO postgres;
-
---
--- TOC entry 218 (class 1259 OID 31191)
--- Name: flora; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.flora (
-    flora character varying(30) NOT NULL,
-    biomes integer
-);
-
-
-ALTER TABLE public.flora OWNER TO postgres;
-
---
--- TOC entry 221 (class 1259 OID 31216)
--- Name: gatheryield; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.gatheryield (
-    "character" integer NOT NULL,
-    gatheryield character varying(30) NOT NULL
-);
-
-
-ALTER TABLE public.gatheryield OWNER TO postgres;
-
---
--- TOC entry 215 (class 1259 OID 31164)
--- Name: havemapregion; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.havemapregion (
-    mapid integer NOT NULL,
-    coordinates integer NOT NULL
-);
-
-
-ALTER TABLE public.havemapregion OWNER TO postgres;
-
---
--- TOC entry 252 (class 1259 OID 31433)
+-- TOC entry 239 (class 1259 OID 33489)
 -- Name: instanceditem; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -502,7 +525,7 @@ CREATE TABLE public.instanceditem (
 ALTER TABLE public.instanceditem OWNER TO postgres;
 
 --
--- TOC entry 251 (class 1259 OID 31432)
+-- TOC entry 238 (class 1259 OID 33488)
 -- Name: instanceditem_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -518,8 +541,8 @@ CREATE SEQUENCE public.instanceditem_id_seq
 ALTER TABLE public.instanceditem_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3634 (class 0 OID 0)
--- Dependencies: 251
+-- TOC entry 3531 (class 0 OID 0)
+-- Dependencies: 238
 -- Name: instanceditem_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -527,7 +550,7 @@ ALTER SEQUENCE public.instanceditem_id_seq OWNED BY public.instanceditem.id;
 
 
 --
--- TOC entry 235 (class 1259 OID 31337)
+-- TOC entry 220 (class 1259 OID 33386)
 -- Name: items_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -543,8 +566,8 @@ CREATE SEQUENCE public.items_id_seq
 ALTER TABLE public.items_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3635 (class 0 OID 0)
--- Dependencies: 235
+-- TOC entry 3532 (class 0 OID 0)
+-- Dependencies: 220
 -- Name: items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -552,12 +575,57 @@ ALTER SEQUENCE public.items_id_seq OWNED BY public.items.id;
 
 
 --
--- TOC entry 248 (class 1259 OID 31401)
+-- TOC entry 235 (class 1259 OID 33457)
+-- Name: loot_crate_instance; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.loot_crate_instance (
+    id integer NOT NULL,
+    loot_grade public.loot_grade,
+    item1_id integer,
+    item2_id integer,
+    item3_id integer,
+    item4_id integer,
+    item5_id integer,
+    item6_id integer,
+    item7_id integer
+);
+
+
+ALTER TABLE public.loot_crate_instance OWNER TO postgres;
+
+--
+-- TOC entry 234 (class 1259 OID 33456)
+-- Name: loot_crate_instance_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.loot_crate_instance_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.loot_crate_instance_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3533 (class 0 OID 0)
+-- Dependencies: 234
+-- Name: loot_crate_instance_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.loot_crate_instance_id_seq OWNED BY public.loot_crate_instance.id;
+
+
+--
+-- TOC entry 233 (class 1259 OID 33450)
 -- Name: lootcrates; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.lootcrates (
-    quantifyofitens integer,
+    item_quantity integer,
     id integer NOT NULL,
     grade public.loot_grade
 );
@@ -566,7 +634,7 @@ CREATE TABLE public.lootcrates (
 ALTER TABLE public.lootcrates OWNER TO postgres;
 
 --
--- TOC entry 247 (class 1259 OID 31400)
+-- TOC entry 232 (class 1259 OID 33449)
 -- Name: lootcrates_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -582,8 +650,8 @@ CREATE SEQUENCE public.lootcrates_id_seq
 ALTER TABLE public.lootcrates_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3636 (class 0 OID 0)
--- Dependencies: 247
+-- TOC entry 3534 (class 0 OID 0)
+-- Dependencies: 232
 -- Name: lootcrates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -591,20 +659,7 @@ ALTER SEQUENCE public.lootcrates_id_seq OWNED BY public.lootcrates.id;
 
 
 --
--- TOC entry 228 (class 1259 OID 31280)
--- Name: maincharacter; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.maincharacter (
-    charactersid integer NOT NULL,
-    owner integer NOT NULL
-);
-
-
-ALTER TABLE public.maincharacter OWNER TO postgres;
-
---
--- TOC entry 210 (class 1259 OID 31134)
+-- TOC entry 210 (class 1259 OID 33342)
 -- Name: maps; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -617,7 +672,7 @@ CREATE TABLE public.maps (
 ALTER TABLE public.maps OWNER TO postgres;
 
 --
--- TOC entry 209 (class 1259 OID 31133)
+-- TOC entry 209 (class 1259 OID 33341)
 -- Name: maps_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -633,7 +688,7 @@ CREATE SEQUENCE public.maps_id_seq
 ALTER TABLE public.maps_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3637 (class 0 OID 0)
+-- TOC entry 3535 (class 0 OID 0)
 -- Dependencies: 209
 -- Name: maps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -642,7 +697,7 @@ ALTER SEQUENCE public.maps_id_seq OWNED BY public.maps.id;
 
 
 --
--- TOC entry 237 (class 1259 OID 31344)
+-- TOC entry 222 (class 1259 OID 33393)
 -- Name: meleeweapons; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -663,24 +718,22 @@ INHERITS (public.items);
 ALTER TABLE public.meleeweapons OWNER TO postgres;
 
 --
--- TOC entry 213 (class 1259 OID 31148)
+-- TOC entry 213 (class 1259 OID 33356)
 -- Name: monuments; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.monuments (
-    monumentsize integer,
     id integer NOT NULL,
+    monumentsize integer,
     lootgrade public.monument_tier,
-    enemygrade public.enemy_grade,
-    regions character varying(5),
-    name character varying(10)
+    name character varying(30)
 );
 
 
 ALTER TABLE public.monuments OWNER TO postgres;
 
 --
--- TOC entry 212 (class 1259 OID 31147)
+-- TOC entry 212 (class 1259 OID 33355)
 -- Name: monuments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -696,7 +749,7 @@ CREATE SEQUENCE public.monuments_id_seq
 ALTER TABLE public.monuments_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3638 (class 0 OID 0)
+-- TOC entry 3536 (class 0 OID 0)
 -- Dependencies: 212
 -- Name: monuments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -705,28 +758,27 @@ ALTER SEQUENCE public.monuments_id_seq OWNED BY public.monuments.id;
 
 
 --
--- TOC entry 231 (class 1259 OID 31297)
+-- TOC entry 219 (class 1259 OID 33382)
 -- Name: npcs; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.npcs (
-    charactersid integer NOT NULL,
-    isagressive public.enum_boolean NOT NULL,
-    aggrorange character varying(30) NOT NULL,
-    enemygrade character varying(30) NOT NULL,
-    type character varying(30) NOT NULL
-);
+    isagressive boolean NOT NULL,
+    typenpc character varying(30) NOT NULL,
+    grade character varying(30) NOT NULL
+)
+INHERITS (public.characters);
 
 
 ALTER TABLE public.npcs OWNER TO postgres;
 
 --
--- TOC entry 250 (class 1259 OID 31422)
+-- TOC entry 237 (class 1259 OID 33478)
 -- Name: party; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.party (
-    partyid integer NOT NULL,
+    id integer NOT NULL,
     "character" integer NOT NULL,
     capacity integer NOT NULL
 );
@@ -735,29 +787,28 @@ CREATE TABLE public.party (
 ALTER TABLE public.party OWNER TO postgres;
 
 --
--- TOC entry 226 (class 1259 OID 31255)
+-- TOC entry 218 (class 1259 OID 33378)
 -- Name: playercharacters; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.playercharacters (
-    charactersid integer NOT NULL,
     hydration integer NOT NULL,
     poisoned integer NOT NULL,
     hunger integer NOT NULL,
-    type character varying(30) NOT NULL,
     equipeditems1 integer,
     equipeditems2 integer,
     equipeditems3 integer,
     equipeditems4 integer,
     equipeditems5 integer,
-    backpack integer NOT NULL
-);
+    backpack integer
+)
+INHERITS (public.characters);
 
 
 ALTER TABLE public.playercharacters OWNER TO postgres;
 
 --
--- TOC entry 238 (class 1259 OID 31348)
+-- TOC entry 223 (class 1259 OID 33397)
 -- Name: rangedweapons; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -780,37 +831,7 @@ INHERITS (public.items);
 ALTER TABLE public.rangedweapons OWNER TO postgres;
 
 --
--- TOC entry 227 (class 1259 OID 31270)
--- Name: recruitablecharacters; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.recruitablecharacters (
-    charactersid integer NOT NULL,
-    specialization character varying(30) NOT NULL,
-    recruited public.enum_boolean NOT NULL
-);
-
-
-ALTER TABLE public.recruitablecharacters OWNER TO postgres;
-
---
--- TOC entry 214 (class 1259 OID 31156)
--- Name: region; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.region (
-    name character varying(30),
-    coordinates integer,
-    biome character varying(30),
-    dangerlevel smallint,
-    monument character varying(30)
-);
-
-
-ALTER TABLE public.region OWNER TO postgres;
-
---
--- TOC entry 246 (class 1259 OID 31390)
+-- TOC entry 231 (class 1259 OID 33439)
 -- Name: regionsmonuments; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -823,7 +844,7 @@ CREATE TABLE public.regionsmonuments (
 ALTER TABLE public.regionsmonuments OWNER TO postgres;
 
 --
--- TOC entry 244 (class 1259 OID 31369)
+-- TOC entry 229 (class 1259 OID 33418)
 -- Name: resourcenodes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -838,7 +859,7 @@ CREATE TABLE public.resourcenodes (
 ALTER TABLE public.resourcenodes OWNER TO postgres;
 
 --
--- TOC entry 243 (class 1259 OID 31368)
+-- TOC entry 228 (class 1259 OID 33417)
 -- Name: resourcenodes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -854,8 +875,8 @@ CREATE SEQUENCE public.resourcenodes_id_seq
 ALTER TABLE public.resourcenodes_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3639 (class 0 OID 0)
--- Dependencies: 243
+-- TOC entry 3537 (class 0 OID 0)
+-- Dependencies: 228
 -- Name: resourcenodes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -863,7 +884,7 @@ ALTER SEQUENCE public.resourcenodes_id_seq OWNED BY public.resourcenodes.id;
 
 
 --
--- TOC entry 245 (class 1259 OID 31375)
+-- TOC entry 230 (class 1259 OID 33424)
 -- Name: resourcenodesgenerateitems; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -876,7 +897,7 @@ CREATE TABLE public.resourcenodesgenerateitems (
 ALTER TABLE public.resourcenodesgenerateitems OWNER TO postgres;
 
 --
--- TOC entry 242 (class 1259 OID 31364)
+-- TOC entry 227 (class 1259 OID 33413)
 -- Name: resources; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -890,75 +911,21 @@ INHERITS (public.items);
 ALTER TABLE public.resources OWNER TO postgres;
 
 --
--- TOC entry 230 (class 1259 OID 31291)
--- Name: respawnlocation; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.respawnlocation (
-    ownerid integer,
-    id integer NOT NULL,
-    description character varying(300),
-    timer integer,
-    coordinatex character varying(5),
-    coordinatey character varying(5)
-);
-
-
-ALTER TABLE public.respawnlocation OWNER TO postgres;
-
---
--- TOC entry 229 (class 1259 OID 31290)
--- Name: respawnlocation_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.respawnlocation_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.respawnlocation_id_seq OWNER TO postgres;
-
---
--- TOC entry 3640 (class 0 OID 0)
--- Dependencies: 229
--- Name: respawnlocation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.respawnlocation_id_seq OWNED BY public.respawnlocation.id;
-
-
---
--- TOC entry 233 (class 1259 OID 31317)
--- Name: scientists; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.scientists (
-    charactersid integer NOT NULL,
-    hasdialogue public.enum_boolean NOT NULL
-);
-
-
-ALTER TABLE public.scientists OWNER TO postgres;
-
---
--- TOC entry 211 (class 1259 OID 31142)
+-- TOC entry 211 (class 1259 OID 33350)
 -- Name: structures; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.structures (
-    structureid integer NOT NULL,
-    monument character varying(100) NOT NULL
+    id integer NOT NULL,
+    combat_enemy boolean,
+    name character varying(30) NOT NULL
 );
 
 
 ALTER TABLE public.structures OWNER TO postgres;
 
 --
--- TOC entry 249 (class 1259 OID 31407)
+-- TOC entry 236 (class 1259 OID 33463)
 -- Name: structurescontainslootcrates; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -971,7 +938,7 @@ CREATE TABLE public.structurescontainslootcrates (
 ALTER TABLE public.structurescontainslootcrates OWNER TO postgres;
 
 --
--- TOC entry 240 (class 1259 OID 31356)
+-- TOC entry 225 (class 1259 OID 33405)
 -- Name: teas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -985,7 +952,7 @@ INHERITS (public.consumables);
 ALTER TABLE public.teas OWNER TO postgres;
 
 --
--- TOC entry 3343 (class 2604 OID 31250)
+-- TOC entry 3295 (class 2604 OID 33368)
 -- Name: backpack id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -993,7 +960,15 @@ ALTER TABLE ONLY public.backpack ALTER COLUMN id SET DEFAULT nextval('public.bac
 
 
 --
--- TOC entry 3350 (class 2604 OID 31363)
+-- TOC entry 3296 (class 2604 OID 33375)
+-- Name: characters id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.characters ALTER COLUMN id SET DEFAULT nextval('public.characters_id_seq'::regclass);
+
+
+--
+-- TOC entry 3304 (class 2604 OID 33412)
 -- Name: clothing id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1001,7 +976,7 @@ ALTER TABLE ONLY public.clothing ALTER COLUMN id SET DEFAULT nextval('public.ite
 
 
 --
--- TOC entry 3348 (class 2604 OID 31355)
+-- TOC entry 3302 (class 2604 OID 33404)
 -- Name: consumables id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1009,7 +984,7 @@ ALTER TABLE ONLY public.consumables ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 3354 (class 2604 OID 31436)
+-- TOC entry 3309 (class 2604 OID 33492)
 -- Name: instanceditem id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1017,7 +992,7 @@ ALTER TABLE ONLY public.instanceditem ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3345 (class 2604 OID 31341)
+-- TOC entry 3299 (class 2604 OID 33390)
 -- Name: items id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1025,7 +1000,15 @@ ALTER TABLE ONLY public.items ALTER COLUMN id SET DEFAULT nextval('public.items_
 
 
 --
--- TOC entry 3353 (class 2604 OID 31404)
+-- TOC entry 3308 (class 2604 OID 33460)
+-- Name: loot_crate_instance id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.loot_crate_instance ALTER COLUMN id SET DEFAULT nextval('public.loot_crate_instance_id_seq'::regclass);
+
+
+--
+-- TOC entry 3307 (class 2604 OID 33453)
 -- Name: lootcrates id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1033,7 +1016,7 @@ ALTER TABLE ONLY public.lootcrates ALTER COLUMN id SET DEFAULT nextval('public.l
 
 
 --
--- TOC entry 3341 (class 2604 OID 31137)
+-- TOC entry 3293 (class 2604 OID 33345)
 -- Name: maps id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1041,7 +1024,7 @@ ALTER TABLE ONLY public.maps ALTER COLUMN id SET DEFAULT nextval('public.maps_id
 
 
 --
--- TOC entry 3346 (class 2604 OID 31347)
+-- TOC entry 3300 (class 2604 OID 33396)
 -- Name: meleeweapons id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1049,7 +1032,7 @@ ALTER TABLE ONLY public.meleeweapons ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- TOC entry 3342 (class 2604 OID 31151)
+-- TOC entry 3294 (class 2604 OID 33359)
 -- Name: monuments id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1057,7 +1040,23 @@ ALTER TABLE ONLY public.monuments ALTER COLUMN id SET DEFAULT nextval('public.mo
 
 
 --
--- TOC entry 3347 (class 2604 OID 31351)
+-- TOC entry 3298 (class 2604 OID 33385)
+-- Name: npcs id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.npcs ALTER COLUMN id SET DEFAULT nextval('public.characters_id_seq'::regclass);
+
+
+--
+-- TOC entry 3297 (class 2604 OID 33381)
+-- Name: playercharacters id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.playercharacters ALTER COLUMN id SET DEFAULT nextval('public.characters_id_seq'::regclass);
+
+
+--
+-- TOC entry 3301 (class 2604 OID 33400)
 -- Name: rangedweapons id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1065,7 +1064,7 @@ ALTER TABLE ONLY public.rangedweapons ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3352 (class 2604 OID 31372)
+-- TOC entry 3306 (class 2604 OID 33421)
 -- Name: resourcenodes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1073,7 +1072,7 @@ ALTER TABLE ONLY public.resourcenodes ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3351 (class 2604 OID 31367)
+-- TOC entry 3305 (class 2604 OID 33416)
 -- Name: resources id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1081,15 +1080,7 @@ ALTER TABLE ONLY public.resources ALTER COLUMN id SET DEFAULT nextval('public.it
 
 
 --
--- TOC entry 3344 (class 2604 OID 31294)
--- Name: respawnlocation id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.respawnlocation ALTER COLUMN id SET DEFAULT nextval('public.respawnlocation_id_seq'::regclass);
-
-
---
--- TOC entry 3349 (class 2604 OID 31359)
+-- TOC entry 3303 (class 2604 OID 33408)
 -- Name: teas id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -1097,80 +1088,38 @@ ALTER TABLE ONLY public.teas ALTER COLUMN id SET DEFAULT nextval('public.items_i
 
 
 --
--- TOC entry 3606 (class 0 OID 31307)
--- Dependencies: 232
--- Data for Name: animals; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.animals (charactersid, sound, modeltype) FROM stdin;
-1	roar, roooor	aligator
-2	ssssss	snake
-3	auuu	wolf
-\.
-
-
---
--- TOC entry 3599 (class 0 OID 31247)
--- Dependencies: 225
+-- TOC entry 3498 (class 0 OID 33365)
+-- Dependencies: 215
 -- Data for Name: backpack; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.backpack (ownerid, id, slot01, slot02, slot03, slot04, slot05, slot06, slot07, slot08, slot09, slot10, slot11, slot12, slot13, slot14, slot15, slot16, slot17, slot18, slot19, slot20, slot21, slot22, slot23, slot24, slot25, slot26, slot27, slot28, slot29, slot30, slot31, slot32, slot33, slot34, slot35, slot36, slot37, slot38, slot39, slot40, slot41, slot42, slot43, slot44, slot45, slot46, slot47, slot48, slot49, slot50) FROM stdin;
-1	1	4	2	4	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-2	2	4	2	4	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-3	3	4	2	4	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+15	1	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+16	2	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+17	3	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+18	4	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+19	5	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+20	6	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+21	7	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+22	8	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+23	9	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+24	10	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
 --
--- TOC entry 3591 (class 0 OID 31186)
+-- TOC entry 3500 (class 0 OID 33372)
 -- Dependencies: 217
--- Data for Name: biomes; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.biomes (biomesid, coordinates, resourceabundance, resourceavailability, type, climate) FROM stdin;
-1	xyz1	t	t	Temperate Grassland Plains	climate1
-2	xyz2	t	t	Temperate Grassland Hills	climate2
-3	xyz3	t	t	Temperate Forest	climate3
-4	xyz4	t	t	Desert	climate4
-5	xyz5	t	t	Snow	climate5
-6	xyz6	t	t	Trivia	climate6
-7	xyz7	t	t	Beach	climate7
-8	xyz8	t	t	Lake	climate8
-9	xyz9	t	t	River	climate9
-10	xyz10	t	t	Ocean	climate10
-\.
-
-
---
--- TOC entry 3594 (class 0 OID 31211)
--- Dependencies: 220
 -- Data for Name: characters; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.characters (charactersid, name, "position", charactermodel, type, item) FROM stdin;
-1	Character1	10	model1	type1	item1
-2	Character2	5	model2	type2	item2
-3	Character3	20	model3	type3	item3
+COPY public.characters (id, name, type) FROM stdin;
 \.
 
 
 --
--- TOC entry 3590 (class 0 OID 31181)
--- Dependencies: 216
--- Data for Name: climate; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.climate (climateid, temperature, event, statuseffect, visibility) FROM stdin;
-1	30.3	event1	status1	\N
-2	5.4	event2	status2	\N
-3	20.2	event3	status3	\N
-\.
-
-
---
--- TOC entry 3615 (class 0 OID 31360)
--- Dependencies: 241
+-- TOC entry 3509 (class 0 OID 33409)
+-- Dependencies: 226
 -- Data for Name: clothing; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1214,18 +1163,8 @@ COPY public.clothing (id, maxstacksize, itemname, itemtype, lootgrade, coldresis
 
 
 --
--- TOC entry 3597 (class 0 OID 31241)
--- Dependencies: 223
--- Data for Name: combatlog; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.combatlog (entercombatcharacters, indexlog, log) FROM stdin;
-\.
-
-
---
--- TOC entry 3613 (class 0 OID 31352)
--- Dependencies: 239
+-- TOC entry 3507 (class 0 OID 33401)
+-- Dependencies: 224
 -- Data for Name: consumables; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1254,68 +1193,8 @@ COPY public.consumables (id, maxstacksize, itemname, itemtype, lootgrade, instan
 
 
 --
--- TOC entry 3608 (class 0 OID 31327)
--- Dependencies: 234
--- Data for Name: dialoguetext; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.dialoguetext (dialogue, "character") FROM stdin;
-\.
-
-
---
--- TOC entry 3596 (class 0 OID 31226)
--- Dependencies: 222
--- Data for Name: entercombatcharacters; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.entercombatcharacters (entercombatcharactersid, firstcharacter, secondcharacter) FROM stdin;
-\.
-
-
---
--- TOC entry 3593 (class 0 OID 31201)
--- Dependencies: 219
--- Data for Name: fauna; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.fauna (fauna, biomes) FROM stdin;
-\.
-
-
---
--- TOC entry 3592 (class 0 OID 31191)
--- Dependencies: 218
--- Data for Name: flora; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.flora (flora, biomes) FROM stdin;
-\.
-
-
---
--- TOC entry 3595 (class 0 OID 31216)
--- Dependencies: 221
--- Data for Name: gatheryield; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.gatheryield ("character", gatheryield) FROM stdin;
-\.
-
-
---
--- TOC entry 3589 (class 0 OID 31164)
--- Dependencies: 215
--- Data for Name: havemapregion; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.havemapregion (mapid, coordinates) FROM stdin;
-\.
-
-
---
--- TOC entry 3626 (class 0 OID 31433)
--- Dependencies: 252
+-- TOC entry 3522 (class 0 OID 33489)
+-- Dependencies: 239
 -- Data for Name: instanceditem; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1324,8 +1203,8 @@ COPY public.instanceditem (id, itemid, itemdurability, quantity) FROM stdin;
 
 
 --
--- TOC entry 3610 (class 0 OID 31338)
--- Dependencies: 236
+-- TOC entry 3504 (class 0 OID 33387)
+-- Dependencies: 221
 -- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1334,44 +1213,57 @@ COPY public.items (id, maxstacksize, itemname, itemtype, lootgrade) FROM stdin;
 
 
 --
--- TOC entry 3622 (class 0 OID 31401)
--- Dependencies: 248
+-- TOC entry 3518 (class 0 OID 33457)
+-- Dependencies: 235
+-- Data for Name: loot_crate_instance; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.loot_crate_instance (id, loot_grade, item1_id, item2_id, item3_id, item4_id, item5_id, item6_id, item7_id) FROM stdin;
+17	basic	38	80	78	\N	\N	\N	\N
+18	basic	27	69	73	19	53	\N	\N
+19	basic	20	37	\N	\N	\N	\N	\N
+20	basic	78	53	80	\N	\N	\N	\N
+21	basic	73	69	52	61	\N	\N	\N
+22	basic	78	53	38	\N	\N	\N	\N
+23	basic	69	41	21	\N	\N	\N	\N
+24	basic	63	61	53	\N	\N	\N	\N
+25	resource	14	12	\N	\N	\N	\N	\N
+26	food	110	87	\N	\N	\N	\N	\N
+27	military	32	51	\N	\N	\N	\N	\N
+28	barrel	59	76	\N	\N	\N	\N	\N
+\.
+
+
+--
+-- TOC entry 3516 (class 0 OID 33450)
+-- Dependencies: 233
 -- Data for Name: lootcrates; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.lootcrates (quantifyofitens, id, grade) FROM stdin;
+COPY public.lootcrates (item_quantity, id, grade) FROM stdin;
+5	1	basic
+2	2	barrel
+3	3	resource
+6	4	military
+3	5	tool
+3	6	food
+7	7	elite
 \.
 
 
 --
--- TOC entry 3602 (class 0 OID 31280)
--- Dependencies: 228
--- Data for Name: maincharacter; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.maincharacter (charactersid, owner) FROM stdin;
-1	1
-3	2
-2	3
-\.
-
-
---
--- TOC entry 3584 (class 0 OID 31134)
+-- TOC entry 3493 (class 0 OID 33342)
 -- Dependencies: 210
 -- Data for Name: maps; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.maps (id, mapid) FROM stdin;
-1	1
-2	2
-3	3
 \.
 
 
 --
--- TOC entry 3611 (class 0 OID 31344)
--- Dependencies: 237
+-- TOC entry 3505 (class 0 OID 33393)
+-- Dependencies: 222
 -- Data for Name: meleeweapons; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1392,57 +1284,80 @@ COPY public.meleeweapons (id, maxstacksize, itemname, itemtype, lootgrade, attac
 
 
 --
--- TOC entry 3587 (class 0 OID 31148)
+-- TOC entry 3496 (class 0 OID 33356)
 -- Dependencies: 213
 -- Data for Name: monuments; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.monuments (monumentsize, id, lootgrade, enemygrade, regions, name) FROM stdin;
-1	1	0	scientist	lest	Monument1
-1	2	1	scientist	lest	Monument2
-1	3	2	scientist	lest	Monument3
+COPY public.monuments (id, monumentsize, lootgrade, name) FROM stdin;
+1	10	basic	Lighthouse
+2	10	basic	Warehouse
+3	10	basic	Harbour
+4	15	military	Water Treatment Plant
+5	15	military	The Dome
+6	15	military	Airfield
+7	20	elite	Giant Excavator
+8	20	elite	Launch Site
+9	20	elite	Military Tunnel
 \.
 
 
 --
--- TOC entry 3605 (class 0 OID 31297)
--- Dependencies: 231
+-- TOC entry 3502 (class 0 OID 33382)
+-- Dependencies: 219
 -- Data for Name: npcs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.npcs (charactersid, isagressive, aggrorange, enemygrade, type) FROM stdin;
-1	false	30	50	type1
-2	true	40	60	type2
-3	false	80	70	type3
+COPY public.npcs (id, name, type, isagressive, typenpc, grade) FROM stdin;
+2	M249 Scientist	NPC	t	Scientist	elite
+3	M92 Scientist	NPC	t	Scientist	basic
+4	LR300 Scientist	NPC	t	Scientist	military
+5	AK Bandit	NPC	t	Bandit	elite
+6	Tommy Bandit	NPC	t	Bandit	military
+7	Revolver Bandit	NPC	t	Bandit	basic
+8	Hunter	NPC	f	Bandit	basic
+9	Boar	NPC	t	Animal	basic
+10	Deer	NPC	f	Animal	basic
+11	Wolf	NPC	t	Animal	military
+12	Bear	NPC	t	Animal	military
+13	Polar Bear	NPC	t	Animal	elite
 \.
 
 
 --
--- TOC entry 3624 (class 0 OID 31422)
--- Dependencies: 250
+-- TOC entry 3520 (class 0 OID 33478)
+-- Dependencies: 237
 -- Data for Name: party; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.party (partyid, "character", capacity) FROM stdin;
+COPY public.party (id, "character", capacity) FROM stdin;
 \.
 
 
 --
--- TOC entry 3600 (class 0 OID 31255)
--- Dependencies: 226
+-- TOC entry 3501 (class 0 OID 33378)
+-- Dependencies: 218
 -- Data for Name: playercharacters; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.playercharacters (charactersid, hydration, poisoned, hunger, type, equipeditems1, equipeditems2, equipeditems3, equipeditems4, equipeditems5, backpack) FROM stdin;
-1	10	20	30	type1	1	2	3	4	5	1
-2	30	20	10	type2	1	5	4	3	2	2
-3	30	10	20	type3	1	3	5	4	2	3
+COPY public.playercharacters (id, name, type, hydration, poisoned, hunger, equipeditems1, equipeditems2, equipeditems3, equipeditems4, equipeditems5, backpack) FROM stdin;
+1	Character1	Player	1	2	3	\N	\N	\N	\N	\N	\N
+15	Kyo	player	100	0	120	43	\N	\N	\N	\N	1
+16	Yes	player	100	0	120	43	\N	\N	\N	\N	2
+17	Kyo	player	100	0	120	43	\N	\N	\N	\N	3
+18	Molib	player	100	0	120	43	\N	\N	\N	\N	4
+19	dsadsaf	player	100	0	120	43	\N	\N	\N	\N	5
+20	yes	player	100	0	120	43	\N	\N	\N	\N	6
+21	yes	player	100	0	120	43	\N	\N	\N	\N	7
+22	yes	player	100	0	120	43	\N	\N	\N	\N	8
+23	id	player	100	0	120	43	\N	\N	\N	\N	9
+24	y6es	player	100	0	120	43	\N	\N	\N	\N	10
 \.
 
 
 --
--- TOC entry 3612 (class 0 OID 31348)
--- Dependencies: 238
+-- TOC entry 3506 (class 0 OID 33397)
+-- Dependencies: 223
 -- Data for Name: rangedweapons; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1469,31 +1384,8 @@ COPY public.rangedweapons (id, maxstacksize, itemname, itemtype, lootgrade, atta
 
 
 --
--- TOC entry 3601 (class 0 OID 31270)
--- Dependencies: 227
--- Data for Name: recruitablecharacters; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.recruitablecharacters (charactersid, specialization, recruited) FROM stdin;
-1	Melee Weapons	true
-2	Bows	false
-3	Handguns	true
-\.
-
-
---
--- TOC entry 3588 (class 0 OID 31156)
--- Dependencies: 214
--- Data for Name: region; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.region (name, coordinates, biome, dangerlevel, monument) FROM stdin;
-\.
-
-
---
--- TOC entry 3620 (class 0 OID 31390)
--- Dependencies: 246
+-- TOC entry 3514 (class 0 OID 33439)
+-- Dependencies: 231
 -- Data for Name: regionsmonuments; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1502,8 +1394,8 @@ COPY public.regionsmonuments (name, regionmonument) FROM stdin;
 
 
 --
--- TOC entry 3618 (class 0 OID 31369)
--- Dependencies: 244
+-- TOC entry 3512 (class 0 OID 33418)
+-- Dependencies: 229
 -- Data for Name: resourcenodes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1512,13 +1404,13 @@ COPY public.resourcenodes (id, nodetype, maxyield, durabilitydamage) FROM stdin;
 2	stone	1000	7.5
 3	metal	600	7.5
 4	tree	500	3.75
-5	cactus	3	2.5
+5	cactus	10	2.5
 \.
 
 
 --
--- TOC entry 3619 (class 0 OID 31375)
--- Dependencies: 245
+-- TOC entry 3513 (class 0 OID 33424)
+-- Dependencies: 230
 -- Data for Name: resourcenodesgenerateitems; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1527,8 +1419,8 @@ COPY public.resourcenodesgenerateitems (resourcenodes, item) FROM stdin;
 
 
 --
--- TOC entry 3616 (class 0 OID 31364)
--- Dependencies: 242
+-- TOC entry 3510 (class 0 OID 33413)
+-- Dependencies: 227
 -- Data for Name: resources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1554,44 +1446,28 @@ COPY public.resources (id, maxstacksize, itemname, itemtype, lootgrade, isprimar
 
 
 --
--- TOC entry 3604 (class 0 OID 31291)
--- Dependencies: 230
--- Data for Name: respawnlocation; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.respawnlocation (ownerid, id, description, timer, coordinatex, coordinatey) FROM stdin;
-\.
-
-
---
--- TOC entry 3607 (class 0 OID 31317)
--- Dependencies: 233
--- Data for Name: scientists; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.scientists (charactersid, hasdialogue) FROM stdin;
-1	true
-2	false
-3	true
-\.
-
-
---
--- TOC entry 3585 (class 0 OID 31142)
+-- TOC entry 3494 (class 0 OID 33350)
 -- Dependencies: 211
 -- Data for Name: structures; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.structures (structureid, monument) FROM stdin;
-1	Structure1
-2	Structure2
-3	Structure3
+COPY public.structures (id, combat_enemy, name) FROM stdin;
+1	f	Eletric Central
+2	t	Eletric Central 2
+3	f	Regular Building
+4	f	Parkour Puzzle
+5	t	Special Loot Room
+6	f	Recycler
+7	f	Old Abandoned Cars
+8	t	Old Abandoned Cars 2
+9	f	Loot Room
+10	t	Loot Room 2
 \.
 
 
 --
--- TOC entry 3623 (class 0 OID 31407)
--- Dependencies: 249
+-- TOC entry 3519 (class 0 OID 33463)
+-- Dependencies: 236
 -- Data for Name: structurescontainslootcrates; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1600,8 +1476,8 @@ COPY public.structurescontainslootcrates (structure, lootcrates) FROM stdin;
 
 
 --
--- TOC entry 3614 (class 0 OID 31356)
--- Dependencies: 240
+-- TOC entry 3508 (class 0 OID 33405)
+-- Dependencies: 225
 -- Data for Name: teas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1631,17 +1507,26 @@ COPY public.teas (id, maxstacksize, itemname, itemtype, lootgrade, instantheal, 
 
 
 --
--- TOC entry 3641 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 3538 (class 0 OID 0)
+-- Dependencies: 214
 -- Name: backpack_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.backpack_id_seq', 1, false);
+SELECT pg_catalog.setval('public.backpack_id_seq', 10, true);
 
 
 --
--- TOC entry 3642 (class 0 OID 0)
--- Dependencies: 251
+-- TOC entry 3539 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: characters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.characters_id_seq', 24, true);
+
+
+--
+-- TOC entry 3540 (class 0 OID 0)
+-- Dependencies: 238
 -- Name: instanceditem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -1649,8 +1534,8 @@ SELECT pg_catalog.setval('public.instanceditem_id_seq', 1, false);
 
 
 --
--- TOC entry 3643 (class 0 OID 0)
--- Dependencies: 235
+-- TOC entry 3541 (class 0 OID 0)
+-- Dependencies: 220
 -- Name: items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -1658,8 +1543,17 @@ SELECT pg_catalog.setval('public.items_id_seq', 123, true);
 
 
 --
--- TOC entry 3644 (class 0 OID 0)
--- Dependencies: 247
+-- TOC entry 3542 (class 0 OID 0)
+-- Dependencies: 234
+-- Name: loot_crate_instance_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.loot_crate_instance_id_seq', 28, true);
+
+
+--
+-- TOC entry 3543 (class 0 OID 0)
+-- Dependencies: 232
 -- Name: lootcrates_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -1667,7 +1561,7 @@ SELECT pg_catalog.setval('public.lootcrates_id_seq', 1, false);
 
 
 --
--- TOC entry 3645 (class 0 OID 0)
+-- TOC entry 3544 (class 0 OID 0)
 -- Dependencies: 209
 -- Name: maps_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -1676,7 +1570,7 @@ SELECT pg_catalog.setval('public.maps_id_seq', 1, false);
 
 
 --
--- TOC entry 3646 (class 0 OID 0)
+-- TOC entry 3545 (class 0 OID 0)
 -- Dependencies: 212
 -- Name: monuments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -1685,8 +1579,8 @@ SELECT pg_catalog.setval('public.monuments_id_seq', 1, false);
 
 
 --
--- TOC entry 3647 (class 0 OID 0)
--- Dependencies: 243
+-- TOC entry 3546 (class 0 OID 0)
+-- Dependencies: 228
 -- Name: resourcenodes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -1694,25 +1588,7 @@ SELECT pg_catalog.setval('public.resourcenodes_id_seq', 5, true);
 
 
 --
--- TOC entry 3648 (class 0 OID 0)
--- Dependencies: 229
--- Name: respawnlocation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.respawnlocation_id_seq', 1, false);
-
-
---
--- TOC entry 3386 (class 2606 OID 31254)
--- Name: backpack backpack_ownerid_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.backpack
-    ADD CONSTRAINT backpack_ownerid_key UNIQUE (ownerid);
-
-
---
--- TOC entry 3388 (class 2606 OID 31252)
+-- TOC entry 3321 (class 2606 OID 33370)
 -- Name: backpack backpack_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1721,34 +1597,16 @@ ALTER TABLE ONLY public.backpack
 
 
 --
--- TOC entry 3372 (class 2606 OID 31190)
--- Name: biomes biomes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 3323 (class 2606 OID 33377)
+-- Name: characters characters_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.biomes
-    ADD CONSTRAINT biomes_pkey PRIMARY KEY (biomesid);
-
-
---
--- TOC entry 3370 (class 2606 OID 31185)
--- Name: climate climate_climateid_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.climate
-    ADD CONSTRAINT climate_climateid_key UNIQUE (climateid);
+ALTER TABLE ONLY public.characters
+    ADD CONSTRAINT characters_pkey PRIMARY KEY (id);
 
 
 --
--- TOC entry 3366 (class 2606 OID 31170)
--- Name: havemapregion havemapregion_mapid_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.havemapregion
-    ADD CONSTRAINT havemapregion_mapid_key UNIQUE (mapid);
-
-
---
--- TOC entry 3420 (class 2606 OID 31438)
+-- TOC entry 3341 (class 2606 OID 33494)
 -- Name: instanceditem instanceditem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1757,7 +1615,7 @@ ALTER TABLE ONLY public.instanceditem
 
 
 --
--- TOC entry 3406 (class 2606 OID 31343)
+-- TOC entry 3325 (class 2606 OID 33392)
 -- Name: items items_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1766,7 +1624,16 @@ ALTER TABLE ONLY public.items
 
 
 --
--- TOC entry 3414 (class 2606 OID 31406)
+-- TOC entry 3335 (class 2606 OID 33462)
+-- Name: loot_crate_instance loot_crate_instance_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.loot_crate_instance
+    ADD CONSTRAINT loot_crate_instance_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3333 (class 2606 OID 33455)
 -- Name: lootcrates lootcrates_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1775,7 +1642,7 @@ ALTER TABLE ONLY public.lootcrates
 
 
 --
--- TOC entry 3356 (class 2606 OID 31141)
+-- TOC entry 3311 (class 2606 OID 33349)
 -- Name: maps maps_mapid_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1784,7 +1651,7 @@ ALTER TABLE ONLY public.maps
 
 
 --
--- TOC entry 3358 (class 2606 OID 31139)
+-- TOC entry 3313 (class 2606 OID 33347)
 -- Name: maps maps_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1793,7 +1660,7 @@ ALTER TABLE ONLY public.maps
 
 
 --
--- TOC entry 3362 (class 2606 OID 31155)
+-- TOC entry 3317 (class 2606 OID 33363)
 -- Name: monuments monuments_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1802,7 +1669,7 @@ ALTER TABLE ONLY public.monuments
 
 
 --
--- TOC entry 3364 (class 2606 OID 31153)
+-- TOC entry 3319 (class 2606 OID 33361)
 -- Name: monuments monuments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1811,133 +1678,16 @@ ALTER TABLE ONLY public.monuments
 
 
 --
--- TOC entry 3400 (class 2606 OID 31311)
--- Name: animals pk_animals; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.animals
-    ADD CONSTRAINT pk_animals PRIMARY KEY (charactersid);
-
-
---
--- TOC entry 3378 (class 2606 OID 31215)
--- Name: characters pk_characters; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.characters
-    ADD CONSTRAINT pk_characters PRIMARY KEY (charactersid);
-
-
---
--- TOC entry 3384 (class 2606 OID 31245)
--- Name: combatlog pk_combatlog; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.combatlog
-    ADD CONSTRAINT pk_combatlog PRIMARY KEY (entercombatcharacters, indexlog);
-
-
---
--- TOC entry 3404 (class 2606 OID 31331)
--- Name: dialoguetext pk_dialoguetext; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.dialoguetext
-    ADD CONSTRAINT pk_dialoguetext PRIMARY KEY (dialogue);
-
-
---
--- TOC entry 3382 (class 2606 OID 31230)
--- Name: entercombatcharacters pk_entercombatcharacters; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.entercombatcharacters
-    ADD CONSTRAINT pk_entercombatcharacters PRIMARY KEY (entercombatcharactersid);
-
-
---
--- TOC entry 3376 (class 2606 OID 31205)
--- Name: fauna pk_fauna; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.fauna
-    ADD CONSTRAINT pk_fauna PRIMARY KEY (fauna);
-
-
---
--- TOC entry 3374 (class 2606 OID 31195)
--- Name: flora pk_flora; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.flora
-    ADD CONSTRAINT pk_flora PRIMARY KEY (flora);
-
-
---
--- TOC entry 3380 (class 2606 OID 31220)
--- Name: gatheryield pk_gatheryield; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.gatheryield
-    ADD CONSTRAINT pk_gatheryield PRIMARY KEY ("character", gatheryield);
-
-
---
--- TOC entry 3368 (class 2606 OID 31168)
--- Name: havemapregion pk_havemapregion; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.havemapregion
-    ADD CONSTRAINT pk_havemapregion PRIMARY KEY (mapid, coordinates);
-
-
---
--- TOC entry 3394 (class 2606 OID 31284)
--- Name: maincharacter pk_maincharacter; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.maincharacter
-    ADD CONSTRAINT pk_maincharacter PRIMARY KEY (charactersid, owner);
-
-
---
--- TOC entry 3398 (class 2606 OID 31301)
--- Name: npcs pk_npcs; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.npcs
-    ADD CONSTRAINT pk_npcs PRIMARY KEY (charactersid);
-
-
---
--- TOC entry 3418 (class 2606 OID 31426)
+-- TOC entry 3339 (class 2606 OID 33482)
 -- Name: party pk_party; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.party
-    ADD CONSTRAINT pk_party PRIMARY KEY (partyid);
+    ADD CONSTRAINT pk_party PRIMARY KEY (id);
 
 
 --
--- TOC entry 3390 (class 2606 OID 31259)
--- Name: playercharacters pk_playercharacters; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.playercharacters
-    ADD CONSTRAINT pk_playercharacters PRIMARY KEY (charactersid);
-
-
---
--- TOC entry 3392 (class 2606 OID 31274)
--- Name: recruitablecharacters pk_recruitablecharacters; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.recruitablecharacters
-    ADD CONSTRAINT pk_recruitablecharacters PRIMARY KEY (charactersid);
-
-
---
--- TOC entry 3412 (class 2606 OID 31394)
+-- TOC entry 3331 (class 2606 OID 33443)
 -- Name: regionsmonuments pk_regionsmonuments; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1946,7 +1696,7 @@ ALTER TABLE ONLY public.regionsmonuments
 
 
 --
--- TOC entry 3410 (class 2606 OID 31379)
+-- TOC entry 3329 (class 2606 OID 33428)
 -- Name: resourcenodesgenerateitems pk_resourcenodesgenerateitems; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1955,25 +1705,16 @@ ALTER TABLE ONLY public.resourcenodesgenerateitems
 
 
 --
--- TOC entry 3402 (class 2606 OID 31321)
--- Name: scientists pk_scientists; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.scientists
-    ADD CONSTRAINT pk_scientists PRIMARY KEY (charactersid);
-
-
---
--- TOC entry 3360 (class 2606 OID 31146)
+-- TOC entry 3315 (class 2606 OID 33354)
 -- Name: structures pk_structures; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.structures
-    ADD CONSTRAINT pk_structures PRIMARY KEY (structureid);
+    ADD CONSTRAINT pk_structures PRIMARY KEY (id);
 
 
 --
--- TOC entry 3416 (class 2606 OID 31411)
+-- TOC entry 3337 (class 2606 OID 33467)
 -- Name: structurescontainslootcrates pk_structurescontainslootcrates; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1982,7 +1723,7 @@ ALTER TABLE ONLY public.structurescontainslootcrates
 
 
 --
--- TOC entry 3408 (class 2606 OID 31374)
+-- TOC entry 3327 (class 2606 OID 33423)
 -- Name: resourcenodes resourcenodes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1991,151 +1732,48 @@ ALTER TABLE ONLY public.resourcenodes
 
 
 --
--- TOC entry 3396 (class 2606 OID 31296)
--- Name: respawnlocation respawnlocation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 3350 (class 2620 OID 33511)
+-- Name: backpack insertbackpack; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.respawnlocation
-    ADD CONSTRAINT respawnlocation_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 3434 (class 2606 OID 31312)
--- Name: animals fk_animals_characters; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.animals
-    ADD CONSTRAINT fk_animals_characters FOREIGN KEY (charactersid) REFERENCES public.characters(charactersid) ON DELETE RESTRICT;
+CREATE TRIGGER insertbackpack AFTER INSERT ON public.backpack FOR EACH ROW EXECUTE FUNCTION public.insertbackpack();
 
 
 --
--- TOC entry 3423 (class 2606 OID 31176)
--- Name: havemapregion fk_coordinates_havemapregion; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 3349 (class 2620 OID 33508)
+-- Name: maps insertmap; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.havemapregion
-    ADD CONSTRAINT fk_coordinates_havemapregion FOREIGN KEY (coordinates) REFERENCES public.structures(structureid) ON DELETE RESTRICT;
-
-
---
--- TOC entry 3436 (class 2606 OID 31332)
--- Name: dialoguetext fk_dialoguetext_characters; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.dialoguetext
-    ADD CONSTRAINT fk_dialoguetext_characters FOREIGN KEY ("character") REFERENCES public.characters(charactersid) ON DELETE RESTRICT;
+CREATE TRIGGER insertmap BEFORE INSERT ON public.maps FOR EACH ROW EXECUTE FUNCTION public.insert_map();
 
 
 --
--- TOC entry 3427 (class 2606 OID 31231)
--- Name: entercombatcharacters fk_entercombatcharacters_characters_1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 3352 (class 2620 OID 33509)
+-- Name: party insertparty; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.entercombatcharacters
-    ADD CONSTRAINT fk_entercombatcharacters_characters_1 FOREIGN KEY (firstcharacter) REFERENCES public.characters(charactersid) ON DELETE RESTRICT;
-
-
---
--- TOC entry 3428 (class 2606 OID 31236)
--- Name: entercombatcharacters fk_entercombatcharacters_characters_2; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.entercombatcharacters
-    ADD CONSTRAINT fk_entercombatcharacters_characters_2 FOREIGN KEY (secondcharacter) REFERENCES public.characters(charactersid) ON DELETE RESTRICT;
+CREATE TRIGGER insertparty BEFORE INSERT ON public.party FOR EACH ROW EXECUTE FUNCTION public.insert_party();
 
 
 --
--- TOC entry 3425 (class 2606 OID 31206)
--- Name: fauna fk_fauna_biomes; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 3351 (class 2620 OID 33510)
+-- Name: playercharacters instanciatecharacter; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.fauna
-    ADD CONSTRAINT fk_fauna_biomes FOREIGN KEY (biomes) REFERENCES public.biomes(biomesid) ON DELETE RESTRICT;
-
-
---
--- TOC entry 3424 (class 2606 OID 31196)
--- Name: flora fk_flora_biomes; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.flora
-    ADD CONSTRAINT fk_flora_biomes FOREIGN KEY (biomes) REFERENCES public.biomes(biomesid) ON DELETE RESTRICT;
+CREATE TRIGGER instanciatecharacter AFTER INSERT ON public.playercharacters FOR EACH ROW EXECUTE FUNCTION public.insertcharacter_backpack();
 
 
 --
--- TOC entry 3426 (class 2606 OID 31221)
--- Name: gatheryield fk_gatheryield_characters; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.gatheryield
-    ADD CONSTRAINT fk_gatheryield_characters FOREIGN KEY ("character") REFERENCES public.characters(charactersid) ON DELETE RESTRICT;
-
-
---
--- TOC entry 3432 (class 2606 OID 31285)
--- Name: maincharacter fk_maincharacter_characters; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.maincharacter
-    ADD CONSTRAINT fk_maincharacter_characters FOREIGN KEY (charactersid) REFERENCES public.characters(charactersid) ON DELETE RESTRICT;
-
-
---
--- TOC entry 3422 (class 2606 OID 31171)
--- Name: havemapregion fk_mapid_havemapregion; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.havemapregion
-    ADD CONSTRAINT fk_mapid_havemapregion FOREIGN KEY (mapid) REFERENCES public.maps(mapid) ON DELETE RESTRICT;
-
-
---
--- TOC entry 3433 (class 2606 OID 31302)
--- Name: npcs fk_npcs_characters; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.npcs
-    ADD CONSTRAINT fk_npcs_characters FOREIGN KEY (charactersid) REFERENCES public.characters(charactersid) ON DELETE RESTRICT;
-
-
---
--- TOC entry 3442 (class 2606 OID 31427)
+-- TOC entry 3347 (class 2606 OID 33483)
 -- Name: party fk_party_characters; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.party
-    ADD CONSTRAINT fk_party_characters FOREIGN KEY ("character") REFERENCES public.characters(charactersid) ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_party_characters FOREIGN KEY ("character") REFERENCES public.characters(id) ON DELETE RESTRICT;
 
 
 --
--- TOC entry 3430 (class 2606 OID 31265)
--- Name: playercharacters fk_playercharacters_backpack; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.playercharacters
-    ADD CONSTRAINT fk_playercharacters_backpack FOREIGN KEY (backpack) REFERENCES public.backpack(ownerid) ON DELETE RESTRICT;
-
-
---
--- TOC entry 3429 (class 2606 OID 31260)
--- Name: playercharacters fk_playercharacters_characters; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.playercharacters
-    ADD CONSTRAINT fk_playercharacters_characters FOREIGN KEY (charactersid) REFERENCES public.characters(charactersid) ON DELETE RESTRICT;
-
-
---
--- TOC entry 3431 (class 2606 OID 31275)
--- Name: recruitablecharacters fk_recruitablecharacters_characters; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.recruitablecharacters
-    ADD CONSTRAINT fk_recruitablecharacters_characters FOREIGN KEY (charactersid) REFERENCES public.characters(charactersid) ON DELETE RESTRICT;
-
-
---
--- TOC entry 3439 (class 2606 OID 31395)
+-- TOC entry 3344 (class 2606 OID 33444)
 -- Name: regionsmonuments fk_regionsmonuments_monuments; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2144,7 +1782,7 @@ ALTER TABLE ONLY public.regionsmonuments
 
 
 --
--- TOC entry 3438 (class 2606 OID 31385)
+-- TOC entry 3343 (class 2606 OID 33434)
 -- Name: resourcenodesgenerateitems fk_resourcenodesgenerateitems_items; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2153,7 +1791,7 @@ ALTER TABLE ONLY public.resourcenodesgenerateitems
 
 
 --
--- TOC entry 3437 (class 2606 OID 31380)
+-- TOC entry 3342 (class 2606 OID 33429)
 -- Name: resourcenodesgenerateitems fk_resourcenodesgenerateitems_resourcenodes; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2162,16 +1800,7 @@ ALTER TABLE ONLY public.resourcenodesgenerateitems
 
 
 --
--- TOC entry 3435 (class 2606 OID 31322)
--- Name: scientists fk_scientists_characters; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.scientists
-    ADD CONSTRAINT fk_scientists_characters FOREIGN KEY (charactersid) REFERENCES public.characters(charactersid) ON DELETE RESTRICT;
-
-
---
--- TOC entry 3441 (class 2606 OID 31417)
+-- TOC entry 3346 (class 2606 OID 33473)
 -- Name: structurescontainslootcrates fk_structurescontainslootcrates_lootcrates; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2180,16 +1809,16 @@ ALTER TABLE ONLY public.structurescontainslootcrates
 
 
 --
--- TOC entry 3440 (class 2606 OID 31412)
+-- TOC entry 3345 (class 2606 OID 33468)
 -- Name: structurescontainslootcrates fk_structurescontainslootcrates_structures; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.structurescontainslootcrates
-    ADD CONSTRAINT fk_structurescontainslootcrates_structures FOREIGN KEY (structure) REFERENCES public.structures(structureid) ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_structurescontainslootcrates_structures FOREIGN KEY (structure) REFERENCES public.structures(id) ON DELETE RESTRICT;
 
 
 --
--- TOC entry 3443 (class 2606 OID 31439)
+-- TOC entry 3348 (class 2606 OID 33495)
 -- Name: instanceditem instanceditem_itemid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2198,16 +1827,7 @@ ALTER TABLE ONLY public.instanceditem
 
 
 --
--- TOC entry 3421 (class 2606 OID 31159)
--- Name: region region_monument_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.region
-    ADD CONSTRAINT region_monument_fkey FOREIGN KEY (monument) REFERENCES public.monuments(name) ON DELETE RESTRICT;
-
-
---
--- TOC entry 3632 (class 0 OID 0)
+-- TOC entry 3528 (class 0 OID 0)
 -- Dependencies: 3
 -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -2215,7 +1835,7 @@ ALTER TABLE ONLY public.region
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2022-03-28 22:35:50
+-- Completed on 2022-04-25 18:44:46
 
 --
 -- PostgreSQL database dump complete
