@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 import sqlalchemy as db
+import random
+
 
 class game_assets():
     def load_game_db(self):
@@ -8,42 +10,28 @@ class game_assets():
         DBPASSWORD = os.getenv('DBPASSWORD','shadow954')
         DBHOST = os.getenv('DBHOST','localhost')
         DBPORT = os.getenv('DBPORT','5432')
-        DBNAME = os.getenv('DBNAME','rust-items')
+        DBNAME = os.getenv('DBNAME','rust-2')
 
         engine = db.create_engine(
             f"postgresql+psycopg2://{DBUSER}:{DBPASSWORD}@{DBHOST}:{DBPORT}/{DBNAME}", client_encoding='utf8')
         return engine
-    
-    # def start_game(self):
-    #     print('Welcome to Rust!')
-        
-    #     conta_ex = 0 
-    #     while(conta_ex!='S' or conta_ex!='N'):
-    #         print('Já possui uma conta? S ou N')
-    #         conta_ex = input()
-    #         if(conta_ex == 'S'):
-    #             print('ótimo, qual o id da sua conta?')
-    #             maincharacterlist = pd.read_sql('select * from maincharacter',engine)
-    #             print(maincharacterlist)
-    #             idConta = input()
-    #             return idConta
-    #         elif(conta_ex == 'N'):
-    #             print('deseja criar uma? S ou N')
-    #             createAcc = input()
-    #             if(createAcc == 'S'):
-    #                 print('qual será o nome da conta?')
-    #                 owner = input()
-    #                 print('Ótimo! Sua conta foi criada com o nome {}'.format(owner))
-    #                 insertion = "INSERT INTO maincharacter(owner) VALUES('{}')".format(owner)
-    #                 with engine.begin() as conn:     # TRANSACTION
-    #                     conn.execute(insertion)
-    #                 return pd.read_sql('select id from maincharacter order by id desc limit 1',engine).id
-    #             elif(createAcc== 'N'):
-    #                 print('Conta não criada')     
 
-    #     return owner
-    
-    def instance_loot_box(self,loot_grade):
+    def monument_gen(self,monument_size, loot_grade,engine):
+        monument_content = []
+        for square in range(monument_size):
+            if(square == 5 or square == 10 or square == 15 or square == 20):
+                monument_content.append(pd.read_sql("select * from structures ORDER BY random() LIMIT 1;".format(loot_grade),engine))
+            else:
+                randomizer = random.randint(1,100)
+                if randomizer <= 40:
+                    monument_content.append('')
+                elif randomizer <= 70 and randomizer > 40:
+                    monument_content.append(pd.read_sql("select * from npcs where grau = '{}' and isagressive = true ORDER BY random() LIMIT 1;".format(loot_grade),engine))
+                elif randomizer > 70 and randomizer <= 100:
+                    monument_content.append(game_assets.instance_loot_box(self,loot_grade,engine))
+        return monument_content
+
+    def instance_loot_box(self,loot_grade,engine):
         query = "select * from lootcrates where grade = '{}'".format(loot_grade)
         qoi = pd.read_sql(query,engine).item_quantity
         
@@ -73,12 +61,7 @@ class game_assets():
             
         return int(pd.read_sql("select id from loot_crate_instance order by id desc limit 1;",engine).id)
     
-#       def instanciate_backpack(self, ownerID):
-#         query = "INSERT INTO backpack(ownerID, slot01,slot02) VALUES({},) ".format(ownerID)    
-#         with engine.begin() as conn:     # TRANSACTION
-#             conn.execute(drop_query)
-
-    def quit_game(self):
+    def quit_game(self,engine):
         drop_query = 'DELETE FROM loot_crate_instance;'
         with engine.begin() as conn:     # TRANSACTION
             conn.execute(drop_query)
