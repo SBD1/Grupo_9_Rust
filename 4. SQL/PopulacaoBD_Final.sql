@@ -32,7 +32,7 @@ INSERT INTO Monuments VALUES
 INSERT INTO PlayerCharacters(name, type, hydration, poisoned, hunger)VALUES
 ('Character1', 'Player',1,2,3);
 
-INSERT INTO NPCs(name,type,isAgressive,typeNpc,grau) VALUES
+INSERT INTO NPCs(name,type,isAgressive,typeNpc,grade) VALUES
 ('M249 Scientist','NPC',true,'Scientist','elite'),
 ('M92 Scientist','NPC',true,'Scientist','basic'),
 ('LR300 Scientist','NPC',true,'Scientist','military'),
@@ -44,8 +44,7 @@ INSERT INTO NPCs(name,type,isAgressive,typeNpc,grau) VALUES
 ('Deer','NPC',false,'Animal','basic'),
 ('Wolf','NPC',true,'Animal','military'),
 ('Bear','NPC',true,'Animal','military'),
-('Polar Bear','NPC',true,'Animal','elite')
-;
+('Polar Bear','NPC',true,'Animal','elite');
 
 INSERT INTO ResourceNodes (nodeType, maxYield, durabilityDamage) VALUES
 ('sulfur',300,7.5),
@@ -199,7 +198,7 @@ statusUpgradeType, upgradePercentage) VALUES
 (5,'Advanced Radiation Resistance Tea','tea','food',0,0,0,0,0,0,0,0,'radiation',0.3),
 (5,'Pure Radiation Resistance Tea','tea','food',0,0,0,0,0,0,0,0,'radiation',0.5);
 
-INSERT INTO lootcrates values
+INSERT INTO lootcrates VALUES
 (5,1,'basic'),
 (2,2,'barrel'),
 (3,3,'resource'),
