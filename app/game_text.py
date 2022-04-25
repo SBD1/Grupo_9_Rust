@@ -100,13 +100,18 @@ You have an urgent feeling, the need to survive, the question is, do you have wh
     def lighthouse_text(self):
         gametext.print_sim('You decide to move towards high ground. That may be your inner animal making decisions but its a decision nonetheless.\n')
         gametext.print_sim('Immediatly a not-so-far-away lighthouse catches your eyes. You stride towards it in hope of finding something.\n')
-        gametext.print_sim('You enter in hopes of finding life, but what awaits you may be death.')
+        gametext.print_sim('You enter in hopes of finding life, but what awaits you may be death...\n')
+        gametext.print_sim('Now all that is left to do is explore, but carefully.')
 
     def warehouse_text(self):
-        pass
+        gametext.print_sim('You see a building on the horizon, it seems to be empty, but better approach carefully anyway.\n')
+        gametext.print_sim('When you get closer, you notice that inside this place there are several shelves and boxes scattered around.\n')
+        gametext.print_sim('Now are you sure what this place is that you found by luck, it is a warehouse.')
 
     def harbor_text(self):
-        pass
+        gametext.print_sim('What is that by the water... something different from that endless beach you used to see on the coast.\n')
+        gametext.print_sim('It is a harbor, it has some old ships parked at the docks, some containers scattered around...')
+        gametext.print_sim('...and it is possible to notice that at least part of the energy works, it would be great.')
 
     def water_treatment_text(self):
         pass
