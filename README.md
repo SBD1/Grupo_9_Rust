@@ -28,7 +28,7 @@
 
 ### Diagrama
 <p align="center">
-  <img src="1. Modelo Entidade Relacionamento/MER-Versão-Final.jpg" title="Diagrama MER">
+  <img src="1. Modelo Entidade Relacionamento/MER-Revisão-Final.png" title="Diagrama MER Revisado">
 </p>
 
 ## Módulo 2 - Modelo Relacional
