@@ -75,3 +75,31 @@ class game_assets():
         with engine.begin() as conn:     # TRANSACTION
             conn.execute(drop_query)
         engine.dispose()
+
+    def getBackpack(self, characterId, engine):
+        character = []
+        character.append(pd.read_sql(f"select * from Backpack where ownerID={characterId} LIMIT 1;",engine))
+        return character
+
+    def equipBackpackItem(self, characterId, itemId, engine):
+        item = []
+        item = (pd.read_sql(f"select equipedItems1 from PlayerCharacters where id={characterId} LIMIT 1;",engine))
+        if item != None:
+            item = (pd.read_sql(f"select equipedItems2 from PlayerCharacters where id={characterId} LIMIT 1;",engine))
+            if item != None:
+                item = (pd.read_sql(f"select equipedItems3 from PlayerCharacters where id={characterId} LIMIT 1;",engine))
+                if item != None:
+                    item = (pd.read_sql(f"select equipedItems4 from PlayerCharacters where id={characterId} LIMIT 1;",engine))
+                    if item != None:
+                        item = f"update PlayerCharacters set equipedItems5={itemId} where id={characterId} LIMIT 1;"
+                    else:
+                        item = f"update PlayerCharacters set equipedItems4={itemId} where id={characterId} LIMIT 1;"
+                else:
+                    item = f"update PlayerCharacters set equipedItems3={itemId} where id={characterId} LIMIT 1;"
+            else:
+                item = f"update PlayerCharacters set equipedItems2={itemId} where id={characterId} LIMIT 1;"
+        else:
+            item = f"update PlayerCharacters set equipedItems1={itemId} where id={characterId} LIMIT 1;"
+
+        with engine.begin() as conn:     # TRANSACTION
+            conn.execute(item)
