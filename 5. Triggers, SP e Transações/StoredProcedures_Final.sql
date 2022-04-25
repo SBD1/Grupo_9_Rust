@@ -85,14 +85,14 @@ $insert_party$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION insertCharacter_backpack() RETURNS trigger AS $insertCharacter_backpack$
 BEGIN
-    INSERT INTO backpack(ownerID) VALUES (new.charactersID);
+    INSERT INTO backpack(ownerID) VALUES (new.id);
     RETURN NEW;
 END;
 $insertCharacter_backpack$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION insertBackpack() RETURNS trigger AS $insertBackpack$
 BEGIN
-    UPDATE PlayerCharacters SET backpack = new.id WHERE charactersID = new.ownerID;
+    UPDATE PlayerCharacters SET backpack = new.id WHERE id = new.ownerID;
     RETURN NEW;
 END;
 $insertBackpack$ LANGUAGE plpgsql;

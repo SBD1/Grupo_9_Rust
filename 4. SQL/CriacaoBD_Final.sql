@@ -48,47 +48,7 @@ CREATE TABLE IF NOT EXISTS Backpack (
     slot07 INT,
     slot08 INT,
     slot09 INT,
-    slot10 INT,
-    slot11 INT,
-    slot12 INT,
-    slot13 INT,
-    slot14 INT,
-    slot15 INT,
-    slot16 INT,
-    slot17 INT,
-    slot18 INT,
-    slot19 INT,
-    slot20 INT,
-    slot21 INT,
-    slot22 INT,
-    slot23 INT,
-    slot24 INT,
-    slot25 INT,
-    slot26 INT,
-    slot27 INT,
-    slot28 INT,
-    slot29 INT,
-    slot30 INT,
-    slot31 INT,
-    slot32 INT,
-    slot33 INT,
-    slot34 INT,
-    slot35 INT,
-    slot36 INT,
-    slot37 INT,
-    slot38 INT,
-    slot39 INT,
-    slot40 INT,
-    slot41 INT,
-    slot42 INT,
-    slot43 INT,
-    slot44 INT,
-    slot45 INT,
-    slot46 INT,
-    slot47 INT,
-    slot48 INT,
-    slot49 INT,
-    slot50 INT
+    slot10 INT
 );
 
 CREATE TABLE IF NOT EXISTS Characters (
@@ -189,13 +149,6 @@ CREATE TABLE IF NOT EXISTS ResourceNodes (
     durabilityDamage FLOAT
 );
 
-CREATE TABLE IF NOT EXISTS ResourceNodesGenerateItems (
-  resourceNodes INTEGER NOT NULL,
-  item INTEGER NOT NULL,
-  CONSTRAINT pk_ResourceNodesGenerateItems PRIMARY KEY(resourceNodes, item),
-  CONSTRAINT fk_ResourceNodesGenerateItems_ResourceNodes FOREIGN KEY (resourceNodes) REFERENCES ResourceNodes(id) ON DELETE RESTRICT,
-  CONSTRAINT fk_ResourceNodesGenerateItems_Items FOREIGN KEY (item) REFERENCES Items(id) ON DELETE RESTRICT
-);
 
 CREATE TABLE IF NOT EXISTS RegionsMonuments (
   name VARCHAR(30) NOT NULL,
@@ -220,14 +173,6 @@ CREATE TABLE IF NOT EXISTS loot_crate_instance(
     item5_id int,
     item6_id int,
     item7_id int
-);
-
-CREATE TABLE IF NOT EXISTS StructuresContainsLootCrates (
-  structure INTEGER NOT NULL,
-  lootCrates INTEGER NOT NULL,
-  CONSTRAINT pk_StructuresContainsLootCrates PRIMARY KEY(structure, lootCrates),
-  CONSTRAINT fk_StructuresContainsLootCrates_Structures FOREIGN KEY (structure) REFERENCES Structures(id) ON DELETE RESTRICT,
-  CONSTRAINT fk_StructuresContainsLootCrates_LootCrates FOREIGN KEY (lootCrates) REFERENCES LootCrates(id) ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS Party (
