@@ -26,7 +26,7 @@ class game_assets():
                 if randomizer <= 40:
                     monument_content.append('')
                 elif randomizer <= 70 and randomizer > 40:
-                    monument_content.append(pd.read_sql("select * from npcs where grau = '{}' and isagressive = true ORDER BY random() LIMIT 1;".format(loot_grade),engine))
+                    monument_content.append(pd.read_sql("select * from npcs where grade = '{}' and isagressive = true ORDER BY random() LIMIT 1;".format(loot_grade),engine))
                 elif randomizer > 70 and randomizer <= 100:
                     monument_content.append(game_assets.instance_loot_box(self,loot_grade,engine))
         return monument_content

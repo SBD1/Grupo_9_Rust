@@ -4,9 +4,8 @@ import pandas as pd
 class gametext():
     
     def introduction_text(self,engine):
-
-        print("Welcome to Rust")
-        print("""((((((((((((((((((((((((((((((
+        print("""
+        ((((((((((((((((((((((((((((((
         ((((((((((((((((((((((((((((((
         (((((((((((((&&&&&&(((((((((((
         ((((((((((((((&&&&&(((((((((((
@@ -19,13 +18,18 @@ class gametext():
         (((((((((((((((((((((%&&((((((
         ((((((((((((((((((((((((((((((
         """)
-        print("""You wake up washed upon a beach, it is morning, you remember nothing but your name.\n 
-        You look around, you come to the conclusion you're in an Island, you can't make out how large it is, but it doesn't seem uninhabited
-        """)
-        char_name = input('What is it, your name?\n')
+        print("_____________________________________________")
+        print("---------------Welcome to Rust---------------")
+        print("_____________________________________________")
+
+        print("""You wake up washed upon a beach, it is morning, you remember nothing but your name.\n
+You look around, you come to the conclusion you're in an Island, you can't make out how large it is, but it doesn't seem uninhabited
+""")
+        char_name = input('You stop for a second and think. What is it, your name?\n')
+        print("Oh right, your name is {}. You remember now, at least you still have that. Your name.\n".format(char_name))
         print("""Well {}, quite the situation you put yourself in. You've got voices in your head talking to you,
-        you don't know who, where or what you are, all you've got are your primal instincts to guide you.\n
-        You have an urgent feeling, the need to survive, the question is, do you have what it takes?\n""".format(char_name))
+you don't know where or what you are.\nAll you've got are your primal instincts to guide you.\n
+You have an urgent feeling, the need to survive, the question is, do you have what it takes?\n""".format(char_name))
         what_it_takes = input('Yes or No\n\n')
         while(True):
             if(what_it_takes.lower()=='yes' or what_it_takes.lower() == 'y'):

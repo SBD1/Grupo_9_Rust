@@ -3,7 +3,7 @@ import os
 import sqlalchemy as db
 from sqlalchemy.orm import sessionmaker
 from game_text import gametext
-
+from combat_mechanics import *
 from game_instances import game_assets
 
 
@@ -14,10 +14,11 @@ engine = gi.load_game_db()
 gt = gametext()
 
 char_id = gt.introduction_text(engine)
+char_atr = combat_mechanics.load_attributes()
 
 while True:
     choice = gt.progression_text(engine)
-    
+    print("\nHealth:" + str(char_atr['health']) + " Hunger:" + str(char_atr['hunger'])+ " Thirst:" + str(char_atr['thirst'])+'\n')
     try:
         if choice == '9':
             gi.quit_game(engine)
