@@ -17,11 +17,6 @@ CREATE TYPE monument_tier AS ENUM('basic','military','elite');
 CREATE TYPE enemy_grade AS ENUM('scientist', 'outpost-scientist', 'heavy-scientist', 'bandit');
 CREATE TYPE ENUM_BOOLEAN AS ENUM('true','false');
 
-CREATE TABLE IF NOT EXISTS Maps (
-  id SERIAL PRIMARY KEY UNIQUE,
-  mapID int UNIQUE
-);
-
 CREATE TABLE IF NOT EXISTS Structures (
   id INTEGER NOT NULL,
   combat_enemy BOOLEAN,
@@ -147,14 +142,6 @@ CREATE TABLE IF NOT EXISTS ResourceNodes (
     nodeType node_type,
     maxYield INT,
     durabilityDamage FLOAT
-);
-
-
-CREATE TABLE IF NOT EXISTS RegionsMonuments (
-  name VARCHAR(30) NOT NULL,
-  regionMonument VARCHAR(30) NOT NULL,
-  CONSTRAINT pk_RegionsMonuments PRIMARY KEY(name, regionMonument),
-  CONSTRAINT fk_RegionsMonuments_Monuments FOREIGN KEY (name) REFERENCES Monuments(name) ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS LootCrates (
