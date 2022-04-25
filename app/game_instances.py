@@ -92,4 +92,5 @@ class game_assets():
         else:
             item = f"update PlayerCharacters set equipedItems1={itemId} where id={characterId} LIMIT 1;"
 
-        conn.execute(item)
+        with engine.begin() as conn:     # TRANSACTION
+            conn.execute(item)
