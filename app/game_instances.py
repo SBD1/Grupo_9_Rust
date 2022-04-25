@@ -19,17 +19,26 @@ class game_assets():
     def monument_gen(self,monument_size, loot_grade,engine):
         monument_content = []
         for square in range(monument_size):
-            if(square == 5 or square == 10 or square == 15 or square == 20):
-                monument_content.append(pd.read_sql("select * from structures ORDER BY random() LIMIT 1;".format(loot_grade),engine))
+            if(square == 4 or square == 9 or square == 14 or square == 19):
+                monument_content.append(['structure',pd.read_sql("select id from structures ORDER BY random() LIMIT 1;".format(loot_grade),engine)])
+            elif(square ==  0):
+                monument_content.append(['loot_box',game_assets.instance_loot_box(self,loot_grade,engine)])
             else:
                 randomizer = random.randint(1,100)
                 if randomizer <= 40:
-                    monument_content.append('')
+                    monument_content.append('Empty')
                 elif randomizer <= 70 and randomizer > 40:
-                    monument_content.append(pd.read_sql("select * from npcs where grade = '{}' and isagressive = true ORDER BY random() LIMIT 1;".format(loot_grade),engine))
+                    monument_content.append(['npc',pd.read_sql("select id from npcs where grade = '{}' and isagressive = true ORDER BY random() LIMIT 1;".format(loot_grade),engine).id[0]])
                 elif randomizer > 70 and randomizer <= 100:
-                    monument_content.append(game_assets.instance_loot_box(self,loot_grade,engine))
+                    if loot_grade == 'basic':
+                        loot_boxes = ['primary','resource','barrel','basic','tool','food']
+                    elif loot_grade == 'military':
+                        loot_boxes = ['primary','resource','barrel','basic','tool','food','military']
+                    elif loot_grade == 'elite':
+                        loot_boxes = ['primary','resource','barrel','basic','tool','food','military','elite']
+                    monument_content.append(['loot_box',game_assets.instance_loot_box(self,random.choice(loot_boxes),engine)])
         return monument_content
+
 
     def instance_loot_box(self,loot_grade,engine):
         query = "select * from lootcrates where grade = '{}'".format(loot_grade)
@@ -92,4 +101,5 @@ class game_assets():
         else:
             item = f"update PlayerCharacters set equipedItems1={itemId} where id={characterId} LIMIT 1;"
 
-        conn.execute(item)
+        with engine.begin() as conn:     # TRANSACTION
+            conn.execute(item)
