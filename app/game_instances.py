@@ -87,26 +87,30 @@ class game_instances():
     def getBackpack(self, characterId, engine):
         backpack = pd.read_sql("select * from Backpack where ownerID={} LIMIT 1;".format(characterId),engine)
         return backpack
+    
+    def getEquipedItems(self, characterId, engine):
+        equiped = pd.read_sql("select equipedItems1,equipedItems2,equipedItems3,equipedItems4,equipedItems5 from playercharacters where id={}".format(characterId),engine)
+        print(equiped)
 
-    def equipBackpackItem(self, characterId, itemId, engine):
-        item = []
-        item = (pd.read_sql(f"select equipedItems1 from PlayerCharacters where id={characterId} LIMIT 1;",engine))
+    def equipBackpackItem(self, characterId, itemId, engine,slot):
+        item = pd.read_sql("select equipedItems1 from PlayerCharacters where id={} LIMIT 1;".format(characterId),engine).equipeditems1[0]
+
         if item != None:
-            item = (pd.read_sql(f"select equipedItems2 from PlayerCharacters where id={characterId} LIMIT 1;",engine))
+            item = (pd.read_sql("select equipedItems2 from PlayerCharacters where id={};".format(characterId),engine)).equipeditems2[0]
             if item != None:
-                item = (pd.read_sql(f"select equipedItems3 from PlayerCharacters where id={characterId} LIMIT 1;",engine))
+                item = (pd.read_sql("select equipedItems3 from PlayerCharacters where id={};".format(characterId),engine)).equipeditems3[0]
                 if item != None:
-                    item = (pd.read_sql(f"select equipedItems4 from PlayerCharacters where id={characterId} LIMIT 1;",engine))
+                    item = (pd.read_sql("select equipedItems4 from PlayerCharacters where id={};".format(characterId),engine)).equipeditems4[0]
                     if item != None:
-                        item = f"update PlayerCharacters set equipedItems5={itemId} where id={characterId} LIMIT 1;"
+                        item = "update PlayerCharacters set equipedItems5={} where id={};update backpack set slot{}=null where ownerid={};".format(itemId,characterId,slot,characterId).equipeditems5[0]
                     else:
-                        item = f"update PlayerCharacters set equipedItems4={itemId} where id={characterId} LIMIT 1;"
+                        item = "update PlayerCharacters set equipedItems4={} where id={};update backpack set slot{}=null where ownerid={};".format(itemId,characterId,slot,characterId)
                 else:
-                    item = f"update PlayerCharacters set equipedItems3={itemId} where id={characterId} LIMIT 1;"
+                    item = "update PlayerCharacters set equipedItems3={} where id={};update backpack set slot{}=null where ownerid={};".format(itemId,characterId,slot,characterId)
             else:
-                item = f"update PlayerCharacters set equipedItems2={itemId} where id={characterId} LIMIT 1;"
+                item = "update PlayerCharacters set equipedItems2={} where id={}; update backpack set slot{}=null where ownerid={};".format(itemId,characterId,slot,characterId)
         else:
-            item = f"update PlayerCharacters set equipedItems1={itemId} where id={characterId} LIMIT 1;"
+            item = "update PlayerCharacters set equipedItems1={} where id={}; update backpack set slot{}=null where ownerid={};".format(itemId,characterId,slot,characterId)
 
         with engine.begin() as conn:     # TRANSACTION
             conn.execute(item)

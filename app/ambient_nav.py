@@ -10,24 +10,24 @@ class ambient_nav():
     def enter_monument(self,choice,engine):
         gt = gametext()
         gi = game_instances()
-        if(choice.name[0] == 'Lighthouse'):  
-            gt.lighthouse_text()
-        elif(choice.name[0] == 'Warehouse' ):
-            gt.warehouse_text()
-        elif(choice.name[0] == 'Harbour' ):
-            gt.harbor_text()
-        elif(choice.name[0] == 'Water Treatment Plant' ):
-            gt.water_treatment_text()
-        elif(choice.name[0] == 'The Dome'):
-            gt.dome_text()
-        elif(choice.name[0] == 'Airfield'):
-            gt.airfield_text()
-        elif(choice.name[0] == 'Giant Excavator'):
-            gt.excavator_text()
-        elif(choice.name[0] == 'Launch Site'):
-            gt.launch_site_text()
-        elif(choice.name[0] == 'Military Tunnel'):
-            gt.mil_tunnel_text()
+        # if(choice.name[0] == 'Lighthouse'):  
+        #     gt.lighthouse_text()
+        # elif(choice.name[0] == 'Warehouse' ):
+        #     gt.warehouse_text()
+        # elif(choice.name[0] == 'Harbour' ):
+        #     gt.harbor_text()
+        # elif(choice.name[0] == 'Water Treatment Plant' ):
+        #     gt.water_treatment_text()
+        # elif(choice.name[0] == 'The Dome'):
+        #     gt.dome_text()
+        # elif(choice.name[0] == 'Airfield'):
+        #     gt.airfield_text()
+        # elif(choice.name[0] == 'Giant Excavator'):
+        #     gt.excavator_text()
+        # elif(choice.name[0] == 'Launch Site'):
+        #     gt.launch_site_text()
+        # elif(choice.name[0] == 'Military Tunnel'):
+        #     gt.mil_tunnel_text()
         monument = gi.monument_gen(choice.monumentsize[0],choice.lootgrade[0],engine)
 
         return monument
@@ -44,6 +44,10 @@ class ambient_nav():
     def load_room_content(self,monument,char_atr,engine,char_id,grade):
         gi = game_instances()
         slot_select = True
+
+        query = "update backpack set slot01=39 where ownerid={}".format(char_id)
+        with engine.begin() as conn:     # TRANSACTION
+            conn.execute(query)
 
         for room in monument:
             entry = ambient_nav.menu()
@@ -71,17 +75,38 @@ class ambient_nav():
 
             elif entry == '2':
                 backpack = game_instances().getBackpack(char_id,engine)
+
                 backpack_items = backpack[['slot01','slot02','slot03','slot04','slot05','slot06','slot07','slot08','slot09','slot10']]
                 print("{}'s, Backpack:".format(pd.read_sql('select name from playercharacters where id={}'.format(char_id),engine).name[0]))
                 i = 1
+                gi.getEquipedItems(char_id,engine)
                 for slot in backpack_items:
-
                     print(str(i) + ':' + str(backpack_items[slot].iloc[0]))
                     i+=1
                 while slot_select != '0':
                     print("To use or equip and item, enter its slot number, to exit the backpack, enter the number 0")
                     slot_select = input()
-
+                    if slot_select == '1':
+                        gi.equipBackpackItem(char_id, backpack.slot01[0],engine,'01')
+                    if slot_select == '2':
+                        gi.equipBackpackItem(char_id, backpack.slot02[0],engine,'02')
+                    if slot_select == '3':
+                        gi.equipBackpackItem(char_id, backpack.slot03[0],engine,'03')
+                    if slot_select == '4':
+                        gi.equipBackpackItem(char_id, backpack.slot04[0],engine,'04')
+                    if slot_select == '5':
+                        gi.equipBackpackItem(char_id, backpack.slot05[0],engine,'05')
+                    if slot_select == '6':
+                        gi.equipBackpackItem(char_id, backpack.slot06[0],engine,'06')
+                    if slot_select == '7':
+                        gi.equipBackpackItem(char_id, backpack.slot07[0],engine,'07')
+                    if slot_select == '8':
+                        gi.equipBackpackItem(char_id, backpack.slot08[0],engine,'08')
+                    if slot_select == '9':
+                        gi.equipBackpackItem(char_id, backpack.slot09[0],engine,'09')
+                    if slot_select == '10':
+                        gi.equipBackpackItem(char_id, backpack.slot10[0],engine,'10')
+                    
             elif entry == '3':
                 break
 
