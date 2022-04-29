@@ -114,19 +114,34 @@ You have an urgent feeling, the need to survive, the question is, do you have wh
         gametext.print_sim('...and it is possible to notice that at least part of the energy works, it would be great.')
 
     def water_treatment_text(self):
-        pass
+        gametext.print_sim('As you walk around the island you see a large complex with several buil1dings.')
+        gametext.print_sim('It has a water tank, buildings connected to the flow of fluids...')
+        gametext.print_sim('It is a treatment plant.')
+        gametext.print_sim('Clearly it is been idle for a while, but maybe it has some interesting supplies hihihi')
 
     def dome_text(self):
-        pass
+        gametext.print_sim('While you were walking, you came across a huge dome, it has big structures that support it to the ground')
+        gametext.print_sim('You get closer you notice the huge spherical tank with walkways throughout and it probably has a way to the top.')
+        gametext.print_sim('the climb does not seem to be very safe, but something so amazing might have some interesting things in it.')
+        gametext.print_sim('Maybe I am in luck, let me see. -thinking this as I start to climb the dome-')
 
     def airfield_text(self):
-        pass
+        gametext.print_sim('Walking through the trees I notice a large white wall at the end of the forest.')
+        gametext.print_sim('I decide to go around the wall and end up arriving at an empty entrance, when I pass through the entrance and enter the walls I am surprised by what I see.')
+        gametext.print_sim('On one side there are three large aircraft hangars, at the ends four towers and on the opposite side of the hangars there is a large command center. Who knew... this strange island has an airport.')
 
     def excavator_text(self):
-        pass
+        gametext.print_sim('You are walking in a deserted region and just ahead you see a giant excavator inside a crater.')
+        gametext.print_sim('It rotates around its axis while extracting minerals from the walls of this crater, you can see some boxes scattered under the excavator.')
+        gametext.print_sim('Must be worth exploring.')
 
     def launch_site_text(self):
-        pass
+        gametext.print_sim('You see a big rocket launch pad from afar, you can also see something behind it...')
+        gametext.print_sim('Is a large complex with several interconnected sheds and some buildings')
+        gametext.print_sim('Hard to decide where to start exploring, but the platform looks like a good place.')
 
     def mil_tunnel_text(self):
-        pass
+        gametext.print_sim('You find some train tracks and decided to follow it to know where it arrives.')
+        gametext.print_sim('When you reach the end you see a strange underground entrance, with some abandoned military vehicles around.')
+        gametext.print_sim('It clearly does not seem to be a very friendly place, but it seems to be well protected, so it is sure to have a good loot.')
+        gametext.print_sim('You decide to check... carefully.')
