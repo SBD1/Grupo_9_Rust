@@ -1,13 +1,14 @@
 import os
+import struct
 import pandas as pd
 import sqlalchemy as db
 import random
 
 
-class game_assets():
+class game_instances():
     def load_game_db(self):
         DBUSER= os.getenv('DBUSER','postgres')
-        DBPASSWORD = os.getenv('DBPASSWORD','shadow954')
+        DBPASSWORD = os.getenv('DBPASSWORD','postgres')
         DBHOST = os.getenv('DBHOST','localhost')
         DBPORT = os.getenv('DBPORT','5432')
         DBNAME = os.getenv('DBNAME','rust-2')
@@ -15,18 +16,20 @@ class game_assets():
         engine = db.create_engine(
             f"postgresql+psycopg2://{DBUSER}:{DBPASSWORD}@{DBHOST}:{DBPORT}/{DBNAME}", client_encoding='utf8')
         return engine
+        
 
     def monument_gen(self,monument_size, loot_grade,engine):
         monument_content = []
         for square in range(monument_size):
             if(square == 4 or square == 9 or square == 14 or square == 19):
-                monument_content.append(['structure',pd.read_sql("select id from structures ORDER BY random() LIMIT 1;".format(loot_grade),engine)])
+                structure = pd.read_sql("select * from structures ORDER BY random() LIMIT 1;".format(loot_grade),engine)
+                monument_content.append(['structure',structure.id,structure.combat_enemy,structure.name])
             elif(square ==  0):
-                monument_content.append(['loot_box',game_assets.instance_loot_box(self,loot_grade,engine)])
+                monument_content.append(['loot_box',game_instances.instance_loot_box(self,loot_grade,engine)])
             else:
                 randomizer = random.randint(1,100)
                 if randomizer <= 40:
-                    monument_content.append('Empty')
+                    monument_content.append(['Empty'])
                 elif randomizer <= 70 and randomizer > 40:
                     monument_content.append(['npc',pd.read_sql("select id from npcs where grade = '{}' and isagressive = true ORDER BY random() LIMIT 1;".format(loot_grade),engine).id[0]])
                 elif randomizer > 70 and randomizer <= 100:
@@ -36,7 +39,7 @@ class game_assets():
                         loot_boxes = ['primary','resource','barrel','basic','tool','food','military']
                     elif loot_grade == 'elite':
                         loot_boxes = ['primary','resource','barrel','basic','tool','food','military','elite']
-                    monument_content.append(['loot_box',game_assets.instance_loot_box(self,random.choice(loot_boxes),engine)])
+                    monument_content.append(['loot_box',game_instances.instance_loot_box(self,random.choice(loot_boxes),engine)])
         return monument_content
 
 

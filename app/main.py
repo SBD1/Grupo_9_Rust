@@ -4,67 +4,24 @@ import sqlalchemy as db
 from sqlalchemy.orm import sessionmaker
 from game_text import gametext
 from combat_mechanics import *
-from game_instances import game_assets
+from game_instances import game_instances
+from ambient_nav import *
 
-
-gi = game_assets()
+gi = game_instances()
 
 engine = gi.load_game_db()
 
 gt = gametext()
-
+an = ambient_nav()
 char_id = gt.introduction_text(engine)
 char_atr = combat_mechanics.load_attributes()
 
 while True:
-    choice = gt.progression_text(engine)
+    choice, grade = gt.progression_text(engine)
+    
     print("\nHealth:" + str(char_atr['health']) + " Hunger:" + str(char_atr['hunger'])+ " Thirst:" + str(char_atr['thirst'])+'\n')
-    try:
-        if choice == '9':
-            gi.quit_game(engine)
-            break
-    except:
-        if(choice.name[0] == 'Lighthouse'):  
-            gt.lighthouse_text()
-            monument = gi.monument_gen(choice.monumentsize[0],choice.lootgrade[0],engine)
-            print(monument)
 
-        elif(choice.name[0] == 'Warehouse' ):
-            gt.warehouse_text()
-            monument = gi.monument_gen(choice.monumentsize[0],choice.lootgrade[0],engine)
-            print(monument)
+    monument = an.enter_monument(choice, engine)
+    
+    an.load_room_content(monument, char_atr,engine, char_id, grade)
 
-        elif(choice.name[0] == 'Harbour' ):
-            gt.harbor_text()
-            monument = gi.monument_gen(choice.monumentsize[0],choice.lootgrade[0],engine)
-            print(monument)
-
-        elif(choice.name[0] == 'Water Treatment Plant' ):
-            gt.water_treatment_text()
-            monument = gi.monument_gen(choice.monumentsize[0],choice.lootgrade[0],engine)
-            print(monument)
-
-        elif(choice.name[0] == 'The Dome'):
-            gt.dome_text()
-            monument = gi.monument_gen(choice.monumentsize[0],choice.lootgrade[0],engine)
-            print(monument)
-
-        elif(choice.name[0] == 'Airfield'):
-            gt.airfield_text()
-            monument = gi.monument_gen(choice.monumentsize[0],choice.lootgrade[0],engine)
-            print(monument)
-
-        elif(choice.name[0] == 'Giant Excavator'):
-            gt.excavator_text()
-            monument = gi.monument_gen(choice.monumentsize[0],choice.lootgrade[0],engine)
-            print(monument)
-
-        elif(choice.name[0] == 'Launch Site'):
-            gt.launch_site_text()
-            monument = gi.monument_gen(choice.monumentsize[0],choice.lootgrade[0],engine)
-            print(monument)
-
-        elif(choice.name[0] == 'Military Tunnel'):
-            gt.mil_tunnel_text()
-            monument = gi.monument_gen(choice.monumentsize[0],choice.lootgrade[0],engine)
-            print(monument)

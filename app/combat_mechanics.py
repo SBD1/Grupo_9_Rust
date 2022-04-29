@@ -8,11 +8,18 @@ class combat_mechanics():
         self.accuracy = 1
         self.range = 0
 
-    def load_attributes():
+    def load_attributes(grade = 'basic'):
         char_atr = {}
-        char_atr['health'] = 100
+        if grade == 'basic':
+            multiplier = 1
+        elif grade == 'military':
+            multiplier = 1.5
+        elif grade == 'elite':
+            multiplier = 2
+
+        char_atr['health'] = 100 * multiplier
         char_atr['hunger'] = 100
-        char_atr['thirst'] = 100
+        char_atr['thirst'] = 100 
         return char_atr
     
     # def combat(player_character, npcs[]):

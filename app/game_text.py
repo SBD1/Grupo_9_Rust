@@ -1,5 +1,5 @@
 from secrets import choice
-from game_instances import game_assets
+import game_instances as gi
 
 import pandas as pd
 import time
@@ -8,13 +8,14 @@ import sys
 
 class gametext():
 
-    def print_sim(self,words):
+    def print_sim(words):
 
         for char in words:
             time.sleep(random.choice([0.03, 0.011, 0.008, 0.007,   0.007, 0.007, 0.006, 0.006, 0.005, 0.001]))
             sys.stdout.write(char)
             sys.stdout.flush()
         time.sleep(1)
+
 
     def introduction_text(self,engine):
         print("""
@@ -75,21 +76,26 @@ You have an urgent feeling, the need to survive, the question is, do you have wh
         m[2] = pd.read_sql("""SELECT * FROM monuments WHERE lootgrade = '{}' ORDER BY random() LIMIT 1;  """.format('elite'),engine)
 
         while True:
-            gametext.print_sim("You have a choice to make, your life might depend on it.\n ")
-            gametext.print_sim("1 - " + m[0].name[0] + "| TIER 1")
-            gametext.print_sim("2 - " + m[1].name[0] + "| TIER 2")
-            gametext.print_sim("3 - " + m[2].name[0] + "| TIER 3")
+            gametext.print_sim("You have a choice to make, your life might depend on it.\n")
+            gametext.print_sim("1 - " + m[0].name[0] + "| TIER 1\n")
+            gametext.print_sim("2 - " + m[1].name[0] + "| TIER 2\n")
+            gametext.print_sim("3 - " + m[2].name[0] + "| TIER 3\n")
 
-            choice = input("Where you wish to go?\n 1, 2 or 3\n or do you wish to end this? To do so, input 9\n")
+            choice = input("Where you wish to go?\n 1, 2 or 3\n")
 
             if choice == '1':
-                return m[0]
+                return m[0], 'basic'
             elif choice == '2':
-                return m[1]
+                return m[1], 'military'
             elif choice == '3':
-                return m[2]
-            elif choice == '9':
-                return choice
+                return m[2], 'elite'
+            else:
+                gametext.print_sim('That option is not available\n')
+                choice = input('if you wish to exit the game, enter 0')
+                if choice == 0:
+                    exit()
+                else:
+                    gametext.progression_text(engine)
 
 
     def loot_text(self, loot_tier):
