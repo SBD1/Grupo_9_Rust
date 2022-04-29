@@ -120,7 +120,7 @@ You have an urgent feeling, the need to survive, the question is, do you have wh
         gametext.print_sim('As you walk around the island you see a large complex with several buil1dings.')
         gametext.print_sim('It has a water tank, buildings connected to the flow of fluids...')
         gametext.print_sim('It is a treatment plant.')
-        gametext.print_sim('Clearly it is been idle for a while, but maybe it has some interesting supplies hihihi')
+        gametext.print_sim('Clearly it is been idle for a while, but maybe it has some interesting supplies.')
 
     def dome_text(self):
         gametext.print_sim('While you were walking, you came across a huge dome, it has big structures that support it to the ground')

@@ -32,18 +32,18 @@ CREATE TABLE IF NOT EXISTS Monuments (
 );
 
 CREATE TABLE IF NOT EXISTS Backpack (
-    ownerID INT,
-    id SERIAL PRIMARY KEY UNIQUE,
-    slot01 INT,
-    slot02 INT,
-    slot03 INT,
-    slot04 INT,
-    slot05 INT,
-    slot06 INT,
-    slot07 INT,
-    slot08 INT,
-    slot09 INT,
-    slot10 INT
+  ownerID INT,
+  id SERIAL PRIMARY KEY UNIQUE,
+  slot01 INT,
+  slot02 INT,
+  slot03 INT,
+  slot04 INT,
+  slot05 INT,
+  slot06 INT,
+  slot07 INT,
+  slot08 INT,
+  slot09 INT,
+  slot10 INT
 );
 
 CREATE TABLE IF NOT EXISTS Characters (
@@ -138,28 +138,28 @@ CREATE TABLE IF NOT EXISTS Resources (
 )INHERITS (items);
 
 CREATE TABLE IF NOT EXISTS ResourceNodes (
-    id SERIAL PRIMARY KEY UNIQUE,
-    nodeType node_type,
-    maxYield INT,
-    durabilityDamage FLOAT
+  id SERIAL PRIMARY KEY UNIQUE,
+  nodeType node_type,
+  maxYield INT,
+  durabilityDamage FLOAT
 );
 
 CREATE TABLE IF NOT EXISTS LootCrates (
-    item_quantity INT,
-    id SERIAL PRIMARY KEY UNIQUE,
-    grade loot_grade
+  item_quantity INT,
+  id SERIAL PRIMARY KEY UNIQUE,
+  grade loot_grade
 );
 
 CREATE TABLE IF NOT EXISTS loot_crate_instance(
-    id serial primary key unique,
-    loot_grade loot_grade,
-    item1_id int,
-    item2_id int,
-    item3_id int,
-    item4_id int,
-    item5_id int,
-    item6_id int,
-    item7_id int
+  id serial primary key unique,
+  loot_grade loot_grade,
+  item1_id int,
+  item2_id int,
+  item3_id int,
+  item4_id int,
+  item5_id int,
+  item6_id int,
+  item7_id int
 );
 
 CREATE TABLE IF NOT EXISTS Party (

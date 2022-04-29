@@ -1,5 +1,5 @@
 CREATE TRIGGER instanciateCharacter
 AFTER INSERT ON characters
-AS 
+AS
     INSERT INTO Backpack (ownerID)
     SELECT id FROM inserted;
