@@ -8,7 +8,7 @@ import random
 class game_instances():
     def load_game_db(self):
         DBUSER= os.getenv('DBUSER','postgres')
-        DBPASSWORD = os.getenv('DBPASSWORD','shadow954')
+        DBPASSWORD = os.getenv('DBPASSWORD','postgres')
         DBHOST = os.getenv('DBHOST','localhost')
         DBPORT = os.getenv('DBPORT','5432')
         DBNAME = os.getenv('DBNAME','rust-2')
@@ -55,22 +55,24 @@ class game_instances():
         query = """SELECT id FROM items WHERE lootgrade = '{}' ORDER BY random() LIMIT {};  """.format(loot_grade,iqoi)
         
         lootbox_items = pd.read_sql(query, engine)
-
-        if iqoi == 1:
+        try:
+            if iqoi == 1:
+                insertion = "INSERT INTO loot_crate_instance(loot_grade,item1_id) VALUES ('{}',{})".format(loot_grade, lootbox_items.id[0])
+            elif iqoi == 2:
+                insertion = "INSERT INTO loot_crate_instance(loot_grade,item1_id,item2_id) VALUES ('{}',{},{})".format(loot_grade, lootbox_items.id[0],lootbox_items.id[1])
+            elif iqoi == 3:
+                insertion = "INSERT INTO loot_crate_instance(loot_grade,item1_id,item2_id,item3_id) VALUES ('{}',{},{},{})".format(loot_grade, lootbox_items.id[0],lootbox_items.id[1],lootbox_items.id[2])
+            elif iqoi == 4:
+                insertion = "INSERT INTO loot_crate_instance(loot_grade,item1_id,item2_id,item3_id,item4_id) VALUES ('{}',{},{},{},{})".format(loot_grade, lootbox_items.id[0],lootbox_items.id[1],lootbox_items.id[2],lootbox_items.id[3])
+            elif iqoi == 5:
+                insertion = "INSERT INTO loot_crate_instance(loot_grade,item1_id,item2_id,item3_id,item4_id,item5_id) VALUES ('{}',{},{},{},{},{})".format(loot_grade, lootbox_items.id[0],lootbox_items.id[1],lootbox_items.id[2],lootbox_items.id[3],lootbox_items.id[4])
+            elif iqoi == 6:
+                insertion = "INSERT INTO loot_crate_instance(loot_grade,item1_id,item2_id,item3_id,item4_id,item5_id,item6_id) VALUES ('{}',{},{},{},{},{},{})".format(loot_grade, lootbox_items.id[0],lootbox_items.id[1],lootbox_items.id[2],lootbox_items.id[3],lootbox_items.id[4],lootbox_items.id[5])
+            elif iqoi == 7:
+                insertion = "INSERT INTO loot_crate_instance(loot_grade,item1_id,item2_id,item3_id,item4_id,item5_id,item6_id,item7_id) VALUES ('{}',{},{},{},{},{},{},{})".format(loot_grade, lootbox_items.id[0],lootbox_items.id[1],lootbox_items.id[2],lootbox_items.id[3],lootbox_items.id[4],lootbox_items.id[5],lootbox_items.id[6])        
+        except:
             insertion = "INSERT INTO loot_crate_instance(loot_grade,item1_id) VALUES ('{}',{})".format(loot_grade, lootbox_items.id[0])
-        elif iqoi == 2:
-            insertion = "INSERT INTO loot_crate_instance(loot_grade,item1_id,item2_id) VALUES ('{}',{},{})".format(loot_grade, lootbox_items.id[0],lootbox_items.id[1])
-        elif iqoi == 3:
-            insertion = "INSERT INTO loot_crate_instance(loot_grade,item1_id,item2_id,item3_id) VALUES ('{}',{},{},{})".format(loot_grade, lootbox_items.id[0],lootbox_items.id[1],lootbox_items.id[2])
-        elif iqoi == 4:
-            insertion = "INSERT INTO loot_crate_instance(loot_grade,item1_id,item2_id,item3_id,item4_id) VALUES ('{}',{},{},{},{})".format(loot_grade, lootbox_items.id[0],lootbox_items.id[1],lootbox_items.id[2],lootbox_items.id[3])
-        elif iqoi == 5:
-            insertion = "INSERT INTO loot_crate_instance(loot_grade,item1_id,item2_id,item3_id,item4_id,item5_id) VALUES ('{}',{},{},{},{},{})".format(loot_grade, lootbox_items.id[0],lootbox_items.id[1],lootbox_items.id[2],lootbox_items.id[3],lootbox_items.id[4])
-        elif iqoi == 6:
-            insertion = "INSERT INTO loot_crate_instance(loot_grade,item1_id,item2_id,item3_id,item4_id,item5_id,item6_id) VALUES ('{}',{},{},{},{},{},{})".format(loot_grade, lootbox_items.id[0],lootbox_items.id[1],lootbox_items.id[2],lootbox_items.id[3],lootbox_items.id[4],lootbox_items.id[5])
-        elif iqoi == 7:
-            insertion = "INSERT INTO loot_crate_instance(loot_grade,item1_id,item2_id,item3_id,item4_id,item5_id,item6_id,item7_id) VALUES ('{}',{},{},{},{},{},{},{})".format(loot_grade, lootbox_items.id[0],lootbox_items.id[1],lootbox_items.id[2],lootbox_items.id[3],lootbox_items.id[4],lootbox_items.id[5],lootbox_items.id[6])        
-                            
+
         with engine.begin() as conn:     # TRANSACTION
             conn.execute(insertion)
             

@@ -66,8 +66,7 @@ You have an urgent feeling, the need to survive, the question is, do you have wh
         with engine.begin() as conn:     # TRANSACTION
             conn.execute(insertion)
         conn.close()
-
-        return pd.read_sql('select id from playercharacters order by id desc limit 1',engine).id
+        return pd.read_sql('select id from playercharacters order by id desc limit 1',engine).id[0]
 
     def progression_text(self,engine):
         m = {}
@@ -77,25 +76,23 @@ You have an urgent feeling, the need to survive, the question is, do you have wh
 
         while True:
             gametext.print_sim("You have a choice to make, your life might depend on it.\n")
-            gametext.print_sim("1 - " + m[0].name[0] + "| TIER 1\n")
-            gametext.print_sim("2 - " + m[1].name[0] + "| TIER 2\n")
-            gametext.print_sim("3 - " + m[2].name[0] + "| TIER 3\n")
+            print("1 - " + m[0].name[0] + "| TIER 1\n")
+            print("2 - " + m[1].name[0] + "| TIER 2\n")
+            print("3 - " + m[2].name[0] + "| TIER 3\n")
 
             choice = input("Where you wish to go?\n 1, 2 or 3\n")
 
             if choice == '1':
-                return m[0], 'basic'
+                return m[0]
             elif choice == '2':
-                return m[1], 'military'
+                return m[1]
             elif choice == '3':
-                return m[2], 'elite'
+                return m[2]
             else:
                 gametext.print_sim('That option is not available\n')
-                choice = input('if you wish to exit the game, enter 0')
-                if choice == 0:
+                choice = input('if you wish to exit the game, enter 0\n')
+                if choice == '0':
                     exit()
-                else:
-                    gametext.progression_text(engine)
 
 
     def loot_text(self, loot_tier):

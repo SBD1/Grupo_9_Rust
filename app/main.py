@@ -17,7 +17,8 @@ char_id = gt.introduction_text(engine)
 char_atr = combat_mechanics.load_attributes()
 
 while True:
-    choice, grade = gt.progression_text(engine)
+    choice = gt.progression_text(engine)
+    grade = choice.lootgrade[0]
     
     print("\nHealth:" + str(char_atr['health']) + " Hunger:" + str(char_atr['hunger'])+ " Thirst:" + str(char_atr['thirst'])+'\n')
 
