@@ -44,12 +44,15 @@ class ambient_nav():
     def load_room_content(self,monument,char_atr,engine,char_id,grade):
         gi = game_instances()
         slot_select = True
+        room_counter = 0
 
         for room in monument:
-            entry = ambient_nav.menu()
+            room_counter +=1
+            print('This is Room N'+str(room_counter))
             while True:
+                entry = ambient_nav.menu()
                 if entry == '1':
-                    print(room)        
+                    
                     if room == 'Empty':
                         print('The room is empty, you get a break in the midst of this mayhem.')
                         char_atr.health =+10
@@ -59,7 +62,7 @@ class ambient_nav():
                         npc_atr = combat_mechanics.load_attributes(grade)
 
                     elif room[0] == 'loot_box':
-                        print('You encounter a loot box')
+                        print('You encounter a loot crate, luck smiles at you, for once.')
                         crate = pd.read_sql("select * from loot_crate_instance where id = {}".format(room[1]),engine)
                         gi.lootCrate(crate,char_id,engine)
 
@@ -104,9 +107,9 @@ class ambient_nav():
                                 gi.equipBackpackItem(char_id, backpack.slot10[0],engine,'10')
                         except:
                             print('That Item slot is empty, select a valid one or exit the inventory.\n')
-                    break             
-            if entry == '3':
-                break
+                             
+                if entry == '3':
+                    return
 
-            if entry == '4':
-                exit()
+                if entry == '4':
+                    exit()
