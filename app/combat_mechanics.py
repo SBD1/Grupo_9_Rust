@@ -26,7 +26,7 @@ class combat_mechanics():
         return char_atr
 
     def hit(p2life, weapon, attack):
-        place = ["Head", "Chest", "Leg", "Arms"]
+        place = ["Head", "Chest", "Leg", "Arms",'miss']
         h = random.choice(place)
         init_health = p2life["health"]
 
@@ -37,8 +37,6 @@ class combat_mechanics():
 
         if h == "Head":
             p2life["health"] -= head_damage
-
-            
             print("The attack hit the head!\n")
             
         elif h == "Chest":
@@ -52,6 +50,9 @@ class combat_mechanics():
         elif h == "Arms":
             p2life["health"] -= arms_damage
             print("The attack hit the Arms!\n")
+        
+        elif h == 'miss':
+            print('The attack missed')
 
         if attack == True:
             print("You dealt {} damage!\n".format(init_health - p2life["health"]))
@@ -59,19 +60,21 @@ class combat_mechanics():
         else:
             print("You took {} damage!\n".format(init_health - p2life["health"]))
 
-        return p2life["health"]
+        return p2life
 
     def combat(playerlife, npclife, weapon_player, weapon_npc):
 
         while(True):
-            h = combat_mechanics.hit(playerlife, weapon_npc, False)
+            playerlife = combat_mechanics.hit(playerlife, weapon_npc, False)
+            print("\nHealth:" + str(playerlife['health']) +'\n')
 
-            if h <= 0:
+            if playerlife['health'] <= 0:
                 return 1
 
-            h = combat_mechanics.hit(npclife, weapon_player, True)
+            npclife = combat_mechanics.hit(npclife, weapon_player, True)
+            print("\nPlayer Health:" + str(npclife['health']) +'\n')
 
-            if h <= 0:
+            if npclife['health'] <= 0:
                 return 0
 
 
