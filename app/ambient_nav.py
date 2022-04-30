@@ -45,10 +45,6 @@ class ambient_nav():
         gi = game_instances()
         slot_select = True
 
-        query = "update backpack set slot01=39 where ownerid={}".format(char_id)
-        with engine.begin() as conn:     # TRANSACTION
-            conn.execute(query)
-
         for room in monument:
             entry = ambient_nav.menu()
             if entry == '1':
@@ -62,7 +58,9 @@ class ambient_nav():
                     npc_atr = combat_mechanics.load_attributes(grade)
 
                 elif room[0] == 'loot_box':
-                    print('you encounter a loot box, what do you wish to do?')
+                    print('You encounter a loot box')
+                    crate = pd.read_sql("select * from loot_crate_instance where id = {}".format(room[1]),engine)
+                    gi.lootCrate(crate,char_id,engine)
 
                 elif room[0] == 'structure':
                     if room[2] == True:
@@ -70,8 +68,8 @@ class ambient_nav():
                         npc_atr = combat_mechanics.load_attributes(grade)
                     else:
                         print("You find loot, no enemies around, luck smiles at you (for now..)")
-                    lootbox = pd.read_sql("select * from loot_crate_instance where id = {}".format(gi.instance_loot_box(grade, engine)),engine)
-                    print(lootbox)
+                    crate = pd.read_sql("select * from loot_crate_instance where id = {}".format(gi.instance_loot_box(grade, engine)),engine)
+                    gi.lootCrate(crate,char_id,engine)
 
             elif entry == '2':
                 backpack = game_instances().getBackpack(char_id,engine)

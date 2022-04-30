@@ -1,5 +1,6 @@
 import os
 import struct
+from turtle import back
 import pandas as pd
 import sqlalchemy as db
 import random
@@ -47,10 +48,12 @@ class game_instances():
         query = "select * from lootcrates where grade = '{}'".format(loot_grade)
         qoi = pd.read_sql(query,engine).item_quantity.get(key=0)
 
-        try:
-            iqoi = random.randint(1,qoi)
-        except:
-            iqoi = 1
+        # try:
+        #     iqoi = random.randint(1,qoi)
+        # except:
+        #     iqoi = 1
+
+        iqoi = 1
 
         query = """SELECT id FROM items WHERE lootgrade = '{}' ORDER BY random() LIMIT {};  """.format(loot_grade,iqoi)
         
@@ -114,3 +117,42 @@ class game_instances():
 
         with engine.begin() as conn:     # TRANSACTION
             conn.execute(item)
+
+    def lootCrate(self,crate,char_id,engine):
+        print(crate)
+        print("What do you wish to do?")
+        loot = input("""
+1 - Loot
+2 - Discard
+""")
+        backpack = pd.read_sql('select * from backpack where ownerid = {}'.format(char_id),engine)
+        print(backpack.iloc[0])
+        counter = -1
+        with engine.begin() as conn:
+            if loot == '1':
+                
+                for slotCheck in backpack.iloc[0]:
+                    if slotCheck == None:
+                        break
+                    else:
+                        counter+=1
+                for loot_item in crate.iloc[0,2:]:
+
+                    if loot_item !=None:    
+                        if counter == 10:
+                            query = "update backpack set slot10={} where ownerid = {};".format(loot_item,char_id)
+                            counter +=1
+                            conn.execute(query)
+                        
+                        elif counter > 0 and counter <10:
+                            query = "update backpack set slot0{}={} where ownerid = {};".format(counter,loot_item,char_id)
+                            counter+=1
+                            conn.execute(query)                    
+                    else:
+                        break
+                
+                conn.execute("delete from loot_crate_instance where id={}".format(crate.id[0]))
+
+            elif loot=='2':
+                query = "delete from loot_crate_instance where id={}".format(crate.id[0])
+                conn.execute(query)
