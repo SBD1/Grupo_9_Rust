@@ -125,7 +125,7 @@ class game_instances():
                 if item != None:
                     item = (pd.read_sql("select equipedItems4 from PlayerCharacters where id={};".format(characterId),engine)).equipeditems4[0]
                     if item != None:
-                        item = "update PlayerCharacters set equipedItems5={} where id={};update backpack set slot{}=null where ownerid={};".format(itemId,characterId,slot,characterId).equipeditems5[0]
+                        item = "update PlayerCharacters set equipedItems5={} where id={};update backpack set slot{}=null where ownerid={};".format(itemId,characterId,slot,characterId)
                     else:
                         item = "update PlayerCharacters set equipedItems4={} where id={};update backpack set slot{}=null where ownerid={};".format(itemId,characterId,slot,characterId)
                 else:
@@ -139,7 +139,11 @@ class game_instances():
             conn.execute(item)
 
     def lootCrate(self,crate,char_id,engine):
-        print(crate)
+        print("Inside you find the following items:\n")
+        for item in crate.iloc[0,2:]:
+            if item!=None:
+                print(pd.read_sql("select itemname from items where id={}".format(item),engine).itemname[0]+'\n')
+
         print("What do you wish to do?")
         loot = input("1 - Loot\n2 - Discard\n")
         backpack = pd.read_sql('select * from backpack where ownerid = {}'.format(char_id),engine)

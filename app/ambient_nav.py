@@ -44,14 +44,18 @@ class ambient_nav():
     def load_room_content(self,monument,char_atr,engine,char_id,grade):
         gi = game_instances()
         slot_select = True
+        room_counter = 0
 
         for room in monument:
-            entry = ambient_nav.menu()
-            if entry == '1':
-                print(room)        
-                if room[0] == 'Empty':
-                    print('The room is empty, you get a break in the midst of this mayhem.')
-                    char_atr.health =+10
+            room_counter +=1
+            print('This is Room N'+str(room_counter))
+            while True:
+                entry = ambient_nav.menu()
+                if entry == '1':
+                    
+                    if room == 'Empty':
+                        print('The room is empty, you get a break in the midst of this mayhem.')
+                        char_atr.health =+10
 
                 elif room[0] == 'npc':
                     print("You encounter a " + pd.read_sql("select name from npcs where id={}".format(room[1]),engine).name[0]+" in the room, you have no choice than to fight for your life.")
@@ -103,12 +107,10 @@ class ambient_nav():
                     lootbox = pd.read_sql("select * from loot_crate_instance where id = {}".format(gi.instance_loot_box(grade, engine)),engine)
                     print(lootbox)
 
-            elif entry == '2':
-                backpack = game_instances().getBackpack(char_id,engine)
-                backpack_items = backpack[['slot01','slot02','slot03','slot04','slot05','slot06','slot07','slot08','slot09','slot10']]
-                print("{}'s, Backpack:".format(pd.read_sql('select name from playercharacters where id={}'.format(char_id),engine).name[0]))
-                i = 1
-                for slot in backpack_items:
+                    elif room[0] == 'loot_box':
+                        print('You encounter a loot crate, luck smiles at you, for once.')
+                        crate = pd.read_sql("select * from loot_crate_instance where id = {}".format(room[1]),engine)
+                        gi.lootCrate(crate,char_id,engine)
 
                     print(str(i) + ':' + str(backpack_items[slot].iloc[0]))
                     i+=1
@@ -116,8 +118,40 @@ class ambient_nav():
                     print("To use or equip and item, enter its slot number, to exit the backpack, enter the number 0")
                     slot_select = input()
 
-            elif entry == '3':
-                break
+                elif entry == '2':
+                    while slot_select != '0':
+                        gi.getEquipedItems(char_id,engine)
 
-            elif entry == '4':
-                exit()
+                        backpack = game_instances().getBackpack(char_id,engine)
+                    
+                        print("To use or equip and item, enter its slot number, to exit the backpack, enter the number 0")
+                        slot_select = input()
+                        try:
+                            if slot_select == '1':
+                                gi.equipBackpackItem(char_id, backpack.slot01[0],engine,'01')
+                            if slot_select == '2':
+                                gi.equipBackpackItem(char_id, backpack.slot02[0],engine,'02')
+                            if slot_select == '3':
+                                gi.equipBackpackItem(char_id, backpack.slot03[0],engine,'03')
+                            if slot_select == '4':
+                                gi.equipBackpackItem(char_id, backpack.slot04[0],engine,'04')
+                            if slot_select == '5':
+                                gi.equipBackpackItem(char_id, backpack.slot05[0],engine,'05')
+                            if slot_select == '6':
+                                gi.equipBackpackItem(char_id, backpack.slot06[0],engine,'06')
+                            if slot_select == '7':
+                                gi.equipBackpackItem(char_id, backpack.slot07[0],engine,'07')
+                            if slot_select == '8':
+                                gi.equipBackpackItem(char_id, backpack.slot08[0],engine,'08')
+                            if slot_select == '9':
+                                gi.equipBackpackItem(char_id, backpack.slot09[0],engine,'09')
+                            if slot_select == '10':
+                                gi.equipBackpackItem(char_id, backpack.slot10[0],engine,'10')
+                        except:
+                            print('That Item slot is empty, select a valid one or exit the inventory.\n')
+                             
+                if entry == '3':
+                    return
+
+                if entry == '4':
+                    exit()
