@@ -9,7 +9,7 @@ import random
 class game_instances():
     def load_game_db(self):
         DBUSER= os.getenv('DBUSER','postgres')
-        DBPASSWORD = os.getenv('DBPASSWORD','postgres')
+        DBPASSWORD = os.getenv('DBPASSWORD','shadow954')
         DBHOST = os.getenv('DBHOST','localhost')
         DBPORT = os.getenv('DBPORT','5432')
         DBNAME = os.getenv('DBNAME','rust-2')
@@ -48,12 +48,10 @@ class game_instances():
         query = "select * from lootcrates where grade = '{}'".format(loot_grade)
         qoi = pd.read_sql(query,engine).item_quantity.get(key=0)
 
-        # try:
-        #     iqoi = random.randint(1,qoi)
-        # except:
-        #     iqoi = 1
-
-        iqoi = 1
+        try:
+            iqoi = random.randint(1,qoi)
+        except:
+            iqoi = 1
 
         query = """SELECT id FROM items WHERE lootgrade = '{}' ORDER BY random() LIMIT {};  """.format(loot_grade,iqoi)
         
@@ -87,13 +85,35 @@ class game_instances():
             conn.execute(drop_query)
         engine.dispose()
 
-    def getBackpack(self, characterId, engine):
-        backpack = pd.read_sql("select * from Backpack where ownerID={} LIMIT 1;".format(characterId),engine)
+    def getBackpack(self, char_id, engine):
+
+        backpack = pd.read_sql("select * from Backpack where ownerID={} LIMIT 1;".format(char_id),engine)
+
+        backpack_items = backpack[['slot01','slot02','slot03','slot04','slot05','slot06','slot07','slot08','slot09','slot10']]
+        print("{}'s, Backpack:".format(pd.read_sql('select name from playercharacters where id={}'.format(char_id),engine).name[0]))
+        i = 1
+
+        for item in backpack.iloc[0,2:]:
+            if item!=None:
+                print(str(i) + ':' + pd.read_sql("select itemname from items where id={}".format(item),engine).itemname[0])
+            else:
+                print(str(i) + ': None')
+            i+=1            
         return backpack
     
     def getEquipedItems(self, characterId, engine):
+        items = []
         equiped = pd.read_sql("select equipedItems1,equipedItems2,equipedItems3,equipedItems4,equipedItems5 from playercharacters where id={}".format(characterId),engine)
-        print(equiped)
+        for item in equiped.iloc[0]:
+            if item!=None:
+                items.append(pd.read_sql("select itemname from items where id={}".format(item),engine).itemname[0])
+            else:
+                items.append(None)
+        zip_iterator = zip(equiped.columns, items)
+        equipment_dict = dict(zip_iterator)
+        print(pd.DataFrame(equipment_dict, index=[0]))
+        print('\n')
+
 
     def equipBackpackItem(self, characterId, itemId, engine,slot):
         item = pd.read_sql("select equipedItems1 from PlayerCharacters where id={} LIMIT 1;".format(characterId),engine).equipeditems1[0]
@@ -121,12 +141,8 @@ class game_instances():
     def lootCrate(self,crate,char_id,engine):
         print(crate)
         print("What do you wish to do?")
-        loot = input("""
-1 - Loot
-2 - Discard
-""")
+        loot = input("1 - Loot\n2 - Discard\n")
         backpack = pd.read_sql('select * from backpack where ownerid = {}'.format(char_id),engine)
-        print(backpack.iloc[0])
         counter = -1
         with engine.begin() as conn:
             if loot == '1':
