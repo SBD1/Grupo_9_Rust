@@ -67,5 +67,5 @@ Disponíveis no diretório ['4. SQL/'](https://github.com/SBD1/Grupo_9_Rust/tree
 Disponíveis no diretório ['5. Triggers, SP e Transações/'](https://github.com/SBD1/Grupo_9_Rust/blob/main/5.%20Triggers,%20SP%20e%20Transações).
 
 ## Apresentação
-<iframe width="560" height="315" src="https://www.youtube.com/embed/I5eQZih45Gs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![ENTREGA](https://img.youtube.com/vi/I5eQZih45Gs/0.jpg)](https://www.youtube.com/watch?v=I5eQZih45Gs)
 <p>Também disponível no arquivo 'Vídeo Entrega Final.mp4'.</p>
