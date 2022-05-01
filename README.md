@@ -65,3 +65,7 @@ Disponíveis no diretório ['4. SQL/'](https://github.com/SBD1/Grupo_9_Rust/tree
 
 ### Scripts
 Disponíveis no diretório ['5. Triggers, SP e Transações/'](https://github.com/SBD1/Grupo_9_Rust/blob/main/5.%20Triggers,%20SP%20e%20Transações).
+
+## Apresentação
+Link do vídeo de apresentação [aqui](https://www.youtube.com/watch?v=I5eQZih45Gs&ab_channel=IagoOliveira).
+Também disponível no arquivo 'Vídeo Entrega Final.mp4'.
